@@ -13,6 +13,7 @@ import java.util.Random;
 public class GameEngineImpl implements GameEngine {
 	Collection<Player> players = new ArrayList<Player>();
 	GameEngineCallback gameEngineCallback;
+	int houseTotal;
 	
 	@Override
 	public void rollPlayer(Player player, int initialDelay, int finalDelay,
@@ -56,6 +57,7 @@ public class GameEngineImpl implements GameEngine {
 		
 		num1 = random.nextInt(NUM_FACES) + minNum;
 		num2 = random.nextInt(NUM_FACES) + minNum;
+		houseTotal = num1 + num2;
 		dicePair = new DicePairImpl(num1, num2, NUM_FACES);
 		this.gameEngineCallback.houseResult(dicePair, this);
 	}
@@ -78,8 +80,10 @@ public class GameEngineImpl implements GameEngine {
 	@Override
 	public void calculateResult() {
 		Player winner = null;
-		int highestRoll = 0;
+		int highestRoll;
+		
 		this.rollHouse(1, 100, 20);
+		highestRoll = houseTotal;
 		
 		for (Player player: players) {
 			int num1 = player.getRollResult().getDice1();
@@ -91,6 +95,8 @@ public class GameEngineImpl implements GameEngine {
 				winner = player;
 			}
 		}
+		
+		
 		
 		winner.setPoints(winner.getPoints() + winner.getBet());
 	}
