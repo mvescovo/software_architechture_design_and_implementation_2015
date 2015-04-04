@@ -17,7 +17,6 @@ public class GameEngineCallbackImpl implements GameEngineCallback {
 		System.out.printf("%s%s%s%d%s%d%s%d\n", "Player: ", player.getPlayerName(),
 				", intermediate result = Dice 1: ", num1,
 				", Dice 2: ", num2, " .. Total: ", total);
-		System.out.printf("from android");
 	}
 
 	@Override

@@ -79,26 +79,28 @@ public class GameEngineImpl implements GameEngine {
 
 	@Override
 	public void calculateResult() {
-		Player winner = null;
-		int highestRoll;
-		
 		this.rollHouse(1, 100, 20);
-		highestRoll = houseTotal;
 		
 		for (Player player: players) {
 			int num1 = player.getRollResult().getDice1();
 			int num2 = player.getRollResult().getDice2();
 			int total = num1 + num2;
 			
-			if (total > highestRoll) {
-				highestRoll = total;
-				winner = player;
+			if (total > houseTotal) {
+				// player won
+				player.setPoints(player.getPoints() + player.getBet() * 2);
+
+			} else if (total == houseTotal){
+				// draw - return points to player
+				player.setPoints(player.getPoints() + player.getBet());
+			} else {
+				// player lost.
 			}
+			
+			System.out.printf("%s%s%s%s%s%d\n", "Player: id=", player.getPlayerId(),
+					  ", name=", player.getPlayerName(), ", points=",
+					  player.getPoints());
 		}
-		
-		
-		
-		winner.setPoints(winner.getPoints() + winner.getBet());
 	}
 
 	@Override

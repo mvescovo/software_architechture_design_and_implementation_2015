@@ -33,14 +33,12 @@ public class Client
 		// main loop to add player, place a bet, and roll
 		for (Player player : players)
 		{
-			gameEngine.addPlayer(player);
-			
 			try {
 				player.placeBet(100);
 			} catch (IllegalArgumentException e) {
 				System.err.println(e.getMessage() + player.getPlayerName());
 			}
-			
+			gameEngine.addPlayer(player);
 			gameEngine.rollPlayer(player, 1, 100, 20);
 		}
 
