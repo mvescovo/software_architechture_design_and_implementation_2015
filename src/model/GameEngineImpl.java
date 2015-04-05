@@ -13,7 +13,7 @@ import java.util.Random;
 public class GameEngineImpl implements GameEngine {
 	Collection<Player> players = new ArrayList<Player>();
 	GameEngineCallback gameEngineCallback;
-	int houseTotal;
+	private int houseTotal;
 	
 	@Override
 	public void rollPlayer(Player player, int initialDelay, int finalDelay,
@@ -115,8 +115,9 @@ public class GameEngineImpl implements GameEngine {
 
 	@Override
 	public boolean placeBet(Player player, int bet) {
-		// TODO Auto-generated method stub
-		return false;
+		if (player.placeBet(bet))
+			return true;
+		else
+			return false;
 	}
-
 }
