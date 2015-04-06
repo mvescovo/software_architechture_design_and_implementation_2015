@@ -49,7 +49,7 @@ public class SimplePlayer implements Player {
 			throw new IllegalArgumentException("Bet too high for: ");
 		
 		this.bet = bet;
-		this.points = this.points - this.bet;
+		this.points -= bet;
 		
 		return true;
 	}
@@ -69,5 +69,4 @@ public class SimplePlayer implements Player {
 		this.rollResult = rollResult;
 		
 	}
-
 }

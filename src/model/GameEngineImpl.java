@@ -115,9 +115,13 @@ public class GameEngineImpl implements GameEngine {
 
 	@Override
 	public boolean placeBet(Player player, int bet) {
-		if (player.placeBet(bet))
-			return true;
-		else
+		try {
+			player.placeBet(bet);
+		} catch (IllegalArgumentException e) {
+			System.err.println(e.getMessage() + player.getPlayerName());
 			return false;
+		}
+		
+		return true;
 	}
 }

@@ -4,8 +4,8 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
-public class CrapsMenu extends JMenuBar {
-	public CrapsMenu() {
+public class Menu extends JMenuBar {
+	public Menu() {
 		JMenu menu1;
 		JMenuItem menuItem;
 		
