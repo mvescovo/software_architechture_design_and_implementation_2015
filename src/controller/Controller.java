@@ -42,6 +42,7 @@ public class Controller {
 		this.mainFrame.getToolBar().getPlayerRollsButton().addKeyListener(listenerKey);
 		this.mainFrame.getToolBar().getHouseRollsButton().addKeyListener(listenerKey);
 		this.mainFrame.getToolBar().getDisplayResultsButton().addKeyListener(listenerKey);
+		this.mainFrame.getToolBar().getQuitButton().addKeyListener(listenerKey);
 	}
 	
 	public class Listener implements ActionListener {
@@ -148,6 +149,10 @@ public class Controller {
 			} else if (e.getSource() == mainFrame.getToolBar().getDisplayResultsButton()) {
 				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 					mainFrame.getToolBar().clickDisplayResults();
+				}
+			} else if (e.getSource() == mainFrame.getToolBar().getQuitButton()) {
+				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+					mainFrame.getToolBar().clickQuit();;
 				}
 			}
 		}

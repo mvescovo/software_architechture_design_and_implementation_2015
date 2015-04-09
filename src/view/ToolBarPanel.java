@@ -153,4 +153,8 @@ public class ToolBarPanel extends JPanel {
 	public void clickDisplayResults() {
 		displayResultsButton.doClick();
 	}
+	
+	public void clickQuit() {
+		quitButton.doClick();
+	}
 }
