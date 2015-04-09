@@ -18,39 +18,39 @@ public class TimeListener implements ActionListener {
 	int finalDelay;
 	int delayIncrement;
 	
-	public TimeListener(Timer timer, GameEngine gameEngine, int initialDelay, int finalDelay, int delayIncrement) {
-		System.out.println("created player timerlistener");
+	public TimeListener(Timer timer, GameEngine gameEngine, Player player, int initialDelay, int finalDelay, int delayIncrement) {
+		//System.out.println("created new player timerlistener");
 		this.timer = timer;
+		this.gameEngine = gameEngine;
+		this.player = player;
+		this.initialDelay = initialDelay;
+		this.finalDelay = finalDelay;
+		this.delayIncrement = delayIncrement;
+		//System.out.println("times from timelistener");
+		//System.out.println(timer.getDelay());
+		//System.out.println(this.timer.getDelay());
+	}
+	
+	public TimeListener(Timer houseTimer, GameEngine gameEngine, int initialDelay, int finalDelay, int delayIncrement) {
+		System.out.println("created house timerlistener");
+		this.houseTimer = houseTimer;
 		this.gameEngine = gameEngine;
 		this.initialDelay = initialDelay;
 		this.finalDelay = finalDelay;
 		this.delayIncrement = delayIncrement;
 	}
 	
-	public TimeListener(Timer houseTimer, GameEngine gameEngine, Player player, int initialDelay, int finalDelay, int delayIncrement) {
-		System.out.println("created player timerlistener");
-		this.houseTimer = houseTimer;
-		this.gameEngine = gameEngine;
-		this.player = player;
-		this.initialDelay = initialDelay;
-		this.finalDelay = finalDelay;
-		this.delayIncrement = delayIncrement;
-	}
-
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		System.out.println("test");
 		initialDelay += delayIncrement;
-		System.out.println(initialDelay);
-		if (e.getSource() == ((GameEngineImpl)gameEngine).timer) {
-			
+		if (e.getSource() == timer) {
 			System.out.println("player rolled Test");
+			gameEngine.rollPlayer(player, initialDelay, finalDelay, delayIncrement);
+		} else if (e.getSource() == houseTimer) {
+			System.out.println("house rolled Test");
+			gameEngine.rollHouse(initialDelay, finalDelay, delayIncrement);
+		} else {
+			System.out.println("no idea who called me");
 		}
-//			gameEngine.rollPlayer(player, initialDelay, finalDelay, delayIncrement);
-//		} else if (e.getSource() == houseTimer) {
-//			System.out.println("house rolled Test");
-//			gameEngine.rollHouse(initialDelay, finalDelay, delayIncrement);
-//		}
 	}
-
 }

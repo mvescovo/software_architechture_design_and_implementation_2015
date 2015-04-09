@@ -80,6 +80,10 @@ public class PlayerPanel extends JPanel {
 		playerName.setText(name);
 	}
 	
+	public String getPlayerName() {
+		return playerName.getText();
+	}
+	
 	public void disableAddPlayerButton() {
 		addPlayerButton.setEnabled(false);
 		addPlayerButton.setVisible(false);

@@ -4,9 +4,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.ArrayList;
+import java.util.Collection;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+
 import view.MainFrame;
 import model.GameEngineCallbackImpl;
 import model.SimplePlayer;
@@ -18,18 +21,25 @@ public class Controller {
 	private MainFrame mainFrame;
 	private Listener listener;
 	private ListenerKey listenerKey;
-	Player player;
+	private DicePanelListener dicePanelListener;
+	private AddPlayerButtonListener addPlayerButtonListener;
+	Player player = null;
 	
 	public Controller(GameEngine gameEngine, MainFrame mainFrame) {
-		listener = new Listener();
-		listenerKey = new ListenerKey();
 		this.gameEngine = gameEngine;
 		this.mainFrame = mainFrame;
 		gameEngine.addGameEngineCallback(new GameEngineCallbackImpl(mainFrame));
+		listener = new Listener();
+		listenerKey = new ListenerKey();
+		dicePanelListener = new DicePanelListener();
+		addPlayerButtonListener = new AddPlayerButtonListener(gameEngine, mainFrame, player);
 
+		// register listeners
+		this.mainFrame.getPlayerPanel().getAddPlayerButton().addActionListener(addPlayerButtonListener);
+		
 		
 		// register action listeners
-		this.mainFrame.getPlayerPanel().getAddPlayerButton().addActionListener(listener);
+		//this.mainFrame.getPlayerPanel().getAddPlayerButton().addActionListener(listener);
 		this.mainFrame.getToolBar().getPlaceBetButton().addActionListener(listener);
 		this.mainFrame.getToolBar().getBetTextField().addActionListener(listener);
 		this.mainFrame.getToolBar().getPlayerRollsButton().addActionListener(listener);
@@ -50,32 +60,45 @@ public class Controller {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if (e.getSource() == mainFrame.getPlayerPanel().getAddPlayerButton()) {
-				// get player name
-				String name = JOptionPane.showInputDialog("Enter name");
-				String points = JOptionPane.showInputDialog("Enter starting points");
-
-				// change model
-				player = new SimplePlayer("1", name, Integer.parseInt(points));
-				gameEngine.addPlayer(player);
-				
-				// change view
-				mainFrame.getToolBar().focusActiveBetText();
-				mainFrame.getPlayerPanel().setPlayerName(name);
-				mainFrame.getPlayerPanel().showPoints();
-				mainFrame.getPlayerPanel().setPoints(points);
-				mainFrame.getPlayerPanel().disableAddPlayerButton();
-				mainFrame.getToolBar().enableBet();
-				System.out.println("add player button clicked");
-				System.out.printf("%s%d%s\n", "player has ", player.getPoints(), " points");
-				System.out.println(gameEngine.getAllPlayers());
+//				// get player name
+//				String name = JOptionPane.showInputDialog("Enter name");
+//				String points = JOptionPane.showInputDialog("Enter starting points");
+//
+//				// change model
+//				player = new SimplePlayer("1", name, Integer.parseInt(points));
+//				gameEngine.addPlayer(player);
+//				
+//				// change view
+//				mainFrame.getToolBar().focusActiveBetText();
+//				mainFrame.getPlayerPanel().setPlayerName(name);
+//				mainFrame.getPlayerPanel().showPoints();
+//				mainFrame.getPlayerPanel().setPoints(points);
+//				mainFrame.getPlayerPanel().disableAddPlayerButton();
+//				mainFrame.getToolBar().enableBet();
+//				System.out.printf("%s%d%s\n", "player has ", player.getPoints(), " points");
 			} else if (e.getSource() == mainFrame.getToolBar().getPlaceBetButton()) {
+				Player currPlayer = null;
+				String playerString;
+				Collection<Player> players = new ArrayList<Player>();
+				
+				// get the player that pressed the button
+				playerString = mainFrame.getPlayerPanel().getPlayerName();
+				players = gameEngine.getAllPlayers();
+				
+				for (Player player : players) {
+					if (player.getPlayerName() == playerString) {
+						currPlayer = player;
+						continue;
+					}
+				}
+				
 				// get bet from user
 				String bet = mainFrame.getToolBar().getBetTextField().getText();
 				
 				// change model
-				if (gameEngine.placeBet(player, Integer.parseInt(bet)) == true) {
+				if (gameEngine.placeBet(currPlayer, Integer.parseInt(bet)) == true) {
 					// change view
-					System.out.printf("%s%d\n", "placed bet for: ", player.getBet());
+					System.out.printf("%s%d\n", "placed bet for: ", currPlayer.getBet());
 					mainFrame.getPlayerPanel().deductPoints(Integer.parseInt(bet));
 					mainFrame.getPlayerPanel().setBetPoints(Integer.parseInt(bet));
 					mainFrame.getPlayerPanel().showBet();
@@ -84,7 +107,7 @@ public class Controller {
 					mainFrame.getToolBar().focusPlayerRoll();
 				} else {
 					// change view
-					System.out.printf("%s%d\n", "not enough points for bet of: ", player.getBet());
+					System.out.printf("%s%d\n", "not enough points for bet of: ", currPlayer.getBet());
 					mainFrame.getPlayerPanel().notEnoughPoints();
 				}
 			} else if (e.getSource() == mainFrame.getToolBar().getBetTextField()) {
