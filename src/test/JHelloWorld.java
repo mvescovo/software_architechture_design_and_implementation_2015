@@ -12,7 +12,11 @@ import javax.swing.JLabel;
 public class JHelloWorld extends JFrame
 {
 
-   JLabel greeting = new JLabel("Hello world!");
+   /**
+	 * 
+	 */
+	private static final long serialVersionUID = -5323234856680237976L;
+JLabel greeting = new JLabel("Hello world!");
 
    public JHelloWorld()
    {

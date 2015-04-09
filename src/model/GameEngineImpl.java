@@ -1,19 +1,24 @@
 package model;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Collection;
-
 import model.interfaces.DicePair;
 import model.interfaces.GameEngine;
 import model.interfaces.GameEngineCallback;
 import model.interfaces.Player;
-
 import java.util.Random;
+import javax.swing.Timer;
 
 public class GameEngineImpl implements GameEngine {
 	Collection<Player> players = new ArrayList<Player>();
 	GameEngineCallback gameEngineCallback;
 	private int houseTotal;
+	Timer timer;
+	Timer houseTimer;
+	TimeListener timeListener;
+	TimeListener houseTimeListener;
 	
 	@Override
 	public void rollPlayer(Player player, int initialDelay, int finalDelay,
@@ -23,20 +28,26 @@ public class GameEngineImpl implements GameEngine {
 		final int minNum = 1;
 		Random random = new Random();
 		DicePair dicePair = null;
+		timeListener = new TimeListener(player, initialDelay, finalDelay, delayIncrement);
+		timer = new Timer(initialDelay, this.timeListener);
 		
-		while (initialDelay < finalDelay) {
+		// roll the dice and update views
+		if (initialDelay < finalDelay) {
 			num1 = random.nextInt(NUM_FACES) + minNum;
 			num2 = random.nextInt(NUM_FACES) + minNum;
 			dicePair = new DicePairImpl(num1, num2, NUM_FACES);
 			this.gameEngineCallback.intermediateResult(player, dicePair, this);
-			initialDelay += delayIncrement;
+			System.out.println(timer.getDelay());
+			timer.start();
+			System.out.println(Integer.toString(initialDelay));
+			System.out.println(Integer.toString(finalDelay));
+		} else {
+			num1 = random.nextInt(NUM_FACES) + minNum;
+			num2 = random.nextInt(NUM_FACES) + minNum;
+			dicePair = new DicePairImpl(num1, num2, NUM_FACES);
+			player.setRollResult(dicePair);
+			this.gameEngineCallback.result(player, dicePair, this);
 		}
-		
-		num1 = random.nextInt(NUM_FACES) + minNum;
-		num2 = random.nextInt(NUM_FACES) + minNum;
-		dicePair = new DicePairImpl(num1, num2, NUM_FACES);
-		this.gameEngineCallback.result(player, dicePair, this);
-		player.setRollResult(dicePair);
 	}
 
 	@Override
@@ -46,20 +57,23 @@ public class GameEngineImpl implements GameEngine {
 		final int minNum = 1;
 		Random random = new Random();
 		DicePair dicePair = null;
+		houseTimeListener = new TimeListener(initialDelay, finalDelay, delayIncrement);
+		houseTimer = new Timer(initialDelay, houseTimeListener);
 		
-		while (initialDelay < finalDelay) {
+		// roll the dice and update views
+		if (initialDelay < finalDelay) {
 			num1 = random.nextInt(NUM_FACES) + minNum;
 			num2 = random.nextInt(NUM_FACES) + minNum;
 			dicePair = new DicePairImpl(num1, num2, NUM_FACES);
 			this.gameEngineCallback.intermediateHouseResult(dicePair, this);
-			initialDelay += delayIncrement;
+			houseTimer.start();
+		} else {
+			num1 = random.nextInt(NUM_FACES) + minNum;
+			num2 = random.nextInt(NUM_FACES) + minNum;
+			dicePair = new DicePairImpl(num1, num2, NUM_FACES);
+			houseTotal = num1 + num2;
+			this.gameEngineCallback.houseResult(dicePair, this);
 		}
-		
-		num1 = random.nextInt(NUM_FACES) + minNum;
-		num2 = random.nextInt(NUM_FACES) + minNum;
-		houseTotal = num1 + num2;
-		dicePair = new DicePairImpl(num1, num2, NUM_FACES);
-		this.gameEngineCallback.houseResult(dicePair, this);
 	}
 
 	@Override
@@ -79,7 +93,7 @@ public class GameEngineImpl implements GameEngine {
 
 	@Override
 	public void calculateResult() {
-		this.rollHouse(1, 100, 20);
+		//this.rollHouse(1, 100, 20);
 		
 		for (Player player: players) {
 			int num1 = player.getRollResult().getDice1();
@@ -89,7 +103,6 @@ public class GameEngineImpl implements GameEngine {
 			if (total > houseTotal) {
 				// player won
 				player.setPoints(player.getPoints() + player.getBet() * 2);
-
 			} else if (total == houseTotal){
 				// draw - return points to player
 				player.setPoints(player.getPoints() + player.getBet());
@@ -123,5 +136,37 @@ public class GameEngineImpl implements GameEngine {
 		}
 		
 		return true;
+	}
+	
+	public class TimeListener implements ActionListener {
+		Player player = null;
+		int initialDelay;
+		int finalDelay;
+		int delayIncrement;
+		
+		public TimeListener(int initialDelay, int finalDelay, int delayIncrement) {
+			this.initialDelay = initialDelay;
+			this.finalDelay = finalDelay;
+			this.delayIncrement = delayIncrement;
+		}
+		
+		public TimeListener(Player player, int initialDelay, int finalDelay, int delayIncrement) {
+			this.player = player;
+			this.initialDelay = initialDelay;
+			this.finalDelay = finalDelay;
+			this.delayIncrement = delayIncrement;
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			timer.stop();
+			initialDelay += delayIncrement;
+			
+			if (e.getSource().equals(timer)) {
+				rollPlayer(player, initialDelay, finalDelay, delayIncrement);
+			} else if (e.getSource().equals(houseTimer)) {
+				rollHouse(initialDelay, finalDelay, delayIncrement);
+			}
+		}
 	}
 }

@@ -1,18 +1,17 @@
 package view;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Cursor;
-import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.JToolBar;
 
 public class ToolBarPanel extends JPanel {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1874776971025449948L;
 	JToolBar toolBar;
 	JButton placeBetButton;
 	JTextField betTextField;
@@ -46,7 +45,7 @@ public class ToolBarPanel extends JPanel {
 		houseRollsButton.setBackground(new Color(202,151,74));
 		houseRollsButton.setForeground(Color.WHITE);
 		houseRollsButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
-		//toolBar.add(houseRollsButton);
+		toolBar.add(houseRollsButton);
 		displayResultsButton = new JButton("Display results");
 		displayResultsButton.setEnabled(false);
 		displayResultsButton.setBackground(new Color(202,151,74));
@@ -107,11 +106,51 @@ public class ToolBarPanel extends JPanel {
 		playerRollsButton.setEnabled(false);
 	}
 	
+	public void enableHouseRoll() {
+		houseRollsButton.setEnabled(true);
+	}
+	
+	public void disableHouseRoll() {
+		houseRollsButton.setEnabled(false);
+	}
+	
 	public void enableDisplayResults() {
 		displayResultsButton.setEnabled(true);
 	}
 	
 	public void disableDisplayResults() {
 		displayResultsButton.setEnabled(false);
+	}
+	
+	public void focusActiveBetText() {
+		betTextField.requestFocusInWindow();
+	}
+	
+	public void clickPlaceBet() {
+		placeBetButton.doClick();
+	}
+	
+	public void focusPlayerRoll() {
+		playerRollsButton.requestFocusInWindow();
+	}
+	
+	public void clickPlayerRolls() {
+		playerRollsButton.doClick();
+	}
+	
+	public void clickHouseRolls() {
+		houseRollsButton.doClick();
+	}
+	
+	public void focusHouseRolls() {
+		houseRollsButton.requestFocusInWindow();
+	}
+	
+	public void focusDisplayResults() {
+		displayResultsButton.requestFocusInWindow();
+	}
+	
+	public void clickDisplayResults() {
+		displayResultsButton.doClick();
 	}
 }

@@ -7,6 +7,10 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class HeadingPanel extends JPanel {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1266655438532045137L;
 	JLabel heading;
 	Font font;
 	

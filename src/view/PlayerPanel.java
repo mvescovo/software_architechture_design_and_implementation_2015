@@ -1,22 +1,20 @@
 package view;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.GridLayout;
-
-import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.border.TitledBorder;
 
 public class PlayerPanel extends JPanel {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5849689848560582871L;
 	JLabel playerTitle;
 	JLabel playerName;
 	JButton addPlayerButton;
@@ -37,7 +35,6 @@ public class PlayerPanel extends JPanel {
 		playerName = new JLabel("No players yet");
 		playerName.setForeground(Color.WHITE);
 		playerName.setAlignmentX(CENTER_ALIGNMENT);
-		//playerName.setBorder(BorderFactory.createEmptyBorder(0, 10, 10, 10));
 		add(playerName);
 		add(Box.createRigidArea(new Dimension(170, 10)));
 		addPlayerButton = new JButton("Add Player");
@@ -45,7 +42,6 @@ public class PlayerPanel extends JPanel {
 		addPlayerButton.setBackground(new Color(202, 151, 74));
 		addPlayerButton.setForeground(Color.WHITE);
 		addPlayerButton.setAlignmentX(CENTER_ALIGNMENT);
-		//addPlayerButton.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 		add(addPlayerButton);
 		pointsTitle = new JLabel("Points:");
 		pointsTitle.setForeground(new Color(255, 215, 0));
@@ -70,6 +66,7 @@ public class PlayerPanel extends JPanel {
 		betPoints.setVisible(false);
 		betPoints.setAlignmentX(CENTER_ALIGNMENT);
 		add(betPoints);
+		add(Box.createRigidArea(new Dimension(170, 5)));
 		
 		// panel settings
 		setBackground(new Color(151, 42, 39));
@@ -112,8 +109,12 @@ public class PlayerPanel extends JPanel {
 		betPoints.setText(Integer.toString(betPointsInt));
 	}
 	
-	public void displayBet() {
+	public void showBet() {
 		betTitle.setVisible(true);
 		betPoints.setVisible(true);
+	}
+	
+	public void clickAddPlayer() {
+		addPlayerButton.doClick();
 	}
 }

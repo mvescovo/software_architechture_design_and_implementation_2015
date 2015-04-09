@@ -5,6 +5,11 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
 public class Menu extends JMenuBar {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2401343171737574518L;
+
 	public Menu() {
 		JMenu menu1;
 		JMenuItem menuItem;

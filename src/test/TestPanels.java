@@ -6,6 +6,11 @@ import javax.swing.*;
 import javax.swing.border.*;
 
 public class TestPanels extends JFrame {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5395847951658785460L;
+
 	public TestPanels() {
 		ImageIcon diceIcon1 = new ImageIcon("image/diceIcon1.png");
 		ImageIcon diceIcon2 = new ImageIcon("image/diceIcon2.jpg");
