@@ -25,29 +25,56 @@ public class AddPlayerButtonListener implements ActionListener, KeyListener {
 	}
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-		// get player name
-		String name = JOptionPane.showInputDialog("Enter name");
-		String points = JOptionPane.showInputDialog("Enter starting points");
+		String name = null;
+		String points = null;
+		int pointsInt = 0;
+		boolean pointsOk = true;
+		
+		name = JOptionPane.showInputDialog("Enter name");
+		
+		if (name != null) {
+			points = JOptionPane.showInputDialog("Enter starting points");
+			
+			if (points != null) {
+				try {
+					pointsInt = Integer.parseInt(points);
+				} catch (NumberFormatException e) {
+					JOptionPane.showMessageDialog(mainFrame, "Points needs to be a number.", "Invalid points", 0);
+					System.out.println("not a number");
+					pointsOk = false;
+				} finally {
+					if ((pointsOk == true) && (pointsInt < 1)) {
+						JOptionPane.showMessageDialog(mainFrame, "Points must be greater than 0.", "Invalid points", 0);
+						System.out.println("points must be greater than 0");
+						pointsOk = false;
+					}
+				}
+			} else {
+				pointsOk = false;
+			}
+		}
 
-		// change model
-		player = new SimplePlayer("1", name, Integer.parseInt(points));
-		gameEngine.addPlayer(player);
-		
-		// update master controller
-		controller.setCurrPlayer(player);
-		
-		// change view
-		mainFrame.getToolBar().focusActiveBetText();
-		mainFrame.getPlayerPanel().setPlayerName(name);
-		mainFrame.getPlayerPanel().showPoints();
-		mainFrame.getPlayerPanel().setPoints(points);
-		mainFrame.getPlayerPanel().disableAddPlayerButton();
-		mainFrame.getMenu().disableAddPlayerMenu();
-		mainFrame.getToolBar().enableBet();
-		mainFrame.getMenu().enablePlaceBetMenu();
-		mainFrame.getToolBar().enableQuit();
-		mainFrame.getMenu().enableQuitMenu();
-		System.out.printf("%s%d%s\n", "player has ", player.getPoints(), " points");
+		if ((name != null) && (pointsOk == true)) {
+			// change model
+			player = new SimplePlayer("1", name, pointsInt);
+			gameEngine.addPlayer(player);
+			
+			// update master controller
+			controller.setCurrPlayer(player);
+			
+			// change view
+			mainFrame.getToolBar().focusActiveBetText();
+			mainFrame.getPlayerPanel().setPlayerName(name);
+			mainFrame.getPlayerPanel().showPoints();
+			mainFrame.getPlayerPanel().setPoints(points);
+			mainFrame.getPlayerPanel().disableAddPlayerButton();
+			mainFrame.getMenu().disableAddPlayerMenu();
+			mainFrame.getToolBar().enableBet();
+			mainFrame.getMenu().enablePlaceBetMenu();
+			mainFrame.getToolBar().enableQuit();
+			mainFrame.getMenu().enableQuitMenu();
+			System.out.printf("%s%d%s\n", "player has ", player.getPoints(), " points");
+		}
 	}
 	@Override
 	public void keyTyped(KeyEvent e) {

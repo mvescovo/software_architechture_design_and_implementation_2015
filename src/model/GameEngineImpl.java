@@ -101,7 +101,7 @@ public class GameEngineImpl implements GameEngine {
 
 	@Override
 	public void calculateResult() {
-		//this.rollHouse(1, 100, 20);
+		//this.rollHouse(1, 200, 20);
 		
 		for (Player player: players) {
 			int num1 = player.getRollResult().getDice1();
