@@ -22,7 +22,6 @@ public class AddPlayerButtonListener implements ActionListener, KeyListener {
 		this.gameEngine = gameEngine;
 		this.mainFrame = mainFrame;
 		this.controller = controller;
-//		this.player = player;
 	}
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
@@ -43,7 +42,11 @@ public class AddPlayerButtonListener implements ActionListener, KeyListener {
 		mainFrame.getPlayerPanel().showPoints();
 		mainFrame.getPlayerPanel().setPoints(points);
 		mainFrame.getPlayerPanel().disableAddPlayerButton();
+		mainFrame.getMenu().disableAddPlayerMenu();
 		mainFrame.getToolBar().enableBet();
+		mainFrame.getMenu().enablePlaceBetMenu();
+		mainFrame.getToolBar().enableQuit();
+		mainFrame.getMenu().enableQuitMenu();
 		System.out.printf("%s%d%s\n", "player has ", player.getPoints(), " points");
 	}
 	@Override

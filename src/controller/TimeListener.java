@@ -19,16 +19,12 @@ public class TimeListener implements ActionListener {
 	int delayIncrement;
 	
 	public TimeListener(Timer timer, GameEngine gameEngine, Player player, int initialDelay, int finalDelay, int delayIncrement) {
-		//System.out.println("created new player timerlistener");
 		this.timer = timer;
 		this.gameEngine = gameEngine;
 		this.player = player;
 		this.initialDelay = initialDelay;
 		this.finalDelay = finalDelay;
 		this.delayIncrement = delayIncrement;
-		//System.out.println("times from timelistener");
-		//System.out.println(timer.getDelay());
-		//System.out.println(this.timer.getDelay());
 	}
 	
 	public TimeListener(Timer houseTimer, GameEngine gameEngine, int initialDelay, int finalDelay, int delayIncrement) {

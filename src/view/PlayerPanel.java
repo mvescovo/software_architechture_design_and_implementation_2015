@@ -89,9 +89,19 @@ public class PlayerPanel extends JPanel {
 		addPlayerButton.setVisible(false);
 	}
 	
+	public void enableAddPlayerButton() {
+		addPlayerButton.setEnabled(true);
+		addPlayerButton.setVisible(true);
+	}
+	
 	public void showPoints() {
 		pointsTitle.setVisible(true);
 		points.setVisible(true);
+	}
+	
+	public void hidePoints() {
+		pointsTitle.setVisible(false);
+		points.setVisible(false);
 	}
 	
 	public void setPoints(String points) {
@@ -118,7 +128,16 @@ public class PlayerPanel extends JPanel {
 		betPoints.setVisible(true);
 	}
 	
+	public void hideBet() {
+		betTitle.setVisible(false);
+		betPoints.setVisible(false);
+	}
+	
 	public void clickAddPlayer() {
 		addPlayerButton.doClick();
+	}
+	
+	public void focusAddPlayerButton() {
+		addPlayerButton.requestFocusInWindow();
 	}
 }

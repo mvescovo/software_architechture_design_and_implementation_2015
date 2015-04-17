@@ -46,7 +46,9 @@ public class PlaceBetButtonListener implements ActionListener {
 			mainFrame.getPlayerPanel().setBetPoints(Integer.parseInt(bet));
 			mainFrame.getPlayerPanel().showBet();
 			mainFrame.getToolBar().disableBet();
+			mainFrame.getMenu().disablePlaceBetMenu();
 			mainFrame.getToolBar().enableRoll();
+			mainFrame.getMenu().enablePlayerRollsMenu();
 			mainFrame.getToolBar().focusPlayerRoll();
 		} else {
 			// change view

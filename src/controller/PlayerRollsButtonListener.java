@@ -29,6 +29,7 @@ public class PlayerRollsButtonListener implements ActionListener, KeyListener {
 		
 		// change view
 		mainFrame.getToolBar().disableRoll();
+		mainFrame.getMenu().disablePlayerRollsMenu();
 	}
 
 	@Override

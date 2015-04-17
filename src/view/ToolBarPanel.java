@@ -19,6 +19,7 @@ public class ToolBarPanel extends JPanel {
 	JButton houseRollsButton;
 	JButton displayResultsButton;
 	JButton quitButton;
+	JButton exitButton;
 	
 	public ToolBarPanel() {
 		toolBar = new JToolBar("Craps toolbar");
@@ -53,10 +54,16 @@ public class ToolBarPanel extends JPanel {
 		displayResultsButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		toolBar.add(displayResultsButton);
 		quitButton = new JButton("Quit");
+		quitButton.setEnabled(false);
 		quitButton.setBackground(new Color(202,151,74));
 		quitButton.setForeground(Color.WHITE);
 		quitButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		toolBar.add(quitButton);
+		exitButton = new JButton("Exit");
+		exitButton.setBackground(new Color(202,151,74));
+		exitButton.setForeground(Color.WHITE);
+		exitButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		toolBar.add(exitButton);
 		
 		add(toolBar);
 		
@@ -86,6 +93,10 @@ public class ToolBarPanel extends JPanel {
 	
 	public JButton getQuitButton() {
 		return quitButton;
+	}
+	
+	public JButton getExitButton() {
+		return exitButton;
 	}
 	
 	public void enableBet() {
@@ -154,7 +165,23 @@ public class ToolBarPanel extends JPanel {
 		displayResultsButton.doClick();
 	}
 	
+	public void enableQuit() {
+		quitButton.setEnabled(true);
+	}
+	
+	public void disableQuit() {
+		quitButton.setEnabled(false);
+	}
+	
 	public void clickQuit() {
 		quitButton.doClick();
+	}
+	
+	public void clickExit() {
+		exitButton.doClick();
+	}
+	
+	public void setBetTextField(String value) {
+		betTextField.setText(value);
 	}
 }

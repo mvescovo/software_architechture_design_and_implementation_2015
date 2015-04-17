@@ -11,7 +11,7 @@ public class MainFrame extends JFrame {
 	 */
 	private static final long serialVersionUID = -7523238222452192023L;
 	GameEngine gameEngine;
-	Menu crapsMenu;
+	Menu menu;
 	HeadingPanel heading;
 	ToolBarPanel toolBar;
 	PlayerPanel playerPanel;
@@ -20,13 +20,13 @@ public class MainFrame extends JFrame {
 	
 	public MainFrame(GameEngine gameEngine) {
 		this.gameEngine = gameEngine;
-		crapsMenu = new Menu();
+		menu = new Menu();
 		heading = new HeadingPanel();
 		toolBar = new ToolBarPanel();
 		playerPanel = new PlayerPanel();
 		dicePanel = new DicePanel();
 
-		setJMenuBar(crapsMenu);
+		setJMenuBar(menu);
 		add(heading, BorderLayout.NORTH);
 		add(toolBar, BorderLayout.SOUTH);
 		add(playerPanel, BorderLayout.WEST);
@@ -34,7 +34,7 @@ public class MainFrame extends JFrame {
 		
 		// set details of dice frame
 		setTitle("Dice Game");
-		setSize(600, 400);
+		setSize(800, 600);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setVisible(true);
@@ -50,5 +50,9 @@ public class MainFrame extends JFrame {
 	
 	public DicePanel getDicePanel() {
 		return dicePanel;
+	}
+	
+	public Menu getMenu() {
+		return menu;
 	}
 }

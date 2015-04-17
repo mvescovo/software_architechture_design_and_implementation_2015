@@ -45,6 +45,7 @@ public class GameEngineCallbackImpl implements GameEngineCallback {
 		mainFrame.getDicePanel().setDice1(Integer.toString(num1));
 		mainFrame.getDicePanel().setDice2(Integer.toString(num2));
 		mainFrame.getToolBar().enableHouseRoll();
+		mainFrame.getMenu().enableHouseRollsMenu();
 		mainFrame.getToolBar().focusHouseRolls();
 	}
 
@@ -79,6 +80,7 @@ public class GameEngineCallbackImpl implements GameEngineCallback {
 		mainFrame.getDicePanel().setDice1(Integer.toString(num1));
 		mainFrame.getDicePanel().setDice2(Integer.toString(num2));
 		mainFrame.getToolBar().enableDisplayResults();
+		mainFrame.getMenu().enableDisplayResultsMenu();
 		mainFrame.getToolBar().focusDisplayResults();
 	}
 }

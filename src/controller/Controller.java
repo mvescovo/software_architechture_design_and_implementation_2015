@@ -1,22 +1,12 @@
 package controller;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.util.ArrayList;
-import java.util.Collection;
-
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-
 import view.MainFrame;
 import model.GameEngineCallbackImpl;
-import model.SimplePlayer;
 import model.interfaces.GameEngine;
 import model.interfaces.Player;
 
 public class Controller {
+	@SuppressWarnings("unused")
 	private GameEngine gameEngine;
 	private MainFrame mainFrame;
 	private AddPlayerButtonListener addPlayerButtonListener;
@@ -26,6 +16,7 @@ public class Controller {
 	private HouseRollsButtonListener houseRollsButtonListener;
 	private DisplayResultsButtonListener displayResultsButtonListener;
 	private QuitButtonListener quitButtonListener;
+	private ExitButtonListener exitButtonListener;
 	Player player = null;
 	
 	public Controller(GameEngine gameEngine, MainFrame mainFrame) {
@@ -38,7 +29,8 @@ public class Controller {
 		playerRollsButtonListener = new PlayerRollsButtonListener(gameEngine, mainFrame, this);
 		houseRollsButtonListener = new HouseRollsButtonListener(gameEngine, mainFrame);
 		displayResultsButtonListener = new DisplayResultsButtonListener(gameEngine, mainFrame, this);
-		quitButtonListener = new QuitButtonListener(mainFrame);
+		quitButtonListener = new QuitButtonListener(gameEngine, mainFrame, this);
+		exitButtonListener = new ExitButtonListener(mainFrame);
 
 		// register action listeners
 		this.mainFrame.getPlayerPanel().getAddPlayerButton().addActionListener(addPlayerButtonListener);
@@ -48,12 +40,22 @@ public class Controller {
 		this.mainFrame.getToolBar().getHouseRollsButton().addActionListener(houseRollsButtonListener);
 		this.mainFrame.getToolBar().getDisplayResultsButton().addActionListener(displayResultsButtonListener);
 		this.mainFrame.getToolBar().getQuitButton().addActionListener(quitButtonListener);
+		this.mainFrame.getToolBar().getExitButton().addActionListener(exitButtonListener);
 		// register key listeners
 		this.mainFrame.getPlayerPanel().getAddPlayerButton().addKeyListener(addPlayerButtonListener);
 		this.mainFrame.getToolBar().getPlayerRollsButton().addKeyListener(playerRollsButtonListener);
 		this.mainFrame.getToolBar().getHouseRollsButton().addKeyListener(houseRollsButtonListener);
 		this.mainFrame.getToolBar().getDisplayResultsButton().addKeyListener(displayResultsButtonListener);
 		this.mainFrame.getToolBar().getQuitButton().addKeyListener(quitButtonListener);
+		this.mainFrame.getToolBar().getExitButton().addKeyListener(exitButtonListener);
+		// menu listeners
+		this.mainFrame.getMenu().getAddPlayerMenuItem().addActionListener(addPlayerButtonListener);
+		this.mainFrame.getMenu().getplaceBetMenuItem().addActionListener(placeBetButtonListener);
+		this.mainFrame.getMenu().getPlayerRollsDiceMenuItem().addActionListener(playerRollsButtonListener);
+		this.mainFrame.getMenu().getHouseRollsDiceMenuItem().addActionListener(houseRollsButtonListener);
+		this.mainFrame.getMenu().getDisplayResultsMenuItem().addActionListener(displayResultsButtonListener);
+		this.mainFrame.getMenu().getQuitMenuItem().addActionListener(quitButtonListener);
+		this.mainFrame.getMenu().getExitMenuItem().addActionListener(exitButtonListener);
 	}
 	
 	protected void setCurrPlayer(Player player) {
@@ -62,5 +64,9 @@ public class Controller {
 	
 	protected Player getCurrPlayer() {
 		return player;
+	}
+	
+	protected void printCurrPlayerName() {
+		System.out.println(player.getPlayerName());
 	}
 }
