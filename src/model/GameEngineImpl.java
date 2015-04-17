@@ -20,10 +20,11 @@ public class GameEngineImpl implements GameEngine {
 	Collection<Player> players = new ArrayList<Player>();
 	GameEngineCallback gameEngineCallback;
 	private int houseTotal;
-	Timer timer;
-	Timer houseTimer;
-	TimeListener timeListener;
-	TimeListener houseTimeListener;
+	private Timer timer;
+	private Timer houseTimer;
+	private TimeListener timeListener;
+	private TimeListener houseTimeListener;
+	public Player currPlayer;
 	
 	@Override
 	public void rollPlayer(Player player, int initialDelay, int finalDelay,
