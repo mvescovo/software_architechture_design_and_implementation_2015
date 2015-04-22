@@ -28,7 +28,7 @@ public class TimeListener implements ActionListener {
 	}
 	
 	public TimeListener(Timer houseTimer, GameEngine gameEngine, int initialDelay, int finalDelay, int delayIncrement) {
-		System.out.println("created house timerlistener");
+//		System.out.println("created house timerlistener");
 		this.houseTimer = houseTimer;
 		this.gameEngine = gameEngine;
 		this.initialDelay = initialDelay;
@@ -40,10 +40,10 @@ public class TimeListener implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		initialDelay += delayIncrement;
 		if (e.getSource() == timer) {
-			System.out.println("player rolled Test");
+//			System.out.println("player rolled Test");
 			gameEngine.rollPlayer(player, initialDelay, finalDelay, delayIncrement);
 		} else if (e.getSource() == houseTimer) {
-			System.out.println("house rolled Test");
+//			System.out.println("house rolled Test");
 			gameEngine.rollHouse(initialDelay, finalDelay, delayIncrement);
 		} else {
 			System.out.println("no idea who called me");

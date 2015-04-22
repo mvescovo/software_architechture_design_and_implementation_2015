@@ -16,7 +16,6 @@ public class ToolBarPanel extends JPanel {
 	JButton placeBetButton;
 	JTextField betTextField;
 	JButton playerRollsButton;
-	JButton houseRollsButton;
 	JButton displayResultsButton;
 	JButton quitButton;
 	JButton exitButton;
@@ -41,12 +40,6 @@ public class ToolBarPanel extends JPanel {
 		playerRollsButton.setForeground(new Color(255, 215, 0));
 		playerRollsButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		toolBar.add(playerRollsButton);
-		houseRollsButton = new JButton("House rolls dice");
-		houseRollsButton.setEnabled(false);
-		houseRollsButton.setBackground(new Color(202,151,74));
-		houseRollsButton.setForeground(Color.WHITE);
-		houseRollsButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
-		toolBar.add(houseRollsButton);
 		displayResultsButton = new JButton("Display results");
 		displayResultsButton.setEnabled(false);
 		displayResultsButton.setBackground(new Color(202,151,74));
@@ -83,10 +76,6 @@ public class ToolBarPanel extends JPanel {
 		return playerRollsButton;
 	}
 	
-	public JButton getHouseRollsButton() {
-		return houseRollsButton;
-	}
-	
 	public JButton getDisplayResultsButton() {
 		return displayResultsButton;
 	}
@@ -117,14 +106,6 @@ public class ToolBarPanel extends JPanel {
 		playerRollsButton.setEnabled(false);
 	}
 	
-	public void enableHouseRoll() {
-		houseRollsButton.setEnabled(true);
-	}
-	
-	public void disableHouseRoll() {
-		houseRollsButton.setEnabled(false);
-	}
-	
 	public void enableDisplayResults() {
 		displayResultsButton.setEnabled(true);
 	}
@@ -147,14 +128,6 @@ public class ToolBarPanel extends JPanel {
 	
 	public void clickPlayerRolls() {
 		playerRollsButton.doClick();
-	}
-	
-	public void clickHouseRolls() {
-		houseRollsButton.doClick();
-	}
-	
-	public void focusHouseRolls() {
-		houseRollsButton.requestFocusInWindow();
 	}
 	
 	public void focusDisplayResults() {

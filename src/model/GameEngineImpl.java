@@ -1,7 +1,5 @@
 package model;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -81,6 +79,8 @@ public class GameEngineImpl implements GameEngine {
 			dicePair = new DicePairImpl(num1, num2, NUM_FACES);
 			houseTotal = num1 + num2;
 			this.gameEngineCallback.houseResult(dicePair, this);
+			
+			calculateTwo();
 		}
 	}
 
@@ -101,27 +101,27 @@ public class GameEngineImpl implements GameEngine {
 
 	@Override
 	public void calculateResult() {
-		//this.rollHouse(1, 200, 20);
+		this.rollHouse(1, 200, 20);
 		
-		for (Player player: players) {
-			int num1 = player.getRollResult().getDice1();
-			int num2 = player.getRollResult().getDice2();
-			int total = num1 + num2;
-			
-			if (total > houseTotal) {
-				// player won
-				player.setPoints(player.getPoints() + player.getBet() * 2);
-			} else if (total == houseTotal){
-				// draw - return points to player
-				player.setPoints(player.getPoints() + player.getBet());
-			} else {
-				// player lost.
-			}
-			
-			System.out.printf("%s%s%s%s%s%d\n", "Player: id=", player.getPlayerId(),
-					  ", name=", player.getPlayerName(), ", points=",
-					  player.getPoints());
-		}
+//		for (Player player: players) {
+//			int num1 = player.getRollResult().getDice1();
+//			int num2 = player.getRollResult().getDice2();
+//			int total = num1 + num2;
+//			
+//			if (total > houseTotal) {
+//				// player won
+//				player.setPoints(player.getPoints() + player.getBet() * 2);
+//			} else if (total == houseTotal){
+//				// draw - return points to player
+//				player.setPoints(player.getPoints() + player.getBet());
+//			} else {
+//				// player lost.
+//			}
+//			
+//			System.out.printf("%s%s%s%s%s%d\n", "Player: id=", player.getPlayerId(),
+//					  ", name=", player.getPlayerName(), ", points=",
+//					  player.getPoints());
+//		}
 	}
 
 	@Override
@@ -146,7 +146,25 @@ public class GameEngineImpl implements GameEngine {
 		return true;
 	}
 	
-	public void stopTimer() {
-		timer.stop();
+	private void calculateTwo() {
+		for (Player player: players) {
+			int num1 = player.getRollResult().getDice1();
+			int num2 = player.getRollResult().getDice2();
+			int total = num1 + num2;
+			
+			if (total > houseTotal) {
+				// player won
+				player.setPoints(player.getPoints() + player.getBet() * 2);
+			} else if (total == houseTotal){
+				// draw - return points to player
+				player.setPoints(player.getPoints() + player.getBet());
+			} else {
+				// player lost.
+			}
+			
+			System.out.printf("%s%s%s%s%s%d\n", "Player: id=", player.getPlayerId(),
+					  ", name=", player.getPlayerName(), ", points=",
+					  player.getPoints());
+		}
 	}
 }

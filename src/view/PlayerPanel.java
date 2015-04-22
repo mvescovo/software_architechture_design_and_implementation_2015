@@ -11,9 +11,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 public class PlayerPanel extends JPanel {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 5849689848560582871L;
 	JLabel playerTitle;
 	JLabel playerName;

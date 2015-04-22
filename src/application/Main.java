@@ -4,10 +4,11 @@ package application;
 import controller.Controller;
 import view.MainFrame;
 import model.GameEngineImpl;
+import model.interfaces.GameEngine;
 
 public class Main {
 	public static void main(String[] args) {
-		GameEngineImpl gameEngine;
+		GameEngine gameEngine;
 		MainFrame mainFrame;
 		@SuppressWarnings("unused")
 		Controller controller;

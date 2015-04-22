@@ -10,10 +10,9 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 public class DicePanel extends JPanel {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 5943364367155114789L;
+	JLabel rollLabel;
+	JLabel rollLabel2;
 	JLabel dice1Label;
 	JLabel dice2Label;
 	Font font;
@@ -22,6 +21,20 @@ public class DicePanel extends JPanel {
 		font = new Font("SansSerif", Font.BOLD, 48);
 		GridLayout gridLayout = new GridLayout(0, 2);
 		setLayout(gridLayout);
+		
+		rollLabel = new JLabel("Player rolling:");
+		//rollLabel.setFont(font);
+		rollLabel.setForeground(Color.WHITE);
+		rollLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		//rollLabel.setVisible(false);
+		add(rollLabel);
+		
+		rollLabel2 = new JLabel("test2");
+		//rollLabel2.setFont(font);
+		rollLabel2.setForeground(Color.WHITE);
+		rollLabel2.setHorizontalAlignment(SwingConstants.CENTER);
+		//rollLabel2.setVisible(false);
+		add(rollLabel2);
 		
 		dice1Label = new JLabel("1");
 		dice1Label.setFont(font);

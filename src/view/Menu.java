@@ -10,7 +10,6 @@ public class Menu extends JMenuBar {
 	private JMenuItem addPlayer;
 	private JMenuItem placeBet;
 	private JMenuItem playerRolls;
-	private JMenuItem houseRolls;
 	private JMenuItem displayResults;
 	private JMenuItem quit;
 	private JMenuItem exit;
@@ -32,10 +31,6 @@ public class Menu extends JMenuBar {
 		playerRolls = new JMenuItem("Player roll dice");
 		playerRolls.setEnabled(false);
 		menu1.add(playerRolls);
-		
-		houseRolls = new JMenuItem("House roll dice");
-		houseRolls.setEnabled(false);
-		menu1.add(houseRolls);
 		
 		displayResults = new JMenuItem("Display results");
 		displayResults.setEnabled(false);
@@ -59,10 +54,6 @@ public class Menu extends JMenuBar {
 	
 	public JMenuItem getPlayerRollsDiceMenuItem() {
 		return playerRolls;
-	}
-	
-	public JMenuItem getHouseRollsDiceMenuItem() {
-		return houseRolls;
 	}
 	
 	public JMenuItem getDisplayResultsMenuItem() {
@@ -99,14 +90,6 @@ public class Menu extends JMenuBar {
 	
 	public void disablePlayerRollsMenu() {
 		playerRolls.setEnabled(false);
-	}
-	
-	public void enableHouseRollsMenu() {
-		houseRolls.setEnabled(true);
-	}
-	
-	public void disableHouseRollsMenu() {
-		houseRolls.setEnabled(false);
 	}
 	
 	public void enableDisplayResultsMenu() {

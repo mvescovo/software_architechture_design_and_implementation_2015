@@ -7,11 +7,11 @@ import model.interfaces.GameEngineCallback;
 import model.interfaces.Player;
 
 public class GameEngineCallbackImpl implements GameEngineCallback {
-	MainFrame mainFrame;
+//	MainFrame mainFrame;
 	
-	public GameEngineCallbackImpl(MainFrame mainFrame) {
-		this.mainFrame = mainFrame;
-	}
+//	public GameEngineCallbackImpl(MainFrame mainFrame) {
+//		this.mainFrame = mainFrame;
+//	}
 
 	@Override
 	public void intermediateResult(Player player, DicePair dicePair,
@@ -25,9 +25,9 @@ public class GameEngineCallbackImpl implements GameEngineCallback {
 				", intermediate result = Dice 1: ", num1,
 				", Dice 2: ", num2, " .. Total: ", total);
 		
-		// update GUI view
-		mainFrame.getDicePanel().setDice1(Integer.toString(num1));
-		mainFrame.getDicePanel().setDice2(Integer.toString(num2));
+//		// update GUI view
+//		mainFrame.getDicePanel().setDice1(Integer.toString(num1));
+//		mainFrame.getDicePanel().setDice2(Integer.toString(num2));
 	}
 
 	@Override
@@ -41,12 +41,12 @@ public class GameEngineCallbackImpl implements GameEngineCallback {
 				", final result = Dice 1: ", num1,
 				", Dice 2: ", num2, " .. Total: ", total);
 		
-		// update GUI view
-		mainFrame.getDicePanel().setDice1(Integer.toString(num1));
-		mainFrame.getDicePanel().setDice2(Integer.toString(num2));
-		mainFrame.getToolBar().enableHouseRoll();
-		mainFrame.getMenu().enableHouseRollsMenu();
-		mainFrame.getToolBar().focusHouseRolls();
+//		// update GUI view
+//		mainFrame.getDicePanel().setDice1(Integer.toString(num1));
+//		mainFrame.getDicePanel().setDice2(Integer.toString(num2));
+//		mainFrame.getToolBar().enableDisplayResults();
+//		mainFrame.getMenu().enableDisplayResultsMenu();
+//		mainFrame.getToolBar().focusDisplayResults();
 	}
 
 	@Override
@@ -60,9 +60,9 @@ public class GameEngineCallbackImpl implements GameEngineCallback {
 				", intermediate result = Dice 1: ", num1,
 				", Dice 2: ", num2, " .. Total: ", total);
 		
-		// update GUI view
-		mainFrame.getDicePanel().setDice1(Integer.toString(num1));
-		mainFrame.getDicePanel().setDice2(Integer.toString(num2));
+//		// update GUI view
+//		mainFrame.getDicePanel().setDice1(Integer.toString(num1));
+//		mainFrame.getDicePanel().setDice2(Integer.toString(num2));
 	}
 
 	@Override
@@ -76,11 +76,11 @@ public class GameEngineCallbackImpl implements GameEngineCallback {
 				", final result = Dice 1: ", num1,
 				", Dice 2: ", num2, " .. Total: ", total);
 		
-		// update GUI view
-		mainFrame.getDicePanel().setDice1(Integer.toString(num1));
-		mainFrame.getDicePanel().setDice2(Integer.toString(num2));
-		mainFrame.getToolBar().enableDisplayResults();
-		mainFrame.getMenu().enableDisplayResultsMenu();
-		mainFrame.getToolBar().focusDisplayResults();
+//		// update GUI view
+//		mainFrame.getDicePanel().setDice1(Integer.toString(num1));
+//		mainFrame.getDicePanel().setDice2(Integer.toString(num2));
+//		mainFrame.getToolBar().enableDisplayResults();
+//		mainFrame.getMenu().enableDisplayResultsMenu();
+//		mainFrame.getToolBar().focusDisplayResults();
 	}
 }

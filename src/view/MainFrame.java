@@ -1,14 +1,16 @@
 package view;
 
 import java.awt.*;
+
 import javax.swing.*;
 
+import model.GameEngineCallbackImpl;
+import model.interfaces.DicePair;
 import model.interfaces.GameEngine;
+import model.interfaces.GameEngineCallback;
+import model.interfaces.Player;
 
-public class MainFrame extends JFrame {
-	/**
-	 * 
-	 */
+public class MainFrame extends JFrame implements GameEngineCallback {
 	private static final long serialVersionUID = -7523238222452192023L;
 	GameEngine gameEngine;
 	Menu menu;
@@ -16,10 +18,13 @@ public class MainFrame extends JFrame {
 	ToolBarPanel toolBar;
 	PlayerPanel playerPanel;
 	DicePanel dicePanel;
+//	GameEngineCallback gameEngineCallback;
 
 	
 	public MainFrame(GameEngine gameEngine) {
 		this.gameEngine = gameEngine;
+//		gameEngineCallback = this;
+//		this.gameEngine.addGameEngineCallback(this);
 		menu = new Menu();
 		heading = new HeadingPanel();
 		toolBar = new ToolBarPanel();
@@ -34,7 +39,7 @@ public class MainFrame extends JFrame {
 		
 		// set details of dice frame
 		setTitle("Dice Game");
-		setSize(800, 600);
+		setSize(600, 400);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setVisible(true);
@@ -54,5 +59,52 @@ public class MainFrame extends JFrame {
 	
 	public Menu getMenu() {
 		return menu;
+	}
+
+	@Override
+	public void intermediateResult(Player player, DicePair dicePair,
+			GameEngine engine) {
+		int num1 = dicePair.getDice1();
+		int num2 = dicePair.getDice2();
+		
+		// update GUI view
+		getDicePanel().setDice1(Integer.toString(num1));
+		getDicePanel().setDice2(Integer.toString(num2));
+	}
+
+	@Override
+	public void result(Player player, DicePair dicePair, GameEngine engine) {
+		int num1 = dicePair.getDice1();
+		int num2 = dicePair.getDice2();
+		
+		// update GUI view
+		getDicePanel().setDice1(Integer.toString(num1));
+		getDicePanel().setDice2(Integer.toString(num2));
+		getToolBar().enableDisplayResults();
+		getMenu().enableDisplayResultsMenu();
+		getToolBar().focusDisplayResults();
+	}
+
+	@Override
+	public void intermediateHouseResult(DicePair dicePair, GameEngine engine) {
+		int num1 = dicePair.getDice1();
+		int num2 = dicePair.getDice2();
+		
+		// update GUI view
+		getDicePanel().setDice1(Integer.toString(num1));
+		getDicePanel().setDice2(Integer.toString(num2));
+	}
+
+	@Override
+	public void houseResult(DicePair dicePair, GameEngine engine) {
+		int num1 = dicePair.getDice1();
+		int num2 = dicePair.getDice2();
+		
+		// update GUI view
+		getDicePanel().setDice1(Integer.toString(num1));
+		getDicePanel().setDice2(Integer.toString(num2));
+		getToolBar().enableDisplayResults();
+		getMenu().enableDisplayResultsMenu();
+		getToolBar().focusDisplayResults();
 	}
 }

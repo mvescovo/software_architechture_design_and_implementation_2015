@@ -49,8 +49,6 @@ public class QuitButtonListener implements ActionListener, KeyListener {
 			mainFrame.getPlayerPanel().focusAddPlayerButton();
 			mainFrame.getMenu().disablePlayerRollsMenu();
 			mainFrame.getToolBar().disableRoll();
-			mainFrame.getMenu().disableHouseRollsMenu();
-			mainFrame.getToolBar().disableHouseRoll();
 			mainFrame.getMenu().disableDisplayResultsMenu();
 			mainFrame.getToolBar().disableDisplayResults();
 		}
