@@ -68,9 +68,61 @@ public class MainFrame extends JFrame implements GameEngineCallback {
 		int num2 = dicePair.getDice2();
 		
 		// update GUI view
-		getDicePanel().setRollLabel2(player.getPlayerName());
-		getDicePanel().setDice1(Integer.toString(num1));
-		getDicePanel().setDice2(Integer.toString(num2));
+		SwingUtilities.invokeLater(new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				getDicePanel().setRollLabel2(player.getPlayerName());
+				getDicePanel().setDice1(Integer.toString(num1));
+				getDicePanel().setDice2(Integer.toString(num2));
+				
+				// final so that the PropertyChangeListener anonymous inner
+				// class below can access it
+//				final TestSwingWorker frame = new TestSwingWorker();
+//				frame.setSize(600, 400);
+//				frame.setLocation(250, 250);
+//				frame.setVisible(true);
+
+//				JPanel contentPane = (JPanel) frame.getContentPane();
+//
+//				frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//				frame.setLayout(new BorderLayout());
+//				final JProgressBar progressBar = new JProgressBar(0, 100);
+//				final JTextArea textArea = new JTextArea();
+//				contentPane.add(progressBar, BorderLayout.SOUTH);
+//				contentPane.add(textArea, BorderLayout.CENTER);
+
+//				JButton swingWorkerButton = new JButton("Run Task");
+//				contentPane.add(swingWorkerButton, BorderLayout.NORTH);
+//				swingWorkerButton.addActionListener(new ActionListener()
+//				{
+//					@Override
+//					public void actionPerformed(ActionEvent e)
+//					{
+//						// uncomment to hang UI
+//						// wait5secs();
+//
+//						TestTask task = new TestTask(textArea);
+//						task.addPropertyChangeListener(new PropertyChangeListener()
+//						{
+//
+//							public void propertyChange(PropertyChangeEvent evt)
+//							{
+//								if ("progress".equals(evt.getPropertyName()))
+//								{
+//									progressBar.setValue((Integer) evt
+//											.getNewValue());
+//									progressBar.revalidate();
+//								}
+//							}
+//						});
+//
+//						task.execute();
+//					}
+//				});
+			}
+		});
 	}
 
 	@Override

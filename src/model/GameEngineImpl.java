@@ -18,10 +18,10 @@ public class GameEngineImpl implements GameEngine {
 	Collection<Player> players = new ArrayList<Player>();
 	GameEngineCallback gameEngineCallback;
 	private int houseTotal;
-	private Timer timer;
-	private Timer houseTimer;
-	private TimeListener timeListener;
-	private TimeListener houseTimeListener;
+//	private Timer timer;
+//	private Timer houseTimer;
+//	private TimeListener timeListener;
+//	private TimeListener houseTimeListener;
 	public Player currPlayer;
 	
 	@Override
@@ -32,25 +32,32 @@ public class GameEngineImpl implements GameEngine {
 		final int minNum = 1;
 		Random random = new Random();
 		DicePair dicePair = null;
-		timer = new Timer(initialDelay, null);
-		timer.setRepeats(false);
-		timeListener = new TimeListener(timer, this, player, initialDelay, finalDelay, delayIncrement);
-		timer.addActionListener(timeListener);
+//		timer = new Timer(initialDelay, null);
+//		timer.setRepeats(false);
+//		timeListener = new TimeListener(timer, this, player, initialDelay, finalDelay, delayIncrement);
+//		timer.addActionListener(timeListener);
 		
 		// roll the dice and update views
-		if (initialDelay < finalDelay) {
+		while (initialDelay < finalDelay) {
 			num1 = random.nextInt(NUM_FACES) + minNum;
 			num2 = random.nextInt(NUM_FACES) + minNum;
 			dicePair = new DicePairImpl(num1, num2, NUM_FACES);
 			this.gameEngineCallback.intermediateResult(player, dicePair, this);
-			timer.start();
-		} else {
-			num1 = random.nextInt(NUM_FACES) + minNum;
-			num2 = random.nextInt(NUM_FACES) + minNum;
-			dicePair = new DicePairImpl(num1, num2, NUM_FACES);
-			player.setRollResult(dicePair);
-			this.gameEngineCallback.result(player, dicePair, this);
-		}
+			try {
+				Thread.sleep(initialDelay);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			initialDelay += delayIncrement;
+//			timer.start();
+		} 
+		
+		num1 = random.nextInt(NUM_FACES) + minNum;
+		num2 = random.nextInt(NUM_FACES) + minNum;
+		dicePair = new DicePairImpl(num1, num2, NUM_FACES);
+		player.setRollResult(dicePair);
+		this.gameEngineCallback.result(player, dicePair, this);
 	}
 
 	@Override
@@ -60,10 +67,10 @@ public class GameEngineImpl implements GameEngine {
 		final int minNum = 1;
 		Random random = new Random();
 		DicePair dicePair = null;
-		houseTimer = new Timer(initialDelay, null);
-		houseTimer.setRepeats(false);
-		houseTimeListener = new TimeListener(houseTimer, this, initialDelay, finalDelay, delayIncrement);
-		houseTimer.addActionListener(houseTimeListener);
+//		houseTimer = new Timer(initialDelay, null);
+//		houseTimer.setRepeats(false);
+//		houseTimeListener = new TimeListener(houseTimer, this, initialDelay, finalDelay, delayIncrement);
+//		houseTimer.addActionListener(houseTimeListener);
 
 		
 		// roll the dice and update views
@@ -72,7 +79,7 @@ public class GameEngineImpl implements GameEngine {
 			num2 = random.nextInt(NUM_FACES) + minNum;
 			dicePair = new DicePairImpl(num1, num2, NUM_FACES);
 			this.gameEngineCallback.intermediateHouseResult(dicePair, this);
-			houseTimer.start();
+//			houseTimer.start();
 		} else {
 			num1 = random.nextInt(NUM_FACES) + minNum;
 			num2 = random.nextInt(NUM_FACES) + minNum;
@@ -80,7 +87,6 @@ public class GameEngineImpl implements GameEngine {
 			houseTotal = num1 + num2;
 			this.gameEngineCallback.houseResult(dicePair, this);
 			
-			notify();
 			calculateTwo();
 		}
 	}
@@ -105,13 +111,6 @@ public class GameEngineImpl implements GameEngine {
 		System.out.println("call roll house");
 		this.rollHouse(1, 200, 20);
 		
-		try {
-			System.out.println("call wait");
-			wait();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		System.out.println("other process should have finished now");
 		
 //		for (Player player: players) {
