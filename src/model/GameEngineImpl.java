@@ -10,18 +10,10 @@ import model.interfaces.Player;
 
 import java.util.Random;
 
-import javax.swing.Timer;
-
-import controller.TimeListener;
-
 public class GameEngineImpl implements GameEngine {
 	Collection<Player> players = new ArrayList<Player>();
 	GameEngineCallback gameEngineCallback;
 	private int houseTotal;
-//	private Timer timer;
-//	private Timer houseTimer;
-//	private TimeListener timeListener;
-//	private TimeListener houseTimeListener;
 	public Player currPlayer;
 	
 	@Override
@@ -32,10 +24,6 @@ public class GameEngineImpl implements GameEngine {
 		final int minNum = 1;
 		Random random = new Random();
 		DicePair dicePair = null;
-//		timer = new Timer(initialDelay, null);
-//		timer.setRepeats(false);
-//		timeListener = new TimeListener(timer, this, player, initialDelay, finalDelay, delayIncrement);
-//		timer.addActionListener(timeListener);
 		
 		// roll the dice and update views
 		while (initialDelay < finalDelay) {
@@ -46,11 +34,9 @@ public class GameEngineImpl implements GameEngine {
 			try {
 				Thread.sleep(initialDelay);
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			initialDelay += delayIncrement;
-//			timer.start();
 		} 
 		
 		num1 = random.nextInt(NUM_FACES) + minNum;
@@ -67,28 +53,26 @@ public class GameEngineImpl implements GameEngine {
 		final int minNum = 1;
 		Random random = new Random();
 		DicePair dicePair = null;
-//		houseTimer = new Timer(initialDelay, null);
-//		houseTimer.setRepeats(false);
-//		houseTimeListener = new TimeListener(houseTimer, this, initialDelay, finalDelay, delayIncrement);
-//		houseTimer.addActionListener(houseTimeListener);
-
 		
 		// roll the dice and update views
-		if (initialDelay < finalDelay) {
+		while (initialDelay < finalDelay) {
 			num1 = random.nextInt(NUM_FACES) + minNum;
 			num2 = random.nextInt(NUM_FACES) + minNum;
 			dicePair = new DicePairImpl(num1, num2, NUM_FACES);
 			this.gameEngineCallback.intermediateHouseResult(dicePair, this);
-//			houseTimer.start();
-		} else {
-			num1 = random.nextInt(NUM_FACES) + minNum;
-			num2 = random.nextInt(NUM_FACES) + minNum;
-			dicePair = new DicePairImpl(num1, num2, NUM_FACES);
-			houseTotal = num1 + num2;
-			this.gameEngineCallback.houseResult(dicePair, this);
-			
-			calculateTwo();
+			try {
+				Thread.sleep(initialDelay);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			initialDelay += delayIncrement;
 		}
+		
+		num1 = random.nextInt(NUM_FACES) + minNum;
+		num2 = random.nextInt(NUM_FACES) + minNum;
+		dicePair = new DicePairImpl(num1, num2, NUM_FACES);
+		houseTotal = num1 + num2;
+		this.gameEngineCallback.houseResult(dicePair, this);	
 	}
 
 	@Override
@@ -108,30 +92,32 @@ public class GameEngineImpl implements GameEngine {
 
 	@Override
 	public void calculateResult() {
-		System.out.println("call roll house");
 		this.rollHouse(1, 200, 20);
-		
-		System.out.println("other process should have finished now");
-		
-//		for (Player player: players) {
-//			int num1 = player.getRollResult().getDice1();
-//			int num2 = player.getRollResult().getDice2();
-//			int total = num1 + num2;
-//			
-//			if (total > houseTotal) {
-//				// player won
-//				player.setPoints(player.getPoints() + player.getBet() * 2);
-//			} else if (total == houseTotal){
-//				// draw - return points to player
-//				player.setPoints(player.getPoints() + player.getBet());
-//			} else {
-//				// player lost.
-//			}
-//			
+
+		for (Player player: players) {
+			int num1 = player.getRollResult().getDice1();
+			int num2 = player.getRollResult().getDice2();
+			int total = num1 + num2;
+			
+			if (total > houseTotal) {
+				// player won
+				System.out.println("player won");
+				System.out.println(Integer.toString(player.getPoints()));
+				System.out.println(Integer.toString(player.getBet()));
+				player.setPoints(player.getPoints() + player.getBet() * 2);
+			} else if (total == houseTotal){
+				// draw - return points to player
+				System.out.println("draw");
+				player.setPoints(player.getPoints() + player.getBet());
+			} else {
+				// player lost.
+				System.out.println("player lost");
+			}
+			
 //			System.out.printf("%s%s%s%s%s%d\n", "Player: id=", player.getPlayerId(),
 //					  ", name=", player.getPlayerName(), ", points=",
 //					  player.getPoints());
-//		}
+		}
 	}
 
 	@Override
@@ -152,35 +138,6 @@ public class GameEngineImpl implements GameEngine {
 			System.err.println(e.getMessage() + player.getPlayerName());
 			return false;
 		}
-		
 		return true;
-	}
-	
-	private void calculateTwo() {
-		for (Player player: players) {
-			int num1 = player.getRollResult().getDice1();
-			int num2 = player.getRollResult().getDice2();
-			int total = num1 + num2;
-			
-			if (total > houseTotal) {
-				// player won
-				System.out.println("Player won");
-				player.setPoints(player.getPoints() + player.getBet() * 2);
-			} else if (total == houseTotal){
-				// draw - return points to player
-				System.out.println("Draw");
-				player.setPoints(player.getPoints() + player.getBet());
-			} else {
-				// player lost.
-				System.out.println("Player lost");
-			}
-			
-			System.out.printf("%s%s%s%s%s%d\n", "Player: id=", player.getPlayerId(),
-					  ", name=", player.getPlayerName(), ", points=",
-					  player.getPoints());
-			
-			// clear bet
-			player.placeBet(0);
-		}
 	}
 }

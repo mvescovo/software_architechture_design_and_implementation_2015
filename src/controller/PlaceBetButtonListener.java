@@ -53,9 +53,9 @@ public class PlaceBetButtonListener implements ActionListener {
 			}
 		}
 		
-		if ((betOk == true) && betInt == 0) {
-			JOptionPane.showMessageDialog(mainFrame, "Bet needs to be greater than 0.", "Invalid bet", 0);
-			System.out.println("bet needs to be greater than 0");
+		if ((betOk == true) && betInt < 0) {
+			JOptionPane.showMessageDialog(mainFrame, "Bet needs to be 0 or greater.", "Invalid bet", 0);
+			System.out.println("bet needs to be 0 or greater.");
 			betOk = false;
 		}
 		

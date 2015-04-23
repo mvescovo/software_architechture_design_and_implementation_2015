@@ -25,7 +25,15 @@ public class PlayerRollsButtonListener implements ActionListener, KeyListener {
 	public void actionPerformed(ActionEvent e) {
 		// change model
 		player = controller.getCurrPlayer();
-		gameEngine.rollPlayer(player, 1, 200, 20);
+		
+		Thread thread = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				gameEngine.rollPlayer(player, 1, 200, 20);
+			}
+		});
+		
+		thread.start();
 		
 		// change view
 		mainFrame.getToolBar().disableRoll();

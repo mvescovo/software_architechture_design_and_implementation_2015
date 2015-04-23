@@ -3,12 +3,14 @@ package view;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
+
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 public class PlayerPanel extends JPanel {
 	private static final long serialVersionUID = 5849689848560582871L;
@@ -19,6 +21,8 @@ public class PlayerPanel extends JPanel {
 	JLabel points;
 	JLabel betTitle;
 	JLabel betPoints;
+	JButton addPointsButton;
+	JTextField addPointsTextField;
 	int betPointsInt = 0;
 	
 	public PlayerPanel() {
@@ -64,6 +68,17 @@ public class PlayerPanel extends JPanel {
 		betPoints.setAlignmentX(CENTER_ALIGNMENT);
 		add(betPoints);
 		add(Box.createRigidArea(new Dimension(170, 5)));
+		addPointsButton = new JButton("Add Points");
+		addPointsButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		addPointsButton.setBackground(new Color(202, 151, 74));
+		addPointsButton.setForeground(Color.WHITE);
+		addPointsButton.setAlignmentX(CENTER_ALIGNMENT);
+		add(addPointsButton);
+		add(Box.createRigidArea(new Dimension(170, 10)));
+		addPointsTextField = new JTextField(4);
+		addPointsTextField.setMaximumSize(new Dimension(90, 20));
+		addPointsTextField.setEnabled(true);
+		add(addPointsTextField);
 		
 		// panel settings
 		setBackground(new Color(151, 42, 39));

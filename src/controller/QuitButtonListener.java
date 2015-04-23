@@ -51,6 +51,7 @@ public class QuitButtonListener implements ActionListener, KeyListener {
 			mainFrame.getToolBar().disableRoll();
 			mainFrame.getMenu().disableDisplayResultsMenu();
 			mainFrame.getToolBar().disableDisplayResults();
+			mainFrame.getDicePanel().setRollLabel2("N/A");
 		}
 	}
 
