@@ -112,6 +112,7 @@ public class ToolBarPanel extends JPanel {
 	
 	public void disableDisplayResults() {
 		displayResultsButton.setEnabled(false);
+		System.out.println("stopped it");
 	}
 	
 	public void focusActiveBetText() {

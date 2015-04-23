@@ -68,6 +68,7 @@ public class MainFrame extends JFrame implements GameEngineCallback {
 		int num2 = dicePair.getDice2();
 		
 		// update GUI view
+		getDicePanel().setRollLabel2(player.getPlayerName());
 		getDicePanel().setDice1(Integer.toString(num1));
 		getDicePanel().setDice2(Integer.toString(num2));
 	}
@@ -91,6 +92,7 @@ public class MainFrame extends JFrame implements GameEngineCallback {
 		int num2 = dicePair.getDice2();
 		
 		// update GUI view
+		getDicePanel().setRollLabel2("House");
 		getDicePanel().setDice1(Integer.toString(num1));
 		getDicePanel().setDice2(Integer.toString(num2));
 	}
@@ -103,8 +105,8 @@ public class MainFrame extends JFrame implements GameEngineCallback {
 		// update GUI view
 		getDicePanel().setDice1(Integer.toString(num1));
 		getDicePanel().setDice2(Integer.toString(num2));
-		getToolBar().enableDisplayResults();
-		getMenu().enableDisplayResultsMenu();
-		getToolBar().focusDisplayResults();
+//		getToolBar().enableDisplayResults();
+//		getMenu().enableDisplayResultsMenu();
+		getToolBar().focusActiveBetText();
 	}
 }

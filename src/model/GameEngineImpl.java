@@ -80,6 +80,7 @@ public class GameEngineImpl implements GameEngine {
 			houseTotal = num1 + num2;
 			this.gameEngineCallback.houseResult(dicePair, this);
 			
+			notify();
 			calculateTwo();
 		}
 	}
@@ -101,7 +102,17 @@ public class GameEngineImpl implements GameEngine {
 
 	@Override
 	public void calculateResult() {
+		System.out.println("call roll house");
 		this.rollHouse(1, 200, 20);
+		
+		try {
+			System.out.println("call wait");
+			wait();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println("other process should have finished now");
 		
 //		for (Player player: players) {
 //			int num1 = player.getRollResult().getDice1();
@@ -154,17 +165,23 @@ public class GameEngineImpl implements GameEngine {
 			
 			if (total > houseTotal) {
 				// player won
+				System.out.println("Player won");
 				player.setPoints(player.getPoints() + player.getBet() * 2);
 			} else if (total == houseTotal){
 				// draw - return points to player
+				System.out.println("Draw");
 				player.setPoints(player.getPoints() + player.getBet());
 			} else {
 				// player lost.
+				System.out.println("Player lost");
 			}
 			
 			System.out.printf("%s%s%s%s%s%d\n", "Player: id=", player.getPlayerId(),
 					  ", name=", player.getPlayerName(), ", points=",
 					  player.getPoints());
+			
+			// clear bet
+			player.placeBet(0);
 		}
 	}
 }

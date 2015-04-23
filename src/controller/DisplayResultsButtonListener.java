@@ -25,16 +25,16 @@ public class DisplayResultsButtonListener implements ActionListener, KeyListener
 		gameEngine.calculateResult();
 		
 		// clear bet
-		controller.getCurrPlayer().placeBet(0);
+//		controller.getCurrPlayer().placeBet(0);
 		
 		// change view
-		mainFrame.getPlayerPanel().setPoints(Integer.toString(controller.getCurrPlayer().getPoints()));
-		mainFrame.getPlayerPanel().setBetPoints(controller.getCurrPlayer().getBet());
-		mainFrame.getToolBar().enableBet();
-		mainFrame.getMenu().enablePlaceBetMenu();
-		mainFrame.getToolBar().disableDisplayResults();
-		mainFrame.getMenu().disableDisplayResultsMenu();
-		mainFrame.getToolBar().focusActiveBetText();
+//		mainFrame.getPlayerPanel().setPoints(Integer.toString(controller.getCurrPlayer().getPoints()));
+//		mainFrame.getPlayerPanel().setBetPoints(controller.getCurrPlayer().getBet());
+//		mainFrame.getToolBar().enableBet();
+//		mainFrame.getMenu().enablePlaceBetMenu();
+//		mainFrame.getToolBar().disableDisplayResults();
+//		mainFrame.getMenu().disableDisplayResultsMenu();
+//		mainFrame.getToolBar().focusActiveBetText();
 	}
 
 	@Override

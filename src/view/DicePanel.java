@@ -11,7 +11,7 @@ import javax.swing.SwingConstants;
 
 public class DicePanel extends JPanel {
 	private static final long serialVersionUID = 5943364367155114789L;
-	JLabel rollLabel;
+	JLabel rollLabel1;
 	JLabel rollLabel2;
 	JLabel dice1Label;
 	JLabel dice2Label;
@@ -22,14 +22,14 @@ public class DicePanel extends JPanel {
 		GridLayout gridLayout = new GridLayout(0, 2);
 		setLayout(gridLayout);
 		
-		rollLabel = new JLabel("Player rolling:");
+		rollLabel1 = new JLabel("Player rolling:");
 		//rollLabel.setFont(font);
-		rollLabel.setForeground(Color.WHITE);
-		rollLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		rollLabel1.setForeground(Color.WHITE);
+		rollLabel1.setHorizontalAlignment(SwingConstants.CENTER);
 		//rollLabel.setVisible(false);
-		add(rollLabel);
+		add(rollLabel1);
 		
-		rollLabel2 = new JLabel("test2");
+		rollLabel2 = new JLabel("N/A");
 		//rollLabel2.setFont(font);
 		rollLabel2.setForeground(Color.WHITE);
 		rollLabel2.setHorizontalAlignment(SwingConstants.CENTER);
@@ -54,11 +54,15 @@ public class DicePanel extends JPanel {
 		setBackground(new Color(0, 153, 0));
 	}
 	
-	public void setDice1 (String value) {
+	public void setDice1(String value) {
 		dice1Label.setText(value);
 	}
 	
-	public void setDice2 (String value) {
+	public void setDice2(String value) {
 		dice2Label.setText(value);
+	}
+	
+	public void setRollLabel2(String value) {
+		rollLabel2.setText(value);
 	}
 }
