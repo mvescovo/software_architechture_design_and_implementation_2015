@@ -7,6 +7,7 @@ import model.GameEngineImpl;
 import model.interfaces.GameEngine;
 
 public class Main {
+	// Assignment 1 submitted version - to be used for Demo
 	public static void main(String[] args) {
 		GameEngine gameEngine;
 		MainFrame mainFrame;
