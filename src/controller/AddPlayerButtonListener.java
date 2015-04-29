@@ -1,5 +1,6 @@
 package controller;
 
+import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -23,6 +24,7 @@ public class AddPlayerButtonListener implements ActionListener, KeyListener {
 		this.mainFrame = mainFrame;
 		this.controller = controller;
 	}
+	
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		String name = null;
@@ -63,19 +65,28 @@ public class AddPlayerButtonListener implements ActionListener, KeyListener {
 			controller.setCurrPlayer(player);
 			
 			// change view
-			mainFrame.getToolBar().focusActiveBetText();
+			mainFrame.getgameTablePanel().setVisible(true);
+			mainFrame.getStartGamePanel().setVisible(false);
+			mainFrame.getPlayerPanel().setVisible(true);
+			mainFrame.getgameTablePanel().getToolBar().setVisible(true);
+			// reset the centre panel of the mainFrame borderlayout as there can only be one
+			mainFrame.add(mainFrame.getgameTablePanel(), BorderLayout.CENTER);
+			mainFrame.getgameTablePanel().getToolBar().focusActiveBetText();
 			mainFrame.getPlayerPanel().setPlayerName(name);
 			mainFrame.getPlayerPanel().showPoints();
+			mainFrame.getPlayerPanel().showBet();
 			mainFrame.getPlayerPanel().setPoints(points);
 			mainFrame.getPlayerPanel().disableAddPlayerButton();
 			mainFrame.getMenu().disableAddPlayerMenu();
-			mainFrame.getToolBar().enableBet();
+			mainFrame.getgameTablePanel().getToolBar().enableBet();
 			mainFrame.getMenu().enablePlaceBetMenu();
-			mainFrame.getToolBar().enableQuit();
+			mainFrame.getgameTablePanel().getToolBar().enableQuit();
 			mainFrame.getMenu().enableQuitMenu();
+			mainFrame.getPlayerPanel().enableAddPoints();
 			System.out.printf("%s%d%s\n", "player has ", player.getPoints(), " points");
 		}
 	}
+	
 	@Override
 	public void keyTyped(KeyEvent e) {
 		// TODO Auto-generated method stub

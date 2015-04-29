@@ -23,20 +23,34 @@ public class PlayerRollsButtonListener implements ActionListener, KeyListener {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// change model
+		// change model for player roll
 		player = controller.getCurrPlayer();
 		
 		Thread thread = new Thread(new Runnable() {
 			@Override
 			public void run() {
+				// player roll
 				gameEngine.rollPlayer(player, 1, 200, 20);
+				
+				// house roll and calculate results
+				gameEngine.calculateResult();
+				
+				// clear bet
+				controller.getCurrPlayer().placeBet(0);
+				
+				// change view after house has rolled, results calculated, and bet cleared
+				mainFrame.getPlayerPanel().setPoints(Integer.toString(controller.getCurrPlayer().getPoints()));
+				mainFrame.getPlayerPanel().setBetPoints(controller.getCurrPlayer().getBet());
+				mainFrame.getgameTablePanel().getToolBar().enableBet();
+				mainFrame.getMenu().enablePlaceBetMenu();
+				mainFrame.getgameTablePanel().getToolBar().focusActiveBetText();
 			}
 		});
 		
 		thread.start();
 		
 		// change view
-		mainFrame.getToolBar().disableRoll();
+		mainFrame.getgameTablePanel().getToolBar().disableRoll();
 		mainFrame.getMenu().disablePlayerRollsMenu();
 	}
 
@@ -49,7 +63,7 @@ public class PlayerRollsButtonListener implements ActionListener, KeyListener {
 	@Override
 	public void keyPressed(KeyEvent e) {
 		if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-			mainFrame.getToolBar().clickPlayerRolls();
+			mainFrame.getgameTablePanel().getToolBar().clickPlayerRolls();
 		}
 	}
 

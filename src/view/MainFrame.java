@@ -4,148 +4,53 @@ import java.awt.*;
 
 import javax.swing.*;
 
-import model.interfaces.DicePair;
 import model.interfaces.GameEngine;
-import model.interfaces.GameEngineCallback;
-import model.interfaces.Player;
 
-public class MainFrame extends JFrame implements GameEngineCallback {
+public class MainFrame extends JFrame {
 	private static final long serialVersionUID = -7523238222452192023L;
 	GameEngine gameEngine;
+	StartGamePanel startGamePanel;
 	Menu menu;
 	HeadingPanel heading;
-	ToolBarPanel toolBar;
 	PlayerPanel playerPanel;
-	DicePanel dicePanel;
-//	GameEngineCallback gameEngineCallback;
-
+	GameTablePanel gameTablePanel;
 	
 	public MainFrame(GameEngine gameEngine) {
 		this.gameEngine = gameEngine;
-//		gameEngineCallback = this;
-//		this.gameEngine.addGameEngineCallback(this);
+		startGamePanel = new StartGamePanel();
 		menu = new Menu();
 		heading = new HeadingPanel();
-		toolBar = new ToolBarPanel();
 		playerPanel = new PlayerPanel();
-		dicePanel = new DicePanel();
+		gameTablePanel = new GameTablePanel();
 
 		setJMenuBar(menu);
 		add(heading, BorderLayout.NORTH);
-		add(toolBar, BorderLayout.SOUTH);
 		add(playerPanel, BorderLayout.WEST);
-		add(dicePanel, BorderLayout.CENTER);
+		add(gameTablePanel, BorderLayout.CENTER);
+		add(startGamePanel, BorderLayout.CENTER);
 		
-		// set details of dice frame
+		// set details of main frame
 		setTitle("Dice Game");
 		setSize(600, 400);
+//		setLocation(1200, 300);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setVisible(true);
 	}
 	
-	public ToolBarPanel getToolBar() {
-		return toolBar;
+	public StartGamePanel getStartGamePanel() {
+		return startGamePanel;
 	}
 	
 	public PlayerPanel getPlayerPanel() {
 		return playerPanel;
 	}
 	
-	public DicePanel getDicePanel() {
-		return dicePanel;
+	public GameTablePanel getgameTablePanel() {
+		return gameTablePanel;
 	}
 	
 	public Menu getMenu() {
 		return menu;
-	}
-
-	@Override
-	public void intermediateResult(final Player player, DicePair dicePair,
-			GameEngine engine) {
-		final int num1 = dicePair.getDice1();
-		final int num2 = dicePair.getDice2();
-		final int total = num1 + num2;
-		
-		// update GUI view
-		SwingUtilities.invokeLater(new Runnable()
-		{
-			@Override
-			public void run()
-			{
-				System.out.print("intermediate: ");
-				System.out.println(total);
-				getDicePanel().setRollLabel2(player.getPlayerName());
-				getDicePanel().setDice1(Integer.toString(num1));
-				getDicePanel().setDice2(Integer.toString(num2));
-			}
-		});
-	}
-
-	@Override
-	public void result(Player player, DicePair dicePair, GameEngine engine) {
-		final int num1 = dicePair.getDice1();
-		final int num2 = dicePair.getDice2();
-		final int total = num1 + num2;
-		
-		// update GUI view
-		SwingUtilities.invokeLater(new Runnable()
-		{
-			@Override
-			public void run()
-			{
-				System.out.print("total: ");
-				System.out.println(total);
-				getDicePanel().setDice1(Integer.toString(num1));
-				getDicePanel().setDice2(Integer.toString(num2));
-				getToolBar().enableDisplayResults();
-				getMenu().enableDisplayResultsMenu();
-				getToolBar().focusDisplayResults();
-			}
-		});
-	}
-
-	@Override
-	public void intermediateHouseResult(DicePair dicePair, GameEngine engine) {
-		final int num1 = dicePair.getDice1();
-		final int num2 = dicePair.getDice2();
-		final int total = num1 + num2;
-		
-		// update GUI view
-		SwingUtilities.invokeLater(new Runnable()
-		{
-			@Override
-			public void run()
-			{
-				System.out.print("intermediate: ");
-				System.out.println(total);
-				getDicePanel().setRollLabel2("House");
-				getDicePanel().setDice1(Integer.toString(num1));
-				getDicePanel().setDice2(Integer.toString(num2));
-			}
-		});
-	}
-
-	@Override
-	public void houseResult(DicePair dicePair, GameEngine engine) {
-		final int num1 = dicePair.getDice1();
-		final int num2 = dicePair.getDice2();
-		final int total = num1 + num2;
-		
-		// update GUI view
-		SwingUtilities.invokeLater(new Runnable()
-		{
-			@Override
-			public void run()
-			{
-				System.out.print("total: ");
-				System.out.println(total);
-				getDicePanel().setDice1(Integer.toString(num1));
-				getDicePanel().setDice2(Integer.toString(num2));
-//				getToolBar().enableDisplayResults();
-//				getMenu().enableDisplayResultsMenu();
-				getToolBar().focusActiveBetText();
-			}
-		});
 	}
 }

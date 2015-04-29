@@ -1,5 +1,6 @@
 package controller;
 
+import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -37,21 +38,30 @@ public class QuitButtonListener implements ActionListener, KeyListener {
 			mainFrame.getPlayerPanel().setPlayerName("No player");
 			mainFrame.getPlayerPanel().hidePoints();
 			mainFrame.getPlayerPanel().hideBet();
-			mainFrame.getToolBar().setBetTextField("");
-			mainFrame.getToolBar().disableBet();
+			mainFrame.getgameTablePanel().getToolBar().setBetTextField("");
+			mainFrame.getgameTablePanel().getToolBar().disableBet();
 			mainFrame.getMenu().disablePlaceBetMenu();
-			mainFrame.getToolBar().disableQuit();
+			mainFrame.getgameTablePanel().getToolBar().disableQuit();
 			mainFrame.getMenu().disableQuitMenu();
-			mainFrame.getDicePanel().setDice1("1");
-			mainFrame.getDicePanel().setDice2("1");
+			mainFrame.getgameTablePanel().getDicePanel().setDice1("1");
+			mainFrame.getgameTablePanel().getDicePanel().setDice2("1");
 			mainFrame.getPlayerPanel().enableAddPlayerButton();
 			mainFrame.getMenu().enableAddPlayerMenu();
 			mainFrame.getPlayerPanel().focusAddPlayerButton();
 			mainFrame.getMenu().disablePlayerRollsMenu();
-			mainFrame.getToolBar().disableRoll();
-			mainFrame.getMenu().disableDisplayResultsMenu();
-			mainFrame.getToolBar().disableDisplayResults();
-			mainFrame.getDicePanel().setRollLabel2("N/A");
+			mainFrame.getgameTablePanel().getToolBar().disableRoll();
+			mainFrame.getMenu().disablePlayerRollsMenu();
+			mainFrame.getgameTablePanel().getToolBar().disableRoll();
+			mainFrame.getPlayerPanel().disableAddPoints();
+			mainFrame.getgameTablePanel().setVisible(false);
+			mainFrame.getStartGamePanel().setVisible(true);
+			mainFrame.getPlayerPanel().setVisible(false);
+			mainFrame.getgameTablePanel().getToolBar().setVisible(false);
+			mainFrame.add(mainFrame.getStartGamePanel(), BorderLayout.CENTER);
+			mainFrame.getgameTablePanel().getGameStatusPanel().getGameStatusLabel().setText("Place a bet to play");
+			mainFrame.getgameTablePanel().getGameStatusPanel().getPlayerResultLabel().setText("Player result: N/A");
+			mainFrame.getgameTablePanel().getGameStatusPanel().getHouseResultLabel().setText("House result: N/A");
+			mainFrame.getgameTablePanel().getGameStatusPanel().getGameResultLabel().setText("Winner: N/A");
 		}
 	}
 
@@ -64,7 +74,7 @@ public class QuitButtonListener implements ActionListener, KeyListener {
 	@Override
 	public void keyPressed(KeyEvent e) {
 		if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-			mainFrame.getToolBar().clickQuit();;
+			mainFrame.getgameTablePanel().getToolBar().clickQuit();;
 		}
 	}
 

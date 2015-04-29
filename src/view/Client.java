@@ -30,14 +30,10 @@ public class Client
 
 		gameEngine.addGameEngineCallback(new GameEngineCallbackImpl());
 
-		// main loop to add player, place a bet, and roll
+		// main loop to add player place a bet and roll
 		for (Player player : players)
 		{
-			try {
-				player.placeBet(100);
-			} catch (IllegalArgumentException e) {
-				System.err.println(e.getMessage() + player.getPlayerName());
-			}
+			player.placeBet(100);
 			gameEngine.addPlayer(player);
 			gameEngine.rollPlayer(player, 1, 100, 20);
 		}

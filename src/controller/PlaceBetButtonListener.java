@@ -41,7 +41,7 @@ public class PlaceBetButtonListener implements ActionListener {
 		}
 		
 		// get bet from user
-		bet = mainFrame.getToolBar().getBetTextField().getText();
+		bet = mainFrame.getgameTablePanel().getToolBar().getBetTextField().getText();
 		
 		if (bet != null) {
 			try {
@@ -67,11 +67,15 @@ public class PlaceBetButtonListener implements ActionListener {
 				mainFrame.getPlayerPanel().deductPoints(Integer.parseInt(bet));
 				mainFrame.getPlayerPanel().setBetPoints(Integer.parseInt(bet));
 				mainFrame.getPlayerPanel().showBet();
-				mainFrame.getToolBar().disableBet();
+				mainFrame.getgameTablePanel().getToolBar().disableBet();
 				mainFrame.getMenu().disablePlaceBetMenu();
-				mainFrame.getToolBar().enableRoll();
+				mainFrame.getgameTablePanel().getToolBar().enableRoll();
 				mainFrame.getMenu().enablePlayerRollsMenu();
-				mainFrame.getToolBar().focusPlayerRoll();
+				mainFrame.getgameTablePanel().getToolBar().focusPlayerRoll();
+				mainFrame.getgameTablePanel().getGameStatusPanel().getGameStatusLabel().setText("Roll the dice to continue");
+				mainFrame.getgameTablePanel().getGameStatusPanel().getPlayerResultLabel().setText("Player result: N/A");
+				mainFrame.getgameTablePanel().getGameStatusPanel().getHouseResultLabel().setText("House result: N/A");
+				mainFrame.getgameTablePanel().getGameStatusPanel().getGameResultLabel().setText("Winner: N/A");
 			} else {
 				// change view
 				System.out.printf("%s%d\n", "not enough points for bet of: ", currPlayer.getBet());

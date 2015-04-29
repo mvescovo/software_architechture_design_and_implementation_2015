@@ -93,7 +93,7 @@ public class GameEngineImpl implements GameEngine {
 	@Override
 	public void calculateResult() {
 		this.rollHouse(1, 200, 20);
-
+		
 		for (Player player: players) {
 			int num1 = player.getRollResult().getDice1();
 			int num2 = player.getRollResult().getDice2();
@@ -101,9 +101,7 @@ public class GameEngineImpl implements GameEngine {
 			
 			if (total > houseTotal) {
 				// player won
-				System.out.println("player won");
-				System.out.println(Integer.toString(player.getPoints()));
-				System.out.println(Integer.toString(player.getBet()));
+				System.out.printf("%s%s\n", player.getPlayerName(), " won");
 				player.setPoints(player.getPoints() + player.getBet() * 2);
 			} else if (total == houseTotal){
 				// draw - return points to player
@@ -111,12 +109,8 @@ public class GameEngineImpl implements GameEngine {
 				player.setPoints(player.getPoints() + player.getBet());
 			} else {
 				// player lost.
-				System.out.println("player lost");
+				System.out.printf("%s%s\n", player.getPlayerName(), " lost");
 			}
-			
-//			System.out.printf("%s%s%s%s%s%d\n", "Player: id=", player.getPlayerId(),
-//					  ", name=", player.getPlayerName(), ", points=",
-//					  player.getPoints());
 		}
 	}
 

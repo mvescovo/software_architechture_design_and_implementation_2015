@@ -9,8 +9,7 @@ public class Menu extends JMenuBar {
 	private JMenu menu1;
 	private JMenuItem addPlayer;
 	private JMenuItem placeBet;
-	private JMenuItem playerRolls;
-	private JMenuItem displayResults;
+	private JMenuItem rollDice;
 	private JMenuItem quit;
 	private JMenuItem exit;
 	
@@ -28,13 +27,9 @@ public class Menu extends JMenuBar {
 		placeBet.setEnabled(false);
 		menu1.add(placeBet);
 
-		playerRolls = new JMenuItem("Player roll dice");
-		playerRolls.setEnabled(false);
-		menu1.add(playerRolls);
-		
-		displayResults = new JMenuItem("Display results");
-		displayResults.setEnabled(false);
-		menu1.add(displayResults);
+		rollDice = new JMenuItem("Roll dice");
+		rollDice.setEnabled(false);
+		menu1.add(rollDice);
 		
 		quit = new JMenuItem("Quit");
 		quit.setEnabled(false);
@@ -53,11 +48,7 @@ public class Menu extends JMenuBar {
 	}
 	
 	public JMenuItem getPlayerRollsDiceMenuItem() {
-		return playerRolls;
-	}
-	
-	public JMenuItem getDisplayResultsMenuItem() {
-		return displayResults;
+		return rollDice;
 	}
 	
 	public JMenuItem getQuitMenuItem() {
@@ -85,19 +76,11 @@ public class Menu extends JMenuBar {
 	}
 	
 	public void enablePlayerRollsMenu() {
-		playerRolls.setEnabled(true);
+		rollDice.setEnabled(true);
 	}
 	
 	public void disablePlayerRollsMenu() {
-		playerRolls.setEnabled(false);
-	}
-	
-	public void enableDisplayResultsMenu() {
-		displayResults.setEnabled(true);
-	}
-	
-	public void disableDisplayResultsMenu() {
-		displayResults.setEnabled(false);
+		rollDice.setEnabled(false);
 	}
 	
 	public void enableQuitMenu() {
