@@ -69,6 +69,7 @@ public class GameEngineCallbackImplGUI implements GameEngineCallback {
 				{
 					mainFrame.getgameTablePanel().getDicePanel().setDice1(Integer.toString(num1));
 					mainFrame.getgameTablePanel().getDicePanel().setDice2(Integer.toString(num2));
+					// TODO maybe change this part so it's not writing to a GUI object
 					mainFrame.getgameTablePanel().getGameStatusPanel().setTempPlayerResult(total);
 					mainFrame.getgameTablePanel().getGameStatusPanel().getPlayerResultLabel().setText(player.getPlayerName() + "'s result: " + total);
 				}
