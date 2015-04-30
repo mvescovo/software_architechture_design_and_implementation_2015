@@ -26,18 +26,18 @@ public class GameEngineImpl implements GameEngine {
 		DicePair dicePair = null;
 		
 		// roll the dice and update views
-		while (initialDelay < finalDelay) {
-			num1 = random.nextInt(NUM_FACES) + minNum;
-			num2 = random.nextInt(NUM_FACES) + minNum;
-			dicePair = new DicePairImpl(num1, num2, NUM_FACES);
-			this.gameEngineCallback.intermediateResult(player, dicePair, this);
-			try {
+		try {
+			while (initialDelay < finalDelay) {
+				num1 = random.nextInt(NUM_FACES) + minNum;
+				num2 = random.nextInt(NUM_FACES) + minNum;
+				dicePair = new DicePairImpl(num1, num2, NUM_FACES);
+				this.gameEngineCallback.intermediateResult(player, dicePair, this);
+				initialDelay += delayIncrement;
 				Thread.sleep(initialDelay);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
 			}
-			initialDelay += delayIncrement;
-		} 
+		} catch (InterruptedException e) {
+				e.printStackTrace();
+		}
 		
 		num1 = random.nextInt(NUM_FACES) + minNum;
 		num2 = random.nextInt(NUM_FACES) + minNum;
@@ -55,19 +55,19 @@ public class GameEngineImpl implements GameEngine {
 		DicePair dicePair = null;
 		
 		// roll the dice and update views
-		while (initialDelay < finalDelay) {
-			num1 = random.nextInt(NUM_FACES) + minNum;
-			num2 = random.nextInt(NUM_FACES) + minNum;
-			dicePair = new DicePairImpl(num1, num2, NUM_FACES);
-			this.gameEngineCallback.intermediateHouseResult(dicePair, this);
-			try {
+		try {
+			while (initialDelay < finalDelay) {
+				num1 = random.nextInt(NUM_FACES) + minNum;
+				num2 = random.nextInt(NUM_FACES) + minNum;
+				dicePair = new DicePairImpl(num1, num2, NUM_FACES);
+				this.gameEngineCallback.intermediateHouseResult(dicePair, this);
+				initialDelay += delayIncrement;
 				Thread.sleep(initialDelay);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-			initialDelay += delayIncrement;
+			}		
+		} catch (InterruptedException e) {
+			e.printStackTrace();
 		}
-		
+
 		num1 = random.nextInt(NUM_FACES) + minNum;
 		num2 = random.nextInt(NUM_FACES) + minNum;
 		dicePair = new DicePairImpl(num1, num2, NUM_FACES);

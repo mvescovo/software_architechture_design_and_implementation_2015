@@ -1,5 +1,7 @@
 package model;
 
+import java.lang.reflect.InvocationTargetException;
+
 import javax.swing.SwingUtilities;
 
 import view.MainFrame;
@@ -23,19 +25,29 @@ public class GameEngineCallbackImplGUI implements GameEngineCallback {
 		final int total = num1 + num2;
 		final String statusText = player.getPlayerName() + " rolling";
 		
+		// some console output because it looks cool
+		System.out.print(player.getPlayerName() + " intermediate: ");
+		System.out.println(total);
+		
 		// update GUI view
-		SwingUtilities.invokeLater(new Runnable()
-		{
-			@Override
-			public void run()
+		try {
+			SwingUtilities.invokeAndWait(new Runnable()
 			{
-				System.out.print("intermediate: ");
-				System.out.println(total);
-				mainFrame.getgameTablePanel().getGameStatusPanel().getGameStatusLabel().setText(statusText);
-				mainFrame.getgameTablePanel().getDicePanel().setDice1(Integer.toString(num1));
-				mainFrame.getgameTablePanel().getDicePanel().setDice2(Integer.toString(num2));
-			}
-		});
+				@Override
+				public void run()
+				{
+					mainFrame.getgameTablePanel().getGameStatusPanel().getGameStatusLabel().setText(statusText);
+					mainFrame.getgameTablePanel().getDicePanel().setDice1(Integer.toString(num1));
+					mainFrame.getgameTablePanel().getDicePanel().setDice2(Integer.toString(num2));
+				}
+			});
+		} catch (InvocationTargetException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -44,20 +56,30 @@ public class GameEngineCallbackImplGUI implements GameEngineCallback {
 		final int num2 = dicePair.getDice2();
 		final int total = num1 + num2;
 		
+		// some console output because it looks cool
+		System.out.print(player.getPlayerName() + " total: ");
+		System.out.println(total);
+		
 		// update GUI view
-		SwingUtilities.invokeLater(new Runnable()
-		{
-			@Override
-			public void run()
+		try {
+			SwingUtilities.invokeAndWait(new Runnable()
 			{
-				System.out.print("total: ");
-				System.out.println(total);
-				mainFrame.getgameTablePanel().getDicePanel().setDice1(Integer.toString(num1));
-				mainFrame.getgameTablePanel().getDicePanel().setDice2(Integer.toString(num2));
-				mainFrame.getgameTablePanel().getGameStatusPanel().setTempPlayerResult(total);
-				mainFrame.getgameTablePanel().getGameStatusPanel().getPlayerResultLabel().setText(player.getPlayerName() + "'s result: " + total);
-			}
-		});
+				@Override
+				public void run()
+				{
+					mainFrame.getgameTablePanel().getDicePanel().setDice1(Integer.toString(num1));
+					mainFrame.getgameTablePanel().getDicePanel().setDice2(Integer.toString(num2));
+					mainFrame.getgameTablePanel().getGameStatusPanel().setTempPlayerResult(total);
+					mainFrame.getgameTablePanel().getGameStatusPanel().getPlayerResultLabel().setText(player.getPlayerName() + "'s result: " + total);
+				}
+			});
+		} catch (InvocationTargetException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -66,19 +88,29 @@ public class GameEngineCallbackImplGUI implements GameEngineCallback {
 		final int num2 = dicePair.getDice2();
 		final int total = num1 + num2;
 		
+		// some console output because it looks cool
+		System.out.print("house intermediate: ");
+		System.out.println(total);
+		
 		// update GUI view
-		SwingUtilities.invokeLater(new Runnable()
-		{
-			@Override
-			public void run()
+		try {
+			SwingUtilities.invokeAndWait(new Runnable()
 			{
-				System.out.print("intermediate: ");
-				System.out.println(total);
-				mainFrame.getgameTablePanel().getGameStatusPanel().getGameStatusLabel().setText("House rolling");
-				mainFrame.getgameTablePanel().getDicePanel().setDice1(Integer.toString(num1));
-				mainFrame.getgameTablePanel().getDicePanel().setDice2(Integer.toString(num2));
-			}
-		});
+				@Override
+				public void run()
+				{
+					mainFrame.getgameTablePanel().getGameStatusPanel().getGameStatusLabel().setText("House rolling");
+					mainFrame.getgameTablePanel().getDicePanel().setDice1(Integer.toString(num1));
+					mainFrame.getgameTablePanel().getDicePanel().setDice2(Integer.toString(num2));
+				}
+			});
+		} catch (InvocationTargetException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -88,28 +120,38 @@ public class GameEngineCallbackImplGUI implements GameEngineCallback {
 		final int houseTotal = num1 + num2;
 		final int playerTotal = mainFrame.getgameTablePanel().getGameStatusPanel().getTempPlayerResult();
 		
+		// some console output because it looks cool
+		System.out.print("house total: ");
+		System.out.println(houseTotal);
+		
 		// update GUI view
-		SwingUtilities.invokeLater(new Runnable()
-		{
-			@Override
-			public void run()
+		try {
+			SwingUtilities.invokeAndWait(new Runnable()
 			{
-				System.out.print("total: ");
-				System.out.println(houseTotal);
-				mainFrame.getgameTablePanel().getDicePanel().setDice1(Integer.toString(num1));
-				mainFrame.getgameTablePanel().getDicePanel().setDice2(Integer.toString(num2));
-				mainFrame.getgameTablePanel().getGameStatusPanel().getHouseResultLabel().setText("House result: " + houseTotal);
-				if (playerTotal > houseTotal) {
-					mainFrame.getgameTablePanel().getGameStatusPanel().getGameResultLabel().setText("You won!");
-				} else if (playerTotal == houseTotal) {
-					mainFrame.getgameTablePanel().getGameStatusPanel().getGameResultLabel().setText("Draw!");
-				} else {
-					mainFrame.getgameTablePanel().getGameStatusPanel().getGameResultLabel().setText("The house won");
+				@Override
+				public void run()
+				{
+					mainFrame.getgameTablePanel().getDicePanel().setDice1(Integer.toString(num1));
+					mainFrame.getgameTablePanel().getDicePanel().setDice2(Integer.toString(num2));
+					mainFrame.getgameTablePanel().getGameStatusPanel().getHouseResultLabel().setText("House result: " + houseTotal);
+					if (playerTotal > houseTotal) {
+						mainFrame.getgameTablePanel().getGameStatusPanel().getGameResultLabel().setText("You won!");
+					} else if (playerTotal == houseTotal) {
+						mainFrame.getgameTablePanel().getGameStatusPanel().getGameResultLabel().setText("Draw!");
+					} else {
+						mainFrame.getgameTablePanel().getGameStatusPanel().getGameResultLabel().setText("The house won");
+					}
+					
+					mainFrame.getgameTablePanel().getToolBar().focusActiveBetText();
+					mainFrame.getgameTablePanel().getGameStatusPanel().getGameStatusLabel().setText("Place another bet to play again");
 				}
-				
-				mainFrame.getgameTablePanel().getToolBar().focusActiveBetText();
-				mainFrame.getgameTablePanel().getGameStatusPanel().getGameStatusLabel().setText("Place another bet to play again");
-			}
-		});
+			});
+		} catch (InvocationTargetException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }

@@ -32,6 +32,14 @@ public class PlayerRollsButtonListener implements ActionListener, KeyListener {
 				// player roll
 				gameEngine.rollPlayer(player, 1, 200, 20);
 				
+				 // sleep for a bit so player can see their result
+				try {
+					Thread.sleep(2000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
 				// house roll and calculate results
 				gameEngine.calculateResult();
 				
