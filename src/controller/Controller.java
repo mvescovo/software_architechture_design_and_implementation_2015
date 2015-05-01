@@ -46,6 +46,7 @@ public class Controller {
 		this.mainFrame.getgameTablePanel().getToolBar().getPlayerRollsButton().addActionListener(playerRollsButtonListener);
 		this.mainFrame.getgameTablePanel().getToolBar().getQuitButton().addActionListener(quitButtonListener);
 		this.mainFrame.getgameTablePanel().getToolBar().getExitButton().addActionListener(exitButtonListener);
+		this.mainFrame.getStartGamePanel().getQuitGameButton().addActionListener(exitButtonListener);
 		this.mainFrame.getPlayerPanel().getAddPointsButton().addActionListener(addPointsButtonListener);
 		this.mainFrame.getPlayerPanel().getAddPointsTextField().addActionListener(addPointsTextFieldListener);
 		this.mainFrame.getStartGamePanel().getPlayerNameTextField().addActionListener(playerNameTextFieldListener);
@@ -56,6 +57,7 @@ public class Controller {
 		this.mainFrame.getgameTablePanel().getToolBar().getPlayerRollsButton().addKeyListener(playerRollsButtonListener);
 		this.mainFrame.getgameTablePanel().getToolBar().getQuitButton().addKeyListener(quitButtonListener);
 		this.mainFrame.getgameTablePanel().getToolBar().getExitButton().addKeyListener(exitButtonListener);
+		this.mainFrame.getStartGamePanel().getQuitGameButton().addKeyListener(exitButtonListener);
 		this.mainFrame.getPlayerPanel().getAddPointsButton().addKeyListener(addPointsButtonListener);
 		this.mainFrame.getStartGamePanel().getStartGameButton().addKeyListener(startGameButtonListener);
 		// menu listeners
