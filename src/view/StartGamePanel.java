@@ -39,7 +39,7 @@ public class StartGamePanel extends JPanel {
 //		c1.fill = GridBagConstraints.HORIZONTAL;
 //		c1.ipadx = 0; // increase component width
 //		c1.ipady = 0; // increase component height
-		c1.insets = new Insets(2, 2, 2, 2); // for all components
+		c1.insets = new Insets(0, 0, 5, 5); // for all components
 		c1.anchor = GridBagConstraints.SOUTHEAST;
 		c1.weightx = 1.0;
 		c1.weighty = 1.0;
@@ -54,7 +54,7 @@ public class StartGamePanel extends JPanel {
 //		c2.fill = GridBagConstraints.HORIZONTAL;
 //		c2.ipadx = 0;
 //		c2.ipady = 0;
-		c2.insets = new Insets(2, 2, 2, 2);
+		c2.insets = new Insets(0, 5, 5, 0);
 		c2.anchor = GridBagConstraints.SOUTHWEST;
 		c2.weightx = 1.0;
 		c2.weighty = 1.0;
@@ -69,7 +69,7 @@ public class StartGamePanel extends JPanel {
 //		c3.fill = GridBagConstraints.HORIZONTAL;
 //		c3.ipadx = 0;
 //		c3.ipady = 0;
-		c3.insets = new Insets(2, 2, 2, 2);
+		c3.insets = new Insets(5, 0, 0, 5);
 		c3.anchor = GridBagConstraints.EAST;
 		c3.weightx = 1.0;
 		c3.weighty = 0;
@@ -83,7 +83,7 @@ public class StartGamePanel extends JPanel {
 //		c4.fill = GridBagConstraints.HORIZONTAL;
 //		c4.ipadx = 0;
 //		c4.ipady = 0;
-		c4.insets = new Insets(2, 2, 2, 2);
+		c4.insets = new Insets(5, 5, 0, 0);
 		c4.anchor = GridBagConstraints.WEST;
 		c4.weightx = 1.0;
 		c4.weighty = 0;
@@ -100,7 +100,7 @@ public class StartGamePanel extends JPanel {
 //		c5.fill = GridBagConstraints.HORIZONTAL;
 //		c5.ipadx = 0;
 //		c5.ipady = 0;
-		c5.insets = new Insets(10, 0, 0, 0);
+		c5.insets = new Insets(15, 0, 0, 0);
 		c5.anchor = GridBagConstraints.NORTH;
 		c5.weightx = 1.0;
 		c5.weighty = 1.0;
