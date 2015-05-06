@@ -1,7 +1,6 @@
 package controller;
 
 import view.MainFrame;
-import model.GameEngineCallbackImpl;
 import model.GameEngineCallbackImplGUI;
 import model.interfaces.GameEngine;
 import model.interfaces.Player;
