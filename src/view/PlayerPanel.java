@@ -31,14 +31,14 @@ public class PlayerPanel extends JPanel {
 		
 		add(Box.createRigidArea(new Dimension(170, 20)));
 		
-		playerTitle = new JLabel("Players:");
+		playerTitle = new JLabel("Player:");
 		playerTitle.setForeground(new Color(255, 215, 0));
 		playerTitle.setAlignmentX(CENTER_ALIGNMENT);
 		add(playerTitle);
 		
 		add(Box.createRigidArea(new Dimension(170, 5)));
 		
-		playerName = new JLabel("No players yet");
+		playerName = new JLabel("No player yet");
 		playerName.setForeground(Color.WHITE);
 		playerName.setAlignmentX(CENTER_ALIGNMENT);
 		add(playerName);

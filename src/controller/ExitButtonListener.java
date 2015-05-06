@@ -34,7 +34,7 @@ public class ExitButtonListener implements ActionListener, KeyListener {
 	@Override
 	public void keyPressed(KeyEvent e) {
 		if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-			mainFrame.getgameTablePanel().getToolBar().clickExit();;
+			mainFrame.getTableAndToolbarContainerPanel().getToolBar().clickExit();;
 		}
 	}
 

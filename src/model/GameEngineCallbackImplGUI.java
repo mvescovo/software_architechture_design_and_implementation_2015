@@ -1,5 +1,6 @@
 package model;
 
+import java.awt.Color;
 import java.lang.reflect.InvocationTargetException;
 
 import javax.swing.SwingUtilities;
@@ -23,7 +24,7 @@ public class GameEngineCallbackImplGUI implements GameEngineCallback {
 		final int num1 = dicePair.getDice1();
 		final int num2 = dicePair.getDice2();
 		final int total = num1 + num2;
-		final String statusText = player.getPlayerName() + " rolling";
+		final String statusText = player.getPlayerName() + " is rolling...";
 		
 		// some console output because it looks cool
 		System.out.print(player.getPlayerName() + " intermediate: ");
@@ -36,9 +37,11 @@ public class GameEngineCallbackImplGUI implements GameEngineCallback {
 				@Override
 				public void run()
 				{
-					mainFrame.getgameTablePanel().getGameStatusPanel().getGameStatusLabel().setText(statusText);
-					mainFrame.getgameTablePanel().getDicePanel().setDice1(Integer.toString(num1));
-					mainFrame.getgameTablePanel().getDicePanel().setDice2(Integer.toString(num2));
+					mainFrame.getTableAndToolbarContainerPanel().getGameTablePanel().getGameStatusPanel().getGameStatusLabel().setText(statusText);
+					mainFrame.getTableAndToolbarContainerPanel().getGameTablePanel().getDicePanel().getDice1().setVisible(true);
+					mainFrame.getTableAndToolbarContainerPanel().getGameTablePanel().getDicePanel().getDice2().setVisible(true);
+					mainFrame.getTableAndToolbarContainerPanel().getGameTablePanel().getDicePanel().getDice1().setText(Integer.toString(num1));
+					mainFrame.getTableAndToolbarContainerPanel().getGameTablePanel().getDicePanel().getDice2().setText(Integer.toString(num2));
 				}
 			});
 		} catch (InvocationTargetException e) {
@@ -67,11 +70,12 @@ public class GameEngineCallbackImplGUI implements GameEngineCallback {
 				@Override
 				public void run()
 				{
-					mainFrame.getgameTablePanel().getDicePanel().setDice1(Integer.toString(num1));
-					mainFrame.getgameTablePanel().getDicePanel().setDice2(Integer.toString(num2));
+					mainFrame.getTableAndToolbarContainerPanel().getGameTablePanel().getDicePanel().getDice1().setText(Integer.toString(num1));
+					mainFrame.getTableAndToolbarContainerPanel().getGameTablePanel().getDicePanel().getDice2().setText(Integer.toString(num2));
 					// TODO maybe change this part so it's not writing to a GUI object
-					mainFrame.getgameTablePanel().getGameStatusPanel().setTempPlayerResult(total);
-					mainFrame.getgameTablePanel().getGameStatusPanel().getPlayerResultLabel().setText(player.getPlayerName() + "'s result: " + total);
+					mainFrame.getTableAndToolbarContainerPanel().getGameTablePanel().getGameStatusPanel().setTempPlayerResult(total);
+					mainFrame.getTableAndToolbarContainerPanel().getGameTablePanel().getGameStatusPanel().getPlayerResultLabel().setText(player.getPlayerName() + "'s result: " + total);
+					mainFrame.getTableAndToolbarContainerPanel().getGameTablePanel().getGameStatusPanel().getPlayerResultLabel().setVisible(true);
 				}
 			});
 		} catch (InvocationTargetException e) {
@@ -100,9 +104,9 @@ public class GameEngineCallbackImplGUI implements GameEngineCallback {
 				@Override
 				public void run()
 				{
-					mainFrame.getgameTablePanel().getGameStatusPanel().getGameStatusLabel().setText("House rolling");
-					mainFrame.getgameTablePanel().getDicePanel().setDice1(Integer.toString(num1));
-					mainFrame.getgameTablePanel().getDicePanel().setDice2(Integer.toString(num2));
+					mainFrame.getTableAndToolbarContainerPanel().getGameTablePanel().getGameStatusPanel().getGameStatusLabel().setText("House is rolling...");
+					mainFrame.getTableAndToolbarContainerPanel().getGameTablePanel().getDicePanel().getDice1().setText(Integer.toString(num1));
+					mainFrame.getTableAndToolbarContainerPanel().getGameTablePanel().getDicePanel().getDice2().setText(Integer.toString(num2));
 				}
 			});
 		} catch (InvocationTargetException e) {
@@ -119,7 +123,7 @@ public class GameEngineCallbackImplGUI implements GameEngineCallback {
 		final int num1 = dicePair.getDice1();
 		final int num2 = dicePair.getDice2();
 		final int houseTotal = num1 + num2;
-		final int playerTotal = mainFrame.getgameTablePanel().getGameStatusPanel().getTempPlayerResult();
+		final int playerTotal = mainFrame.getTableAndToolbarContainerPanel().getGameTablePanel().getGameStatusPanel().getTempPlayerResult();
 		
 		// some console output because it looks cool
 		System.out.print("house total: ");
@@ -132,19 +136,26 @@ public class GameEngineCallbackImplGUI implements GameEngineCallback {
 				@Override
 				public void run()
 				{
-					mainFrame.getgameTablePanel().getDicePanel().setDice1(Integer.toString(num1));
-					mainFrame.getgameTablePanel().getDicePanel().setDice2(Integer.toString(num2));
-					mainFrame.getgameTablePanel().getGameStatusPanel().getHouseResultLabel().setText("House result: " + houseTotal);
+					mainFrame.getTableAndToolbarContainerPanel().getGameTablePanel().getDicePanel().getDice1().setText(Integer.toString(num1));
+					mainFrame.getTableAndToolbarContainerPanel().getGameTablePanel().getDicePanel().getDice2().setText(Integer.toString(num2));
+					mainFrame.getTableAndToolbarContainerPanel().getGameTablePanel().getGameStatusPanel().getHouseResultLabel().setText("House result: " + houseTotal);
+					mainFrame.getTableAndToolbarContainerPanel().getGameTablePanel().getGameStatusPanel().getHouseResultLabel().setVisible(true);
 					if (playerTotal > houseTotal) {
-						mainFrame.getgameTablePanel().getGameStatusPanel().getGameResultLabel().setText("You won!");
+						mainFrame.getTableAndToolbarContainerPanel().getGameTablePanel().getGameStatusPanel().getGameResultLabel().setText("You won! :)");
+						mainFrame.getTableAndToolbarContainerPanel().getGameTablePanel().getGameStatusPanel().getGameResultLabel().setVisible(true);
+						mainFrame.getTableAndToolbarContainerPanel().getGameTablePanel().getGameStatusPanel().getGameResultLabel().setForeground(new Color(255, 215, 0));
 					} else if (playerTotal == houseTotal) {
-						mainFrame.getgameTablePanel().getGameStatusPanel().getGameResultLabel().setText("Draw!");
+						mainFrame.getTableAndToolbarContainerPanel().getGameTablePanel().getGameStatusPanel().getGameResultLabel().setText("Draw");
+						mainFrame.getTableAndToolbarContainerPanel().getGameTablePanel().getGameStatusPanel().getGameResultLabel().setVisible(true);
+						mainFrame.getTableAndToolbarContainerPanel().getGameTablePanel().getGameStatusPanel().getGameResultLabel().setForeground(Color.WHITE);
 					} else {
-						mainFrame.getgameTablePanel().getGameStatusPanel().getGameResultLabel().setText("The house won");
+						mainFrame.getTableAndToolbarContainerPanel().getGameTablePanel().getGameStatusPanel().getGameResultLabel().setText("The house won :(");
+						mainFrame.getTableAndToolbarContainerPanel().getGameTablePanel().getGameStatusPanel().getGameResultLabel().setVisible(true);
+						mainFrame.getTableAndToolbarContainerPanel().getGameTablePanel().getGameStatusPanel().getGameResultLabel().setForeground(Color.DARK_GRAY);
 					}
 					
-					mainFrame.getgameTablePanel().getToolBar().focusActiveBetText();
-					mainFrame.getgameTablePanel().getGameStatusPanel().getGameStatusLabel().setText("Place another bet to play again");
+					mainFrame.getTableAndToolbarContainerPanel().getToolBar().focusActiveBetText();
+					mainFrame.getTableAndToolbarContainerPanel().getGameTablePanel().getGameStatusPanel().getGameStatusLabel().setText("Place another bet to play again");
 				}
 			});
 		} catch (InvocationTargetException e) {

@@ -15,6 +15,6 @@ public class BetTextFieldListener implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// press place bet button
-		mainFrame.getgameTablePanel().getToolBar().clickPlaceBet();
+		mainFrame.getTableAndToolbarContainerPanel().getToolBar().clickPlaceBet();
 	}
 }

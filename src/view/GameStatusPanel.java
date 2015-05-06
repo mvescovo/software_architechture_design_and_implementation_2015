@@ -25,18 +25,21 @@ public class GameStatusPanel extends JPanel {
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		setBackground(new Color(0, 153, 0));
 		
+		add(Box.createRigidArea(new Dimension(0, 30)));
+		
 		gameStatusLabel = new JLabel("Place a bet to play");
 		gameStatusLabel.setFont(font);
 		gameStatusLabel.setForeground(Color.WHITE);
 		gameStatusLabel.setAlignmentX(CENTER_ALIGNMENT);
 		add(gameStatusLabel);
 		
-		add(Box.createRigidArea(new Dimension(0, 37)));
+		add(Box.createRigidArea(new Dimension(0, 30)));
 		
 		playerResultLabel = new JLabel("Player result: N/A");
 		playerResultLabel.setFont(font);
 		playerResultLabel.setForeground(Color.WHITE);
 		playerResultLabel.setAlignmentX(CENTER_ALIGNMENT);
+		playerResultLabel.setVisible(false);
 		add(playerResultLabel);
 		
 		add(Box.createRigidArea(new Dimension(0, 5)));
@@ -45,6 +48,7 @@ public class GameStatusPanel extends JPanel {
 		houseResultLabel.setFont(font);
 		houseResultLabel.setForeground(Color.WHITE);
 		houseResultLabel.setAlignmentX(CENTER_ALIGNMENT);
+		houseResultLabel.setVisible(false);
 		add(houseResultLabel);
 		
 		add(Box.createRigidArea(new Dimension(0, 5)));
@@ -53,6 +57,7 @@ public class GameStatusPanel extends JPanel {
 		gameResultLabel.setFont(font);
 		gameResultLabel.setForeground(Color.WHITE);
 		gameResultLabel.setAlignmentX(CENTER_ALIGNMENT);
+		gameResultLabel.setVisible(false);
 		add(gameResultLabel);
 	}
 

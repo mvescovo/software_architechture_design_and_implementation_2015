@@ -13,7 +13,7 @@ public class MainFrame extends JFrame {
 	Menu menu;
 	HeadingPanel heading;
 	PlayerPanel playerPanel;
-	GameTablePanel gameTablePanel;
+	TableAndToolbarContainerPanel tableAndToolbarContainerPanel;
 	
 	public MainFrame(GameEngine gameEngine) {
 		this.gameEngine = gameEngine;
@@ -21,12 +21,12 @@ public class MainFrame extends JFrame {
 		menu = new Menu();
 		heading = new HeadingPanel();
 		playerPanel = new PlayerPanel();
-		gameTablePanel = new GameTablePanel();
+		tableAndToolbarContainerPanel = new TableAndToolbarContainerPanel();
 
 		setJMenuBar(menu);
 		add(heading, BorderLayout.NORTH);
 		add(playerPanel, BorderLayout.WEST);
-		add(gameTablePanel, BorderLayout.CENTER);
+		add(tableAndToolbarContainerPanel, BorderLayout.CENTER);
 		add(startGamePanel, BorderLayout.CENTER);
 		
 		// set details of main frame
@@ -35,7 +35,7 @@ public class MainFrame extends JFrame {
 //		setLocation(1200, 300);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setResizable(false);
+//		setResizable(false);
 		setVisible(true);
 	}
 	
@@ -47,8 +47,8 @@ public class MainFrame extends JFrame {
 		return playerPanel;
 	}
 	
-	public GameTablePanel getgameTablePanel() {
-		return gameTablePanel;
+	public TableAndToolbarContainerPanel getTableAndToolbarContainerPanel() {
+		return tableAndToolbarContainerPanel;
 	}
 	
 	public Menu getMenu() {

@@ -49,16 +49,16 @@ public class PlayerRollsButtonListener implements ActionListener, KeyListener {
 				// change view after house has rolled, results calculated, and bet cleared
 				mainFrame.getPlayerPanel().setPoints(Integer.toString(controller.getCurrPlayer().getPoints()));
 				mainFrame.getPlayerPanel().setBetPoints(controller.getCurrPlayer().getBet());
-				mainFrame.getgameTablePanel().getToolBar().enableBet();
+				mainFrame.getTableAndToolbarContainerPanel().getToolBar().enableBet();
 				mainFrame.getMenu().enablePlaceBetMenu();
-				mainFrame.getgameTablePanel().getToolBar().focusActiveBetText();
+				mainFrame.getTableAndToolbarContainerPanel().getToolBar().focusActiveBetText();
 			}
 		});
 		
 		thread.start();
 		
 		// change view
-		mainFrame.getgameTablePanel().getToolBar().disableRoll();
+		mainFrame.getTableAndToolbarContainerPanel().getToolBar().disableRoll();
 		mainFrame.getMenu().disablePlayerRollsMenu();
 	}
 
@@ -71,7 +71,7 @@ public class PlayerRollsButtonListener implements ActionListener, KeyListener {
 	@Override
 	public void keyPressed(KeyEvent e) {
 		if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-			mainFrame.getgameTablePanel().getToolBar().clickPlayerRolls();
+			mainFrame.getTableAndToolbarContainerPanel().getToolBar().clickPlayerRolls();
 		}
 	}
 

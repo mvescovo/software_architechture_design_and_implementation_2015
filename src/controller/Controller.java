@@ -41,11 +41,11 @@ public class Controller {
 
 		// register action listeners
 		this.mainFrame.getPlayerPanel().getAddPlayerButton().addActionListener(addPlayerButtonListener);
-		this.mainFrame.getgameTablePanel().getToolBar().getPlaceBetButton().addActionListener(placeBetButtonListener);
-		this.mainFrame.getgameTablePanel().getToolBar().getBetTextField().addActionListener(betTextFieldListener);
-		this.mainFrame.getgameTablePanel().getToolBar().getPlayerRollsButton().addActionListener(playerRollsButtonListener);
-		this.mainFrame.getgameTablePanel().getToolBar().getQuitButton().addActionListener(quitButtonListener);
-		this.mainFrame.getgameTablePanel().getToolBar().getExitButton().addActionListener(exitButtonListener);
+		this.mainFrame.getTableAndToolbarContainerPanel().getToolBar().getPlaceBetButton().addActionListener(placeBetButtonListener);
+		this.mainFrame.getTableAndToolbarContainerPanel().getToolBar().getBetTextField().addActionListener(betTextFieldListener);
+		this.mainFrame.getTableAndToolbarContainerPanel().getToolBar().getPlayerRollsButton().addActionListener(playerRollsButtonListener);
+		this.mainFrame.getTableAndToolbarContainerPanel().getToolBar().getQuitButton().addActionListener(quitButtonListener);
+		this.mainFrame.getTableAndToolbarContainerPanel().getToolBar().getExitButton().addActionListener(exitButtonListener);
 		this.mainFrame.getStartGamePanel().getQuitGameButton().addActionListener(exitButtonListener);
 		this.mainFrame.getPlayerPanel().getAddPointsButton().addActionListener(addPointsButtonListener);
 		this.mainFrame.getPlayerPanel().getAddPointsTextField().addActionListener(addPointsTextFieldListener);
@@ -54,9 +54,9 @@ public class Controller {
 		this.mainFrame.getStartGamePanel().getStartGameButton().addActionListener(startGameButtonListener);
 		// register key listeners
 		this.mainFrame.getPlayerPanel().getAddPlayerButton().addKeyListener(addPlayerButtonListener);
-		this.mainFrame.getgameTablePanel().getToolBar().getPlayerRollsButton().addKeyListener(playerRollsButtonListener);
-		this.mainFrame.getgameTablePanel().getToolBar().getQuitButton().addKeyListener(quitButtonListener);
-		this.mainFrame.getgameTablePanel().getToolBar().getExitButton().addKeyListener(exitButtonListener);
+		this.mainFrame.getTableAndToolbarContainerPanel().getToolBar().getPlayerRollsButton().addKeyListener(playerRollsButtonListener);
+		this.mainFrame.getTableAndToolbarContainerPanel().getToolBar().getQuitButton().addKeyListener(quitButtonListener);
+		this.mainFrame.getTableAndToolbarContainerPanel().getToolBar().getExitButton().addKeyListener(exitButtonListener);
 		this.mainFrame.getStartGamePanel().getQuitGameButton().addKeyListener(exitButtonListener);
 		this.mainFrame.getPlayerPanel().getAddPointsButton().addKeyListener(addPointsButtonListener);
 		this.mainFrame.getStartGamePanel().getStartGameButton().addKeyListener(startGameButtonListener);
