@@ -102,8 +102,7 @@ public class StartGameButtonListener implements ActionListener, KeyListener {
 
 	@Override
 	public void keyTyped(KeyEvent e) {
-		// TODO Auto-generated method stub
-		
+		// nothing to do here
 	}
 
 	@Override
@@ -115,7 +114,6 @@ public class StartGameButtonListener implements ActionListener, KeyListener {
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		// TODO Auto-generated method stub
-		
+		// nothing to do here
 	}
 }
