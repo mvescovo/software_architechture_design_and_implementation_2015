@@ -1,3 +1,6 @@
+/**
+ * 
+ */
 package controller;
 
 import java.awt.event.ActionEvent;
@@ -9,13 +12,17 @@ import view.MainFrame;
 import model.interfaces.GameEngine;
 import model.interfaces.Player;
 
-public class PlayerRollsButtonListener implements ActionListener, KeyListener {
+/**
+ * @author "Michael Vescovo - s3459317"
+ *
+ */
+public class RollHouseButtonListener implements ActionListener, KeyListener {
 	GameEngine gameEngine;
 	MainFrame mainFrame;
-	Player player;
 	Controller controller;
+	Player player;
 	
-	public PlayerRollsButtonListener(GameEngine gameEngine, MainFrame mainFrame, Controller controller) {
+	RollHouseButtonListener(GameEngine gameEngine, MainFrame mainFrame, Controller controller) {
 		this.gameEngine = gameEngine;
 		this.mainFrame = mainFrame;
 		this.controller = controller;
@@ -29,17 +36,7 @@ public class PlayerRollsButtonListener implements ActionListener, KeyListener {
 		Thread thread = new Thread(new Runnable() {
 			@Override
 			public void run() {
-				// player roll
-				gameEngine.rollPlayer(player, 1, 200, 20);
-				
-				 // sleep for a bit so player can see their result
-				try {
-					Thread.sleep(2000);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-				
-				// house roll and calculate results
+				// roll house and calculate results
 				gameEngine.calculateResult();
 				
 				// clear bet
@@ -49,32 +46,35 @@ public class PlayerRollsButtonListener implements ActionListener, KeyListener {
 				mainFrame.getPlayerPanel().setPoints(Integer.toString(controller.getCurrPlayer().getPoints()));
 				mainFrame.getPlayerPanel().setBetPoints(controller.getCurrPlayer().getBet());
 				mainFrame.getTableAndToolbarContainerPanel().getToolBar().enableBet();
-				mainFrame.getMenu().enablePlaceBetMenu();
+				mainFrame.getMenu().getplaceBetMenuItem().setEnabled(true);
 				mainFrame.getTableAndToolbarContainerPanel().getToolBar().focusActiveBetText();
 			}
 		});
 		
 		thread.start();
 		
-		// change view
-		mainFrame.getTableAndToolbarContainerPanel().getToolBar().disableRoll();
-		mainFrame.getMenu().disablePlayerRollsMenu();
+		// change view immediately
+		mainFrame.getTableAndToolbarContainerPanel().getToolBar().getRollHouseButton().setEnabled(false);
+		mainFrame.getMenu().getRollHouseMenuItem().setEnabled(false);
 	}
 
 	@Override
 	public void keyTyped(KeyEvent e) {
 		// nothing to do here
+		
 	}
 
 	@Override
 	public void keyPressed(KeyEvent e) {
 		if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-			mainFrame.getTableAndToolbarContainerPanel().getToolBar().clickPlayerRolls();
+			mainFrame.getTableAndToolbarContainerPanel().getToolBar().getRollHouseButton().doClick();
 		}
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
 		// nothing to do here
+		
 	}
+
 }

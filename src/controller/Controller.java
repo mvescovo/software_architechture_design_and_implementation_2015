@@ -12,7 +12,8 @@ public class Controller {
 	private AddPlayerButtonListener addPlayerButtonListener;
 	private PlaceBetButtonListener placeBetButtonListener;
 	private BetTextFieldListener betTextFieldListener;
-	private PlayerRollsButtonListener playerRollsButtonListener;
+	private RollPlayerButtonListener rollPlayerButtonListener;
+	private RollHouseButtonListener rollHouseButtonListener;
 	private QuitButtonListener quitButtonListener;
 	private ExitButtonListener exitButtonListener;
 	private AddPointsButtonListener addPointsButtonListener;
@@ -29,7 +30,8 @@ public class Controller {
 		addPlayerButtonListener = new AddPlayerButtonListener(gameEngine, mainFrame, this);
 		placeBetButtonListener = new PlaceBetButtonListener(gameEngine, mainFrame);
 		betTextFieldListener = new BetTextFieldListener(mainFrame);
-		playerRollsButtonListener = new PlayerRollsButtonListener(gameEngine, mainFrame, this);
+		rollPlayerButtonListener = new RollPlayerButtonListener(gameEngine, mainFrame, this);
+		rollHouseButtonListener = new RollHouseButtonListener(gameEngine, mainFrame, this);
 		quitButtonListener = new QuitButtonListener(gameEngine, mainFrame, this);
 		exitButtonListener = new ExitButtonListener(mainFrame);
 		addPointsButtonListener = new AddPointsButtonListener(gameEngine, mainFrame);
@@ -42,7 +44,8 @@ public class Controller {
 		this.mainFrame.getPlayerPanel().getAddPlayerButton().addActionListener(addPlayerButtonListener);
 		this.mainFrame.getTableAndToolbarContainerPanel().getToolBar().getPlaceBetButton().addActionListener(placeBetButtonListener);
 		this.mainFrame.getTableAndToolbarContainerPanel().getToolBar().getBetTextField().addActionListener(betTextFieldListener);
-		this.mainFrame.getTableAndToolbarContainerPanel().getToolBar().getPlayerRollsButton().addActionListener(playerRollsButtonListener);
+		this.mainFrame.getTableAndToolbarContainerPanel().getToolBar().getRollPlayerButton().addActionListener(rollPlayerButtonListener);
+		this.mainFrame.getTableAndToolbarContainerPanel().getToolBar().getRollHouseButton().addActionListener(rollHouseButtonListener);
 		this.mainFrame.getTableAndToolbarContainerPanel().getToolBar().getQuitButton().addActionListener(quitButtonListener);
 		this.mainFrame.getTableAndToolbarContainerPanel().getToolBar().getExitButton().addActionListener(exitButtonListener);
 		this.mainFrame.getStartGamePanel().getQuitGameButton().addActionListener(exitButtonListener);
@@ -53,7 +56,8 @@ public class Controller {
 		this.mainFrame.getStartGamePanel().getStartGameButton().addActionListener(startGameButtonListener);
 		// register key listeners
 		this.mainFrame.getPlayerPanel().getAddPlayerButton().addKeyListener(addPlayerButtonListener);
-		this.mainFrame.getTableAndToolbarContainerPanel().getToolBar().getPlayerRollsButton().addKeyListener(playerRollsButtonListener);
+		this.mainFrame.getTableAndToolbarContainerPanel().getToolBar().getRollPlayerButton().addKeyListener(rollPlayerButtonListener);
+		this.mainFrame.getTableAndToolbarContainerPanel().getToolBar().getRollHouseButton().addKeyListener(rollHouseButtonListener);
 		this.mainFrame.getTableAndToolbarContainerPanel().getToolBar().getQuitButton().addKeyListener(quitButtonListener);
 		this.mainFrame.getTableAndToolbarContainerPanel().getToolBar().getExitButton().addKeyListener(exitButtonListener);
 		this.mainFrame.getStartGamePanel().getQuitGameButton().addKeyListener(exitButtonListener);
@@ -62,7 +66,8 @@ public class Controller {
 		// menu listeners
 		this.mainFrame.getMenu().getAddPlayerMenuItem().addActionListener(addPlayerButtonListener);
 		this.mainFrame.getMenu().getplaceBetMenuItem().addActionListener(placeBetButtonListener);
-		this.mainFrame.getMenu().getPlayerRollsDiceMenuItem().addActionListener(playerRollsButtonListener);
+		this.mainFrame.getMenu().getRollPlayerMenuItem().addActionListener(rollPlayerButtonListener);
+		this.mainFrame.getMenu().getRollHouseMenuItem().addActionListener(rollHouseButtonListener);
 		this.mainFrame.getMenu().getQuitMenuItem().addActionListener(quitButtonListener);
 		this.mainFrame.getMenu().getExitMenuItem().addActionListener(exitButtonListener);
 	}

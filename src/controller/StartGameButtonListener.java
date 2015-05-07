@@ -85,11 +85,11 @@ public class StartGameButtonListener implements ActionListener, KeyListener {
 				mainFrame.getPlayerPanel().showBet();
 				mainFrame.getPlayerPanel().setPoints(points);
 				mainFrame.getPlayerPanel().disableAddPlayerButton();
-				mainFrame.getMenu().disableAddPlayerMenu();
+				mainFrame.getMenu().getAddPlayerMenuItem().setEnabled(false);
 				mainFrame.getTableAndToolbarContainerPanel().getToolBar().enableBet();
-				mainFrame.getMenu().enablePlaceBetMenu();
+				mainFrame.getMenu().getplaceBetMenuItem().setEnabled(true);
 				mainFrame.getTableAndToolbarContainerPanel().getToolBar().enableQuit();
-				mainFrame.getMenu().enableQuitMenu();
+				mainFrame.getMenu().getQuitMenuItem().setEnabled(true);
 				mainFrame.getPlayerPanel().enableAddPoints();
 				System.out.printf("%s%d%s\n", "player has ", player.getPoints(), " points");
 			}

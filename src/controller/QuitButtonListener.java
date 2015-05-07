@@ -35,33 +35,33 @@ public class QuitButtonListener implements ActionListener, KeyListener {
 			controller.setCurrPlayer(null);
 			
 			// change view
+			mainFrame.getPlayerPanel().setVisible(false);
+			mainFrame.getTableAndToolbarContainerPanel().setVisible(false);
+			mainFrame.getStartGamePanel().setVisible(true);
+			// reset the centre panel of the mainFrame borderlayout as there can only be one
+			mainFrame.add(mainFrame.getStartGamePanel(), BorderLayout.CENTER);
+			
 			mainFrame.getPlayerPanel().setPlayerName("No player");
-			mainFrame.getPlayerPanel().hidePoints();
-			mainFrame.getPlayerPanel().hideBet();
+//			mainFrame.getPlayerPanel().hidePoints();
+//			mainFrame.getPlayerPanel().hideBet();
 			mainFrame.getTableAndToolbarContainerPanel().getToolBar().setBetTextField("");
 			mainFrame.getTableAndToolbarContainerPanel().getToolBar().disableBet();
-			mainFrame.getMenu().disablePlaceBetMenu();
-			mainFrame.getTableAndToolbarContainerPanel().getToolBar().disableQuit();
-			mainFrame.getMenu().disableQuitMenu();
-			mainFrame.getTableAndToolbarContainerPanel().getGameTablePanel().getDicePanel().getDice1().setText("1");
-			mainFrame.getTableAndToolbarContainerPanel().getGameTablePanel().getDicePanel().getDice2().setText("1");
-			mainFrame.getPlayerPanel().enableAddPlayerButton();
-			mainFrame.getMenu().enableAddPlayerMenu();
-			mainFrame.getPlayerPanel().focusAddPlayerButton();
-			mainFrame.getMenu().disablePlayerRollsMenu();
-			mainFrame.getTableAndToolbarContainerPanel().getToolBar().disableRoll();
-			mainFrame.getMenu().disablePlayerRollsMenu();
-			mainFrame.getTableAndToolbarContainerPanel().getToolBar().disableRoll();
+			mainFrame.getMenu().getplaceBetMenuItem().setEnabled(false);
+//			mainFrame.getTableAndToolbarContainerPanel().getToolBar().disableQuit();
+			mainFrame.getMenu().getQuitMenuItem().setEnabled(false);
+//			mainFrame.getTableAndToolbarContainerPanel().getGameTablePanel().getDicePanel().getDice1().setText("1");
+//			mainFrame.getTableAndToolbarContainerPanel().getGameTablePanel().getDicePanel().getDice2().setText("1");
+//			mainFrame.getPlayerPanel().enableAddPlayerButton();
+			mainFrame.getMenu().getAddPlayerMenuItem().setEnabled(true);
+//			mainFrame.getPlayerPanel().focusAddPlayerButton();
+			mainFrame.getMenu().getRollPlayerMenuItem().setEnabled(false);
+			mainFrame.getTableAndToolbarContainerPanel().getToolBar().getRollPlayerButton().setEnabled(false);
 			mainFrame.getPlayerPanel().disableAddPoints();
-			mainFrame.getTableAndToolbarContainerPanel().getGameTablePanel().setVisible(false);
-			mainFrame.getStartGamePanel().setVisible(true);
-			mainFrame.getPlayerPanel().setVisible(false);
-			mainFrame.getTableAndToolbarContainerPanel().getToolBar().setVisible(false);
-			mainFrame.add(mainFrame.getStartGamePanel(), BorderLayout.CENTER);
+
 			mainFrame.getTableAndToolbarContainerPanel().getGameTablePanel().getGameStatusPanel().getGameStatusLabel().setText("Place a bet to play");
-			mainFrame.getTableAndToolbarContainerPanel().getGameTablePanel().getGameStatusPanel().getPlayerResultLabel().setText("Player result: N/A");
-			mainFrame.getTableAndToolbarContainerPanel().getGameTablePanel().getGameStatusPanel().getHouseResultLabel().setText("House result: N/A");
-			mainFrame.getTableAndToolbarContainerPanel().getGameTablePanel().getGameStatusPanel().getGameResultLabel().setText("Winner: N/A");
+//			mainFrame.getTableAndToolbarContainerPanel().getGameTablePanel().getGameStatusPanel().getPlayerResultLabel().setText("Player result: N/A");
+//			mainFrame.getTableAndToolbarContainerPanel().getGameTablePanel().getGameStatusPanel().getHouseResultLabel().setText("House result: N/A");
+//			mainFrame.getTableAndToolbarContainerPanel().getGameTablePanel().getGameStatusPanel().getGameResultLabel().setText("Winner: N/A");
 		}
 	}
 

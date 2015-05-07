@@ -68,9 +68,9 @@ public class PlaceBetButtonListener implements ActionListener {
 				mainFrame.getPlayerPanel().setBetPoints(Integer.parseInt(bet));
 				mainFrame.getPlayerPanel().showBet();
 				mainFrame.getTableAndToolbarContainerPanel().getToolBar().disableBet();
-				mainFrame.getMenu().disablePlaceBetMenu();
-				mainFrame.getTableAndToolbarContainerPanel().getToolBar().enableRoll();
-				mainFrame.getMenu().enablePlayerRollsMenu();
+				mainFrame.getMenu().getplaceBetMenuItem().setEnabled(false);
+				mainFrame.getTableAndToolbarContainerPanel().getToolBar().getRollPlayerButton().setEnabled(true);
+				mainFrame.getMenu().getRollPlayerMenuItem().setEnabled(true);
 				mainFrame.getTableAndToolbarContainerPanel().getToolBar().focusPlayerRoll();
 				mainFrame.getTableAndToolbarContainerPanel().getGameTablePanel().getGameStatusPanel().getGameStatusLabel().setText("Roll the dice to continue");
 				mainFrame.getTableAndToolbarContainerPanel().getGameTablePanel().getGameStatusPanel().getPlayerResultLabel().setText("Player result: N/A");

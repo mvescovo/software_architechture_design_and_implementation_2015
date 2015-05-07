@@ -65,23 +65,23 @@ public class AddPlayerButtonListener implements ActionListener, KeyListener {
 			controller.setCurrPlayer(player);
 			
 			// change view
-			mainFrame.getTableAndToolbarContainerPanel().getToolBar().setVisible(true);
 			mainFrame.getStartGamePanel().setVisible(false);
 			mainFrame.getPlayerPanel().setVisible(true);
-			mainFrame.getTableAndToolbarContainerPanel().getToolBar().setVisible(true);
+			mainFrame.getTableAndToolbarContainerPanel().setVisible(true);
 			// reset the centre panel of the mainFrame borderlayout as there can only be one
 			mainFrame.add(mainFrame.getTableAndToolbarContainerPanel(), BorderLayout.CENTER);
+					
 			mainFrame.getTableAndToolbarContainerPanel().getToolBar().focusActiveBetText();
 			mainFrame.getPlayerPanel().setPlayerName(name);
 			mainFrame.getPlayerPanel().showPoints();
 			mainFrame.getPlayerPanel().showBet();
 			mainFrame.getPlayerPanel().setPoints(points);
 			mainFrame.getPlayerPanel().disableAddPlayerButton();
-			mainFrame.getMenu().disableAddPlayerMenu();
+			mainFrame.getMenu().getAddPlayerMenuItem().setEnabled(false);
 			mainFrame.getTableAndToolbarContainerPanel().getToolBar().enableBet();
-			mainFrame.getMenu().enablePlaceBetMenu();
+			mainFrame.getMenu().getplaceBetMenuItem().setEnabled(true);
 			mainFrame.getTableAndToolbarContainerPanel().getToolBar().enableQuit();
-			mainFrame.getMenu().enableQuitMenu();
+			mainFrame.getMenu().getQuitMenuItem().setEnabled(true);
 			mainFrame.getPlayerPanel().enableAddPoints();
 			System.out.printf("%s%d%s\n", "player has ", player.getPoints(), " points");
 		}

@@ -13,6 +13,7 @@ public class ToolBarPanel extends JPanel {
 	JButton placeBetButton;
 	JTextField betTextField;
 	JButton playerRollsButton;
+	JButton houseRollsButton;
 	JButton quitButton;
 	JButton exitButton;
 	
@@ -29,21 +30,32 @@ public class ToolBarPanel extends JPanel {
 		placeBetButton.setForeground(Color.WHITE);
 		placeBetButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		toolBar.add(placeBetButton);
+		
 		betTextField = new JTextField(8);
 		betTextField.setEnabled(false);
 		toolBar.add(betTextField);
-		playerRollsButton = new JButton("Roll dice");
+		
+		playerRollsButton = new JButton("Roll Player");
 		playerRollsButton.setEnabled(false);
 		playerRollsButton.setBackground(new Color(202,151,74));
 		playerRollsButton.setForeground(new Color(255, 215, 0));
 		playerRollsButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		toolBar.add(playerRollsButton);
+		
+		houseRollsButton = new JButton("Roll House");
+		houseRollsButton.setEnabled(false);
+		houseRollsButton.setBackground(new Color(202,151,74));
+		houseRollsButton.setForeground(new Color(255, 215, 0));
+		houseRollsButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		toolBar.add(houseRollsButton);
+		
 		quitButton = new JButton("Quit");
 		quitButton.setEnabled(false);
 		quitButton.setBackground(new Color(202,151,74));
 		quitButton.setForeground(Color.WHITE);
 		quitButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		toolBar.add(quitButton);
+		
 		exitButton = new JButton("Exit");
 		exitButton.setBackground(new Color(202,151,74));
 		exitButton.setForeground(Color.WHITE);
@@ -63,8 +75,12 @@ public class ToolBarPanel extends JPanel {
 		return betTextField;
 	}
 	
-	public JButton getPlayerRollsButton() {
+	public JButton getRollPlayerButton() {
 		return playerRollsButton;
+	}
+	
+	public JButton getRollHouseButton() {
+		return houseRollsButton;
 	}
 	
 	public JButton getQuitButton() {
@@ -85,13 +101,13 @@ public class ToolBarPanel extends JPanel {
 		betTextField.setEnabled(false);
 	}
 	
-	public void enableRoll() {
-		playerRollsButton.setEnabled(true);
-	}
+//	public void enableRoll() {
+//		playerRollsButton.setEnabled(true);
+//	}
 	
-	public void disableRoll() {
-		playerRollsButton.setEnabled(false);
-	}
+//	public void disableRoll() {
+//		playerRollsButton.setEnabled(false);
+//	}
 	
 	public void focusActiveBetText() {
 		betTextField.requestFocusInWindow();
@@ -105,7 +121,7 @@ public class ToolBarPanel extends JPanel {
 		playerRollsButton.requestFocusInWindow();
 	}
 	
-	public void clickPlayerRolls() {
+	public void clickRollPlayer() {
 		playerRollsButton.doClick();
 	}
 	
