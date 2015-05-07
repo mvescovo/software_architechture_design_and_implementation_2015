@@ -3,7 +3,12 @@
  */
 package model;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.Collection;
 
 import model.interfaces.GameEngine;
@@ -16,15 +21,40 @@ import model.interfaces.Player;
  */
 public class GameEngineClientStub implements GameEngine {
 	Socket socket;
+	PrintWriter out;
+	BufferedReader in;
 	
 	public GameEngineClientStub() {
-		System.out.println("This is the client trying to connect to the server...");
+//		System.out.println("This is the client trying to connect to the server...");
 		
 		try {
 			socket = new Socket("localhost", 10000);
-			System.out.println("This is the client saying I connected");
-		} catch(Exception e) {
-			System.out.println("This is the client saying I didn't connect");
+			out = new PrintWriter(socket.getOutputStream(), true);
+			in = new BufferedReader(new InputStreamReader(socket.getInputStream()));	
+//			System.out.println("This is the client saying I connected");
+		} catch (UnknownHostException e) {
+//			System.out.println("This is the client saying I didn't connect");
+			System.out.println("Unknown host: localhost");
+			System.exit(-1);
+		} catch (IOException e) {
+			System.out.println("No I/O");
+			System.exit(-1);
+		}
+		
+		// send data to the server
+		String text = " Hi I'm the client";
+		out.println(text);
+		text = "";
+		out.println(text);
+		
+		
+		// display message from server
+		try {
+			String line = in.readLine();
+			System.out.println("Text received:" + line);
+		} catch (IOException e) {
+			System.out.println("Read failed");
+			System.exit(1);
 		}
 	}
 	

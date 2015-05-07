@@ -17,8 +17,8 @@ public class ClientMain {
 		
 		// MVC model. Controller has references to view and model.
 		// View has reference to model, and model has a callback to update the view.
-//		gameEngine = new GameEngineClientStub();
-		gameEngine = new GameEngineImpl();
+		gameEngine = new GameEngineClientStub();
+//		gameEngine = new GameEngineImpl();
 		mainFrame = new MainFrame(gameEngine);
 		controller = new Controller(gameEngine, mainFrame);
 	}
