@@ -31,7 +31,7 @@ public class MainFrame extends JFrame {
 		
 		// set details of main frame
 		setTitle("Dice Game");
-		setSize(600, 400);
+		setSize(600, 420);
 //		setLocation(1200, 300);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

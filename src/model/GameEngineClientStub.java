@@ -3,6 +3,7 @@
  */
 package model;
 
+import java.net.Socket;
 import java.util.Collection;
 
 import model.interfaces.GameEngine;
@@ -14,7 +15,19 @@ import model.interfaces.Player;
  *
  */
 public class GameEngineClientStub implements GameEngine {
-
+	Socket socket;
+	
+	public GameEngineClientStub() {
+		System.out.println("This is the client trying to connect to the server...");
+		
+		try {
+			socket = new Socket("localhost", 10000);
+			System.out.println("This is the client saying I connected");
+		} catch(Exception e) {
+			System.out.println("This is the client saying I didn't connect");
+		}
+	}
+	
 	/* (non-Javadoc)
 	 * @see model.interfaces.GameEngine#rollPlayer(model.interfaces.Player, int, int, int)
 	 */

@@ -118,6 +118,7 @@ public class GameEngineCallbackImplGUI implements GameEngineCallback {
 		final int num1 = dicePair.getDice1();
 		final int num2 = dicePair.getDice2();
 		final int houseTotal = num1 + num2;
+		// TODO maybe change this part so it's not writing to a GUI object
 		final int playerTotal = mainFrame.getTableAndToolbarContainerPanel().getGameTablePanel().getGameStatusPanel().getTempPlayerResult();
 		
 		// some console output because it looks cool

@@ -12,9 +12,9 @@ import java.net.ServerSocket;
 public class GameEngineServerStub {
 	ServerSocket serverSocket;
 	
-	try {
-		serverSocket = new ServerSocket(10000);
-	} catch(Exception e) {
-		
-	}
+//	try {
+//		serverSocket = new ServerSocket(10000);
+//	} catch(Exception e) {
+//		
+//	}
 }
