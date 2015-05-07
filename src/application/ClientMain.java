@@ -7,7 +7,7 @@ import model.GameEngineImpl;
 import model.interfaces.GameEngine;
 
 //Assignment 2 version
-public class Main {
+public class ClientMain {
 	public static void main(String[] args) {
 		GameEngine gameEngine;
 		MainFrame mainFrame;

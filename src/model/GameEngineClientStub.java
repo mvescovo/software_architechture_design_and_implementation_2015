@@ -10,7 +10,7 @@ import model.interfaces.GameEngineCallback;
 import model.interfaces.Player;
 
 /**
- * @author Michael Vescovo - s3459317
+ * @author "Michael Vescovo - s3459317"
  *
  */
 public class GameEngineClientStub implements GameEngine {
