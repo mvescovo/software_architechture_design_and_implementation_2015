@@ -6,6 +6,7 @@ package model;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
@@ -21,20 +22,26 @@ import model.interfaces.Player;
  */
 public class GameEngineClientStub implements GameEngine {
 	Socket socket;
-	PrintWriter out;
-	BufferedReader in;
+	int port = 10000;
+	String serverName = "localhost";
+	BufferedReader fromServer;
+	PrintWriter toServer;
+	ObjectOutputStream toServerObject;
 	
-	public GameEngineClientStub() {
-//		System.out.println("This is the client trying to connect to the server...");
-		
+	String line;
+	
+	public GameEngineClientStub() {	
 		try {
-			socket = new Socket("localhost", 10000);
-			out = new PrintWriter(socket.getOutputStream(), true);
-			in = new BufferedReader(new InputStreamReader(socket.getInputStream()));	
-//			System.out.println("This is the client saying I connected");
+			// connect to the server
+			socket = new Socket(serverName, port);
+			
+			// setup reader and writer
+			fromServer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+			toServer = new PrintWriter(socket.getOutputStream(), true);
+			toServerObject = new ObjectOutputStream(socket.getOutputStream());
+
 		} catch (UnknownHostException e) {
-//			System.out.println("This is the client saying I didn't connect");
-			System.out.println("Unknown host: localhost");
+			System.out.println("Unknown host: " + serverName);
 			System.exit(-1);
 		} catch (IOException e) {
 			System.out.println("No I/O");
@@ -42,20 +49,18 @@ public class GameEngineClientStub implements GameEngine {
 		}
 		
 		// send data to the server
-		String text = " Hi I'm the client";
-		out.println(text);
-		text = "";
-		out.println(text);
-		
+//		int localPort = socket.getLocalPort();
+//		line = " Hi I'm the client. My local port is: " + localPort;
+//		toServer.println(line);	
 		
 		// display message from server
-		try {
-			String line = in.readLine();
-			System.out.println("Text received:" + line);
-		} catch (IOException e) {
-			System.out.println("Read failed");
-			System.exit(1);
-		}
+//		try {
+//			line = fromServer.readLine();
+//			System.out.println("client says message from server is: " + line);
+//		} catch (IOException e) {
+//			System.out.println("Read failed");
+//			System.exit(1);
+//		}
 	}
 	
 	/* (non-Javadoc)
@@ -82,8 +87,11 @@ public class GameEngineClientStub implements GameEngine {
 	 */
 	@Override
 	public void addPlayer(Player player) {
-		// TODO Auto-generated method stub
-
+		try {
+			toServerObject.writeObject(player);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	/* (non-Javadoc)
@@ -127,8 +135,16 @@ public class GameEngineClientStub implements GameEngine {
 	 */
 	@Override
 	public boolean placeBet(Player player, int bet) {
-		// TODO Auto-generated method stub
-		return false;
+//		try {
+//			toServerObject.writeObject(player);
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+		
+		toServer.print(bet);
+		
+		return true;
 	}
 
 }

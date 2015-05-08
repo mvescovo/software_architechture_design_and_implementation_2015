@@ -1,9 +1,12 @@
 package model;
 
+import java.io.Serializable;
+
 import model.interfaces.DicePair;
 import model.interfaces.Player;
 
-public class SimplePlayer implements Player {
+public class SimplePlayer implements Player, Serializable {
+	private static final long serialVersionUID = -1656658223445569521L;
 	private String playerId;
 	private String playerName;
 	private int points;

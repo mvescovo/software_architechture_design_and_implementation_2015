@@ -22,7 +22,7 @@ public class MainFrame extends JFrame {
 		heading = new HeadingPanel();
 		playerPanel = new PlayerPanel();
 		tableAndToolbarContainerPanel = new TableAndToolbarContainerPanel();
-
+		
 		setJMenuBar(menu);
 		add(heading, BorderLayout.NORTH);
 		add(playerPanel, BorderLayout.WEST);
