@@ -24,13 +24,13 @@ public class RollPlayerButtonListener implements ActionListener, KeyListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// change model for player roll
-		player = controller.getCurrPlayer();
+//		player = controller.getCurrPlayer();
 		
 		Thread thread = new Thread(new Runnable() {
 			@Override
 			public void run() {
 				// player roll
-				gameEngine.rollPlayer(player, 1, 200, 20);
+				gameEngine.rollPlayer(null, 1, 200, 20);
 				
 				// change view after roll has finished
 				mainFrame.getTableAndToolbarContainerPanel().getToolBar().getRollHouseButton().setEnabled(true);

@@ -20,8 +20,10 @@ public class ServerSideGameEngineCallback implements GameEngineCallback {
 	@Override
 	public void intermediateResult(Player player, DicePair dicePair,
 			GameEngine engine) {
-		// TODO Auto-generated method stub
-		
+		int total = dicePair.getDice1() + dicePair.getDice2();
+		// need to pass the info to the GUI callback on the client
+		System.out.println(player.getPlayerName() + " ");
+		System.out.println(total + "\n");
 	}
 
 	/* (non-Javadoc)

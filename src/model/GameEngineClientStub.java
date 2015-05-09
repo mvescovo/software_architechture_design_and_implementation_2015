@@ -27,8 +27,8 @@ public class GameEngineClientStub implements GameEngine {
 	BufferedReader fromServer;
 	PrintWriter toServer;
 	ObjectOutputStream toServerObject;
-	
 	String line;
+	Player player = null;
 	
 	public GameEngineClientStub() {	
 		try {
@@ -69,8 +69,11 @@ public class GameEngineClientStub implements GameEngine {
 	@Override
 	public void rollPlayer(Player player, int initialDelay, int finalDelay,
 			int delayIncrement) {
-		// TODO Auto-generated method stub
-
+		// send the roll to the server
+		System.out.println("sendig roll to the server");
+		toServer.print(initialDelay);
+		toServer.print(finalDelay);
+		toServer.print(delayIncrement);
 	}
 
 	/* (non-Javadoc)
@@ -87,6 +90,10 @@ public class GameEngineClientStub implements GameEngine {
 	 */
 	@Override
 	public void addPlayer(Player player) {
+		// set local gameEngine player
+		this.player = player;
+		
+		// add player to the server
 		try {
 			toServerObject.writeObject(player);
 		} catch (IOException e) {
@@ -126,7 +133,7 @@ public class GameEngineClientStub implements GameEngine {
 	 */
 	@Override
 	public Collection<Player> getAllPlayers() {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 
@@ -141,7 +148,7 @@ public class GameEngineClientStub implements GameEngine {
 //			// TODO Auto-generated catch block
 //			e.printStackTrace();
 //		}
-		
+		System.out.println("trying to place bet with server");
 		toServer.print(bet);
 		
 		return true;

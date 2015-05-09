@@ -5,7 +5,6 @@ package application;
 
 import model.GameEngineImpl;
 import model.GameEngineServerStub;
-import model.interfaces.GameEngine;
 
 /**
  * @author "Michael Vescovo - s3459317"
@@ -13,8 +12,6 @@ import model.interfaces.GameEngine;
  */
 public class ServerMain {
 	public static void main(String[] args) {
-		GameEngine gameEngine = new GameEngineImpl();
-		
-		new GameEngineServerStub(gameEngine);
+		new GameEngineServerStub(new GameEngineImpl());
 	}
 }

@@ -23,6 +23,7 @@ public class GameEngineServerStub {
 	GameEngine gameEngine;
 	GameEngineCallback gameEngineCallback = new ServerSideGameEngineCallback();
 	
+	
 	@SuppressWarnings("resource")
 	public GameEngineServerStub(GameEngine gameEngine) {
 		this.gameEngine = gameEngine;
@@ -61,6 +62,9 @@ public class GameEngineServerStub {
 		Player player;
 		ObjectInputStream objectFromClient;
 		int bet;
+		int initialDelay;
+		int finalDelay;
+		int delayIncrement;
 		
 		// create a new thread
 		public HandleAClient(Socket socket) {
@@ -75,19 +79,28 @@ public class GameEngineServerStub {
 				toClient = new PrintWriter(clientSocket.getOutputStream(), true);
 				objectFromClient = new ObjectInputStream(clientSocket.getInputStream());
 				
-				// first thing server does is add player
+				// 1. add player
 				try {
+					System.out.println("waiting for client to add a player");
 					player = (Player) objectFromClient.readObject();
 				} catch (ClassNotFoundException e) {
 					e.printStackTrace();
 				}
-				
+				// add the player to the gameEngineImpl
 				gameEngine.addPlayer(player);
-//				System.out.println(player.getPlayerName());
-				
+
+				// 2. place a bet
+				System.out.println("waiting for client to place a bet");
 				bet = fromClient.read();
-				
+				System.out.println("received bet, plaing bet...");
 				gameEngine.placeBet(player, bet);
+				
+				// 3. roll player
+				System.out.println("waiting for player roll...");
+				initialDelay = fromClient.read();
+				finalDelay = fromClient.read();
+				delayIncrement = fromClient.read();
+				gameEngine.rollPlayer(player, initialDelay, finalDelay, delayIncrement);
 				
 			} catch (IOException e) {
 				System.out.println("Read failed");

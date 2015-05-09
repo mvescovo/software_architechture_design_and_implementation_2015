@@ -30,40 +30,46 @@ public class PlaceBetButtonListener implements ActionListener {
 		Collection<Player> players = new ArrayList<Player>();
 		
 		// get the player that pressed the button
-		playerString = mainFrame.getPlayerPanel().getPlayerName();
-		players = gameEngine.getAllPlayers();
-		
-		for (Player player : players) {
-			if (player.getPlayerName() == playerString) {
-				currPlayer = player;
-				continue;
-			}
-		}
-		
+//		playerString = mainFrame.getPlayerPanel().getPlayerName();
+//		players = gameEngine.getAllPlayers();
+//		
+//		for (Player player : players) {
+//			if (player.getPlayerName() == playerString) {
+//				currPlayer = player;
+//				continue;
+//			}
+//		}
+
 		// get bet from user
 		bet = mainFrame.getTableAndToolbarContainerPanel().getToolBar().getBetTextField().getText();
+		betInt = Integer.parseInt(bet);
 		
-		if (bet != null) {
-			try {
-				betInt = Integer.parseInt(bet);
-			} catch (NumberFormatException e2){
-				JOptionPane.showMessageDialog(mainFrame, "Bet needs to be a number.", "Invalid bet", 0);
-				System.out.println("bet not a number");
-				betOk = false;
-			}
-		}
+		// place the bet to the gameEngine
+		gameEngine.placeBet(null, betInt);
 		
-		if ((betOk == true) && betInt < 0) {
-			JOptionPane.showMessageDialog(mainFrame, "Bet needs to be 0 or greater.", "Invalid bet", 0);
-			System.out.println("bet needs to be 0 or greater.");
-			betOk = false;
-		}
-		
-		if (betOk == true) {
-			// change model
-			if (gameEngine.placeBet(currPlayer, betInt) == true) {
-				// change view
-				System.out.printf("%s%d\n", "placed bet for: ", currPlayer.getBet());
+		// TODO move this logic to the model then the model should return with an error and then display the error
+//		
+//		if (bet != null) {
+//			try {
+//				betInt = Integer.parseInt(bet);
+//			} catch (NumberFormatException e2){
+//				JOptionPane.showMessageDialog(mainFrame, "Bet needs to be a number.", "Invalid bet", 0);
+//				System.out.println("bet not a number");
+//				betOk = false;
+//			}
+//		}
+//		
+//		if ((betOk == true) && betInt < 0) {
+//			JOptionPane.showMessageDialog(mainFrame, "Bet needs to be 0 or greater.", "Invalid bet", 0);
+//			System.out.println("bet needs to be 0 or greater.");
+//			betOk = false;
+//		}
+//		
+//		if (betOk == true) {
+//			// change model
+//			if (gameEngine.placeBet(currPlayer, betInt) == true) {
+//				// change view
+//				System.out.printf("%s%d\n", "placed bet for: ", currPlayer.getBet());
 				mainFrame.getPlayerPanel().deductPoints(Integer.parseInt(bet));
 				mainFrame.getPlayerPanel().setBetPoints(Integer.parseInt(bet));
 				mainFrame.getPlayerPanel().showBet();
@@ -81,11 +87,11 @@ public class PlaceBetButtonListener implements ActionListener {
 				mainFrame.getTableAndToolbarContainerPanel().getGameTablePanel().getGameStatusPanel().getGameResultLabel().setVisible(false);
 				mainFrame.getTableAndToolbarContainerPanel().getGameTablePanel().getDicePanel().getDice1().setVisible(false);
 				mainFrame.getTableAndToolbarContainerPanel().getGameTablePanel().getDicePanel().getDice2().setVisible(false);
-			} else {
-				// change view
-				System.out.printf("%s%d\n", "not enough points for bet of: ", currPlayer.getBet());
-				mainFrame.getPlayerPanel().notEnoughPoints();
-			}
-		}
+//			} else {
+//				// change view
+//				System.out.printf("%s%d\n", "not enough points for bet of: ", currPlayer.getBet());
+//				mainFrame.getPlayerPanel().notEnoughPoints();
+//			}
+//		}
 	}
 }
