@@ -4,10 +4,13 @@
 package model;
 
 import java.io.BufferedReader;
+import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -21,13 +24,11 @@ import model.interfaces.Player;
  */
 public class GameEngineServerStub {
 	GameEngine gameEngine;
-	GameEngineCallback gameEngineCallback = new ServerSideGameEngineCallback();
-	
 	
 	@SuppressWarnings("resource")
 	public GameEngineServerStub(GameEngine gameEngine) {
 		this.gameEngine = gameEngine;
-		gameEngine.addGameEngineCallback(gameEngineCallback);
+		gameEngine.addGameEngineCallback(new ServerSideGameEngineCallback());
 		ServerSocket serverSocket = null;
 		int port = 10000;
 		
@@ -59,12 +60,14 @@ public class GameEngineServerStub {
 		BufferedReader fromClient = null;
 		PrintWriter toClient = null;
 		String line;
-		Player player;
+		Player simplePlayer;
 		ObjectInputStream objectFromClient;
+		ObjectOutputStream objectToClient;
 		int bet;
 		int initialDelay;
 		int finalDelay;
 		int delayIncrement;
+		DataInputStream fromClientInt;
 		
 		// create a new thread
 		public HandleAClient(Socket socket) {
@@ -75,35 +78,51 @@ public class GameEngineServerStub {
 		public void run() {
 			try {
 				// create readers and writers
-				fromClient = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-				toClient = new PrintWriter(clientSocket.getOutputStream(), true);
+//				fromClient = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+//				toClient = new PrintWriter(clientSocket.getOutputStream(), true);
 				objectFromClient = new ObjectInputStream(clientSocket.getInputStream());
+				objectToClient = new ObjectOutputStream(clientSocket.getOutputStream());
+				fromClientInt = new DataInputStream(clientSocket.getInputStream());
+				
+				//testing reading an int from client
+
+//				System.out.println("got this int from client: " + fromClient.readLine());
+				System.out.println("" + fromClientInt.readInt());
 				
 				// 1. add player
 				try {
-					System.out.println("waiting for client to add a player");
-					player = (Player) objectFromClient.readObject();
+					System.out.println("client connected. waiting for client to add a player...");
+					simplePlayer = (SimplePlayer)objectFromClient.readObject();
+					
+					// test sending player back
+//					objectToClient.writeObject(simplePlayer);
+//					System.out.println("sent player back to client");
 				} catch (ClassNotFoundException e) {
 					e.printStackTrace();
 				}
+				
+				// set hashmap to map player to socket in the server side callback
+				((ServerSideGameEngineCallback)((GameEngineImpl)gameEngine).getGameEngineCallback()).addToMap(simplePlayer, objectToClient);
+				
 				// add the player to the gameEngineImpl
-				gameEngine.addPlayer(player);
-
-				// 2. place a bet
+				gameEngine.addPlayer(simplePlayer);
+				
+//				// 2. place a bet
 				System.out.println("waiting for client to place a bet");
-				bet = fromClient.read();
-				System.out.println("received bet, plaing bet...");
-				gameEngine.placeBet(player, bet);
-				
-				// 3. roll player
+				bet = fromClientInt.readInt();
+				System.out.println("received bet, placing bet...");
+				gameEngine.placeBet(simplePlayer, bet);
+//				
+//				// 3. roll player
 				System.out.println("waiting for player roll...");
-				initialDelay = fromClient.read();
-				finalDelay = fromClient.read();
-				delayIncrement = fromClient.read();
-				gameEngine.rollPlayer(player, initialDelay, finalDelay, delayIncrement);
-				
+				initialDelay = fromClientInt.readInt();
+				finalDelay = fromClientInt.readInt();
+				delayIncrement = fromClientInt.readInt();
+				System.out.println("got roll. trying to roll...");
+				gameEngine.rollPlayer(simplePlayer, initialDelay, finalDelay, delayIncrement);
+//				
 			} catch (IOException e) {
-				System.out.println("Read failed");
+				System.out.println("Read failed: " + e.getMessage());
 				System.exit(-1);
 			}
 		}

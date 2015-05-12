@@ -152,6 +152,16 @@ public class GameEngineCallbackImplGUI implements GameEngineCallback {
 					
 					mainFrame.getTableAndToolbarContainerPanel().getToolBar().focusActiveBetText();
 					mainFrame.getTableAndToolbarContainerPanel().getGameTablePanel().getGameStatusPanel().getGameStatusLabel().setText("Place another bet to play again");
+					
+					// moved from listener
+					// change view after house has rolled, results calculated, and bet cleared
+					
+					// TODO need to ask the gameEngineImpl about these details
+//					mainFrame.getPlayerPanel().setPoints(Integer.toString(controller.getCurrPlayer().getPoints()));
+//					mainFrame.getPlayerPanel().setBetPoints(controller.getCurrPlayer().getBet());
+					mainFrame.getTableAndToolbarContainerPanel().getToolBar().enableBet();
+					mainFrame.getMenu().getplaceBetMenuItem().setEnabled(true);
+					mainFrame.getTableAndToolbarContainerPanel().getToolBar().focusActiveBetText();
 				}
 			});
 		} catch (InvocationTargetException e) {

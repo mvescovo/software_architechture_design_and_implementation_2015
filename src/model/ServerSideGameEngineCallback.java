@@ -3,6 +3,11 @@
  */
 package model;
 
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.util.HashMap;
+import java.util.Map;
+
 import model.interfaces.DicePair;
 import model.interfaces.GameEngine;
 import model.interfaces.GameEngineCallback;
@@ -13,44 +18,42 @@ import model.interfaces.Player;
  *
  */
 public class ServerSideGameEngineCallback implements GameEngineCallback {
+	Map<Player, ObjectOutputStream> hashMap = new HashMap<Player, ObjectOutputStream>();
 
-	/* (non-Javadoc)
-	 * @see model.interfaces.GameEngineCallback#intermediateResult(model.interfaces.Player, model.interfaces.DicePair, model.interfaces.GameEngine)
-	 */
+	public void addToMap(Player player, ObjectOutputStream objectOutputStream) {
+		this.hashMap.put(player, objectOutputStream);
+	}
+	
 	@Override
 	public void intermediateResult(Player player, DicePair dicePair,
-			GameEngine engine) {
+			GameEngine gameEngine) {
 		int total = dicePair.getDice1() + dicePair.getDice2();
 		// need to pass the info to the GUI callback on the client
-		System.out.println(player.getPlayerName() + " ");
-		System.out.println(total + "\n");
+		try {
+			hashMap.get(player).writeObject(player);
+			hashMap.get(player).writeObject(dicePair);
+			System.out.println("passed intermediate GUI refresh to client");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
-	/* (non-Javadoc)
-	 * @see model.interfaces.GameEngineCallback#result(model.interfaces.Player, model.interfaces.DicePair, model.interfaces.GameEngine)
-	 */
 	@Override
 	public void result(Player player, DicePair result, GameEngine engine) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	/* (non-Javadoc)
-	 * @see model.interfaces.GameEngineCallback#intermediateHouseResult(model.interfaces.DicePair, model.interfaces.GameEngine)
-	 */
 	@Override
 	public void intermediateHouseResult(DicePair dicePair, GameEngine engine) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	/* (non-Javadoc)
-	 * @see model.interfaces.GameEngineCallback#houseResult(model.interfaces.DicePair, model.interfaces.GameEngine)
-	 */
 	@Override
 	public void houseResult(DicePair result, GameEngine engine) {
 		// TODO Auto-generated method stub
 		
 	}
-
 }

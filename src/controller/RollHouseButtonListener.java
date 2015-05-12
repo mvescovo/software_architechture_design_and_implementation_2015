@@ -19,19 +19,19 @@ import model.interfaces.Player;
 public class RollHouseButtonListener implements ActionListener, KeyListener {
 	GameEngine gameEngine;
 	MainFrame mainFrame;
-	Controller controller;
+//	Controller controller;
 	Player player;
 	
 	RollHouseButtonListener(GameEngine gameEngine, MainFrame mainFrame, Controller controller) {
 		this.gameEngine = gameEngine;
 		this.mainFrame = mainFrame;
-		this.controller = controller;
+//		this.controller = controller;
 	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// change model for player roll
-		player = controller.getCurrPlayer();
+//		player = controller.getCurrPlayer();
 		
 		Thread thread = new Thread(new Runnable() {
 			@Override
@@ -40,14 +40,9 @@ public class RollHouseButtonListener implements ActionListener, KeyListener {
 				gameEngine.calculateResult();
 				
 				// clear bet
-				controller.getCurrPlayer().placeBet(0);
+//				controller.getCurrPlayer().placeBet(0);
 				
-				// change view after house has rolled, results calculated, and bet cleared
-				mainFrame.getPlayerPanel().setPoints(Integer.toString(controller.getCurrPlayer().getPoints()));
-				mainFrame.getPlayerPanel().setBetPoints(controller.getCurrPlayer().getBet());
-				mainFrame.getTableAndToolbarContainerPanel().getToolBar().enableBet();
-				mainFrame.getMenu().getplaceBetMenuItem().setEnabled(true);
-				mainFrame.getTableAndToolbarContainerPanel().getToolBar().focusActiveBetText();
+
 			}
 		});
 		

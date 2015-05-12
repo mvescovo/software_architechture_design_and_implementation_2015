@@ -1,23 +1,23 @@
 package application;
 
+import javax.swing.SwingUtilities;
 
-import controller.Controller;
 import view.MainFrame;
 import model.GameEngineClientStub;
-import model.GameEngineImpl;
-import model.interfaces.GameEngine;
 
+/**
+ * @author "Michael Vescovo - s3459317"
+ *
+ */
 //Assignment 2 version
 public class ClientMain {
 	public static void main(String[] args) {
-		GameEngine gameEngine;
-		MainFrame mainFrame;
-		
-		// MVC model. Controller has references to view and model.
-		// View has reference to model, and model has a callback to update the view.
-		gameEngine = new GameEngineClientStub();
-//		gameEngine = new GameEngineImpl();
-		mainFrame = new MainFrame(gameEngine);
-		new Controller(gameEngine, mainFrame);
+		// Launch the GUI from the EDT to avoid problems
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				new MainFrame(new GameEngineClientStub());
+//				new MainFrame(new GameEngineImpl());
+			}
+		});
 	}
 }

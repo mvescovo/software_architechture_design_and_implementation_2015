@@ -31,6 +31,7 @@ public class GameEngineImpl implements GameEngine {
 				num1 = random.nextInt(NUM_FACES) + minNum;
 				num2 = random.nextInt(NUM_FACES) + minNum;
 				dicePair = new DicePairImpl(num1, num2, NUM_FACES);
+				System.out.println("rolled. sending to callback...");
 				this.gameEngineCallback.intermediateResult(player, dicePair, this);
 				initialDelay += delayIncrement;
 				Thread.sleep(initialDelay);
@@ -118,6 +119,10 @@ public class GameEngineImpl implements GameEngine {
 	@Override
 	public void addGameEngineCallback(GameEngineCallback gameEngineCallback) {
 		this.gameEngineCallback = gameEngineCallback;
+	}
+	
+	public GameEngineCallback getGameEngineCallback() {
+		return gameEngineCallback;
 	}
 
 	@Override

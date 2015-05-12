@@ -4,6 +4,8 @@ import java.awt.*;
 
 import javax.swing.*;
 
+import controller.Controller;
+import model.GameEngineCallbackImplGUI;
 import model.interfaces.GameEngine;
 
 public class MainFrame extends JFrame {
@@ -17,6 +19,7 @@ public class MainFrame extends JFrame {
 	
 	public MainFrame(GameEngine gameEngine) {
 		this.gameEngine = gameEngine;
+		this.gameEngine.addGameEngineCallback(new GameEngineCallbackImplGUI(this));
 		startGamePanel = new StartGamePanel();
 		menu = new Menu();
 		heading = new HeadingPanel();
@@ -36,6 +39,7 @@ public class MainFrame extends JFrame {
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 //		setResizable(false);
+		new Controller(this.gameEngine, this);
 		setVisible(true);
 	}
 	
