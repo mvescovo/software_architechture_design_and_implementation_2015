@@ -12,20 +12,14 @@ import model.interfaces.Player;
 public class RollPlayerButtonListener implements ActionListener, KeyListener {
 	GameEngine gameEngine;
 	MainFrame mainFrame;
-	Controller controller;
-	Player player;
 	
-	public RollPlayerButtonListener(GameEngine gameEngine, MainFrame mainFrame, Controller controller) {
+	public RollPlayerButtonListener(GameEngine gameEngine, MainFrame mainFrame) {
 		this.gameEngine = gameEngine;
 		this.mainFrame = mainFrame;
-		this.controller = controller;
 	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// change model for player roll
-//		player = controller.getCurrPlayer();
-		
 		Thread thread = new Thread(new Runnable() {
 			@Override
 			public void run() {

@@ -5,6 +5,7 @@ package model;
 
 import java.io.BufferedReader;
 import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
@@ -14,6 +15,7 @@ import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import model.Commands.Command;
 import model.interfaces.GameEngine;
 import model.interfaces.GameEngineCallback;
 import model.interfaces.Player;
@@ -57,17 +59,23 @@ public class GameEngineServerStub {
 	
 	private class HandleAClient implements Runnable {
 		private Socket clientSocket;
+		
+		// streams
 		BufferedReader fromClient = null;
-		PrintWriter toClient = null;
-		String line;
-		Player simplePlayer;
-		ObjectInputStream objectFromClient;
-		ObjectOutputStream objectToClient;
-		int bet;
+		DataInputStream fromClientInt = null;
+		ObjectInputStream fromClientObject = null;
+		ObjectOutputStream toClientObject = null;
+		DataOutputStream toClientInt = null;
+//		PrintWriter toClient = null;
+
+		Command command = null;
+		Player player;
+		int bet = 0;
 		int initialDelay;
 		int finalDelay;
 		int delayIncrement;
-		DataInputStream fromClientInt;
+		
+		boolean quit = false;
 		
 		// create a new thread
 		public HandleAClient(Socket socket) {
@@ -77,50 +85,88 @@ public class GameEngineServerStub {
 		@Override
 		public void run() {
 			try {
-				// create readers and writers
-//				fromClient = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-//				toClient = new PrintWriter(clientSocket.getOutputStream(), true);
-				objectFromClient = new ObjectInputStream(clientSocket.getInputStream());
-				objectToClient = new ObjectOutputStream(clientSocket.getOutputStream());
+				// setup streams
+				fromClient = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+				fromClientObject = new ObjectInputStream(clientSocket.getInputStream());
 				fromClientInt = new DataInputStream(clientSocket.getInputStream());
+				toClientObject = new ObjectOutputStream(clientSocket.getOutputStream());
+				toClientInt = new DataOutputStream(clientSocket.getOutputStream());
+//				toClient = new PrintWriter(clientSocket.getOutputStream(), true);
 				
-				//testing reading an int from client
 
-//				System.out.println("got this int from client: " + fromClient.readLine());
-				System.out.println("" + fromClientInt.readInt());
+				// receive commands from clients
+				do {
+					try {
+						command = (Command)fromClientObject.readObject();
+						
+						switch (command) {
+							case ADD_GAME_ENGINE_CALLBACK:
+								break;
+							case ADD_PLAYER:
+								player = (Player)fromClientObject.readObject();
+								// set hashmap to map player to socket in the server side callback
+								((ServerSideGameEngineCallback)((GameEngineImpl)gameEngine).getGameEngineCallback()).addToMapInt(player, toClientInt);
+								((ServerSideGameEngineCallback)((GameEngineImpl)gameEngine).getGameEngineCallback()).addToMapObject(player, toClientObject);
+
+								break;
+							case ADD_POINTS:
+								break;
+							case CALCULATE_RESULT:
+								break;
+							case GET_ALL_PLAYERS:
+								break;
+							case PLACE_BET:
+								bet = fromClientInt.readInt();
+								
+								if (gameEngine.placeBet(player, bet)) {
+									command = Command.SUCCESS;
+									toClientObject.writeObject(command);
+								} else {
+									command = Command.FAIL;
+									toClientObject.writeObject(command);
+								}
+								break;
+							case QUIT:
+								quit = true;
+								break;
+							case REMOVE_PLAYER:
+								break;
+							case ROLL_HOUSE:
+								break;
+							case ROLL_PLAYER:
+								initialDelay = fromClientInt.readInt();
+								finalDelay = fromClientInt.readInt();
+								delayIncrement = fromClientInt.readInt();
+								gameEngine.rollPlayer(player, initialDelay, finalDelay, delayIncrement);
+								break;
+							default:
+								break;
+						}
+					} catch (ClassNotFoundException e) {
+						e.printStackTrace();
+					}
+				} while (quit == false);
+
+				clientSocket.close();
 				
-				// 1. add player
-				try {
-					System.out.println("client connected. waiting for client to add a player...");
-					simplePlayer = (SimplePlayer)objectFromClient.readObject();
-					
-					// test sending player back
-//					objectToClient.writeObject(simplePlayer);
-//					System.out.println("sent player back to client");
-				} catch (ClassNotFoundException e) {
-					e.printStackTrace();
-				}
-				
-				// set hashmap to map player to socket in the server side callback
-				((ServerSideGameEngineCallback)((GameEngineImpl)gameEngine).getGameEngineCallback()).addToMap(simplePlayer, objectToClient);
-				
-				// add the player to the gameEngineImpl
-				gameEngine.addPlayer(simplePlayer);
-				
-//				// 2. place a bet
-				System.out.println("waiting for client to place a bet");
-				bet = fromClientInt.readInt();
-				System.out.println("received bet, placing bet...");
-				gameEngine.placeBet(simplePlayer, bet);
 //				
-//				// 3. roll player
-				System.out.println("waiting for player roll...");
-				initialDelay = fromClientInt.readInt();
-				finalDelay = fromClientInt.readInt();
-				delayIncrement = fromClientInt.readInt();
-				System.out.println("got roll. trying to roll...");
-				gameEngine.rollPlayer(simplePlayer, initialDelay, finalDelay, delayIncrement);
+//				// add the player to the gameEngineImpl
+//				gameEngine.addPlayer(simplePlayer);
 //				
+////				// 2. place a bet
+//				System.out.println("waiting for client to place a bet");
+//				bet = fromClientInt.readInt();
+//				System.out.println("received bet, placing bet...");
+//				gameEngine.placeBet(simplePlayer, bet);
+////				
+////				// 3. roll player
+//				System.out.println("waiting for player roll...");
+//				initialDelay = fromClientInt.readInt();
+//				finalDelay = fromClientInt.readInt();
+//				delayIncrement = fromClientInt.readInt();
+//				System.out.println("got roll. trying to roll...");
+//				gameEngine.rollPlayer(simplePlayer, initialDelay, finalDelay, delayIncrement);
+////				
 			} catch (IOException e) {
 				System.out.println("Read failed: " + e.getMessage());
 				System.exit(-1);

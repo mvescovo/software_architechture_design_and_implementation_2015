@@ -3,6 +3,7 @@
  */
 package model;
 
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.HashMap;
@@ -18,23 +19,25 @@ import model.interfaces.Player;
  *
  */
 public class ServerSideGameEngineCallback implements GameEngineCallback {
-	Map<Player, ObjectOutputStream> hashMap = new HashMap<Player, ObjectOutputStream>();
+	Map<Player, DataOutputStream> hashMapInt = new HashMap<Player, DataOutputStream>();
+	Map<Player, ObjectOutputStream> hashMapObject = new HashMap<Player, ObjectOutputStream>();
 
-	public void addToMap(Player player, ObjectOutputStream objectOutputStream) {
-		this.hashMap.put(player, objectOutputStream);
+	public void addToMapInt(Player player, DataOutputStream dataOutputStream) {
+		this.hashMapInt.put(player, dataOutputStream);
+	}
+	
+	public void addToMapObject(Player player, ObjectOutputStream objectOutputStream) {
+		this.hashMapObject.put(player, objectOutputStream);
 	}
 	
 	@Override
 	public void intermediateResult(Player player, DicePair dicePair,
 			GameEngine gameEngine) {
 		int total = dicePair.getDice1() + dicePair.getDice2();
-		// need to pass the info to the GUI callback on the client
+
 		try {
-			hashMap.get(player).writeObject(player);
-			hashMap.get(player).writeObject(dicePair);
-			System.out.println("passed intermediate GUI refresh to client");
+			hashMapObject.get(player).writeObject(dicePair);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

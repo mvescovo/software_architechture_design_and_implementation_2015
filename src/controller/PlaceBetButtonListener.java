@@ -24,24 +24,11 @@ public class PlaceBetButtonListener implements ActionListener {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		Player currPlayer = null;
-		String playerString = null;
 		String bet = null;
 		final int betInt;
 		boolean betOk = true;
-		Collection<Player> players = new ArrayList<Player>();
-		
-		// get the player that pressed the button
-//		playerString = mainFrame.getPlayerPanel().getPlayerName();
-//		players = gameEngine.getAllPlayers();
-//		
-//		for (Player player : players) {
-//			if (player.getPlayerName() == playerString) {
-//				currPlayer = player;
-//				continue;
-//			}
-//		}
 
+		// TODO fix this later to do validation using the validation class
 		// get bet from user
 		bet = mainFrame.getTableAndToolbarContainerPanel().getToolBar().getBetTextField().getText();
 		betInt = Integer.parseInt(bet);

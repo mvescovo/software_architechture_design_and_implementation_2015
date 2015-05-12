@@ -32,7 +32,7 @@ public class Controller {
 //		addPlayerButtonListener = new AddPlayerButtonListener(gameEngine, mainFrame);
 		placeBetButtonListener = new PlaceBetButtonListener(gameEngine, mainFrame);
 		betTextFieldListener = new BetTextFieldListener(mainFrame);
-		rollPlayerButtonListener = new RollPlayerButtonListener(gameEngine, mainFrame, this);
+		rollPlayerButtonListener = new RollPlayerButtonListener(gameEngine, mainFrame);
 		rollHouseButtonListener = new RollHouseButtonListener(gameEngine, mainFrame, this);
 		quitButtonListener = new QuitButtonListener(gameEngine, mainFrame, this);
 		exitButtonListener = new ExitButtonListener(mainFrame);
@@ -40,7 +40,7 @@ public class Controller {
 		addPointsTextFieldListener = new AddPointsTextFieldListener(mainFrame);
 		playerNameTextFieldListener = new PlayerNameTextFieldListener(mainFrame);
 		playerPointsTextFieldListener = new PlayerPointsTextFieldListener(mainFrame);
-		startGameButtonListener = new StartGameButtonListener(gameEngine, mainFrame, this);
+		startGameButtonListener = new StartGameButtonListener(gameEngine, mainFrame);
 
 		// register action listeners
 //		this.mainFrame.getPlayerPanel().getAddPlayerButton().addActionListener(addPlayerButtonListener);

@@ -11,18 +11,18 @@ import javax.swing.JOptionPane;
 import model.SimplePlayer;
 import model.interfaces.GameEngine;
 import model.interfaces.Player;
+import utility.InputValidation;
 import view.MainFrame;
 
 public class StartGameButtonListener implements ActionListener, KeyListener {
 	GameEngine gameEngine;
 	MainFrame mainFrame;
 	Player player;
-	Controller controller;
+	InputValidation validate;
 	
-	public StartGameButtonListener(GameEngine gameEngine, MainFrame mainFrame, Controller controller) {
+	public StartGameButtonListener(GameEngine gameEngine, MainFrame mainFrame) {
 		this.gameEngine = gameEngine;
 		this.mainFrame = mainFrame;
-		this.controller = controller;
 	}
 	
 	@Override
@@ -35,6 +35,7 @@ public class StartGameButtonListener implements ActionListener, KeyListener {
 		// check name and points are entered correctly before making changes
 		name = mainFrame.getStartGamePanel().getPlayerNameTextField().getText();			
 		
+		// TODO fix up this class!
 		if (!name.isEmpty()) {
 			points = mainFrame.getStartGamePanel().getPlayerPointsTextField().getText();
 			

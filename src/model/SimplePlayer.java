@@ -37,7 +37,6 @@ public class SimplePlayer implements Player, Serializable {
 	@Override
 	public void setPoints(int points) {
 		this.points = points;
-		
 	}
 
 	@Override
