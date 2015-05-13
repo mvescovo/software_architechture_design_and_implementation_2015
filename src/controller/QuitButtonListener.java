@@ -15,12 +15,10 @@ import view.MainFrame;
 public class QuitButtonListener implements ActionListener, KeyListener {
 	GameEngine gameEngine;
 	MainFrame mainFrame;
-	Controller controller;
 	
-	public QuitButtonListener (GameEngine gameEngine, MainFrame mainFrame, Controller controller) {
+	public QuitButtonListener (GameEngine gameEngine, MainFrame mainFrame) {
 		this.gameEngine = gameEngine;
 		this.mainFrame = mainFrame;
-		this.controller = controller;
 	}
 
 	@Override

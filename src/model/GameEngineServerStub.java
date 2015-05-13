@@ -65,7 +65,7 @@ public class GameEngineServerStub {
 		DataInputStream fromClientInt = null;
 		ObjectInputStream fromClientObject = null;
 		ObjectOutputStream toClientObject = null;
-		DataOutputStream toClientInt = null;
+//		DataOutputStream toClientInt = null;
 //		PrintWriter toClient = null;
 
 		Command command = null;
@@ -87,90 +87,76 @@ public class GameEngineServerStub {
 			try {
 				// setup streams
 				fromClient = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-				fromClientObject = new ObjectInputStream(clientSocket.getInputStream());
 				fromClientInt = new DataInputStream(clientSocket.getInputStream());
+				fromClientObject = new ObjectInputStream(clientSocket.getInputStream());
 				toClientObject = new ObjectOutputStream(clientSocket.getOutputStream());
-				toClientInt = new DataOutputStream(clientSocket.getOutputStream());
+//				toClientInt = new DataOutputStream(clientSocket.getOutputStream());
 //				toClient = new PrintWriter(clientSocket.getOutputStream(), true);
-				
-
-				// receive commands from clients
-				do {
-					try {
-						command = (Command)fromClientObject.readObject();
-						
-						switch (command) {
-							case ADD_GAME_ENGINE_CALLBACK:
-								break;
-							case ADD_PLAYER:
-								player = (Player)fromClientObject.readObject();
-								// set hashmap to map player to socket in the server side callback
-								((ServerSideGameEngineCallback)((GameEngineImpl)gameEngine).getGameEngineCallback()).addToMapInt(player, toClientInt);
-								((ServerSideGameEngineCallback)((GameEngineImpl)gameEngine).getGameEngineCallback()).addToMapObject(player, toClientObject);
-
-								break;
-							case ADD_POINTS:
-								break;
-							case CALCULATE_RESULT:
-								break;
-							case GET_ALL_PLAYERS:
-								break;
-							case PLACE_BET:
-								bet = fromClientInt.readInt();
-								
-								if (gameEngine.placeBet(player, bet)) {
-									command = Command.SUCCESS;
-									toClientObject.writeObject(command);
-								} else {
-									command = Command.FAIL;
-									toClientObject.writeObject(command);
-								}
-								break;
-							case QUIT:
-								quit = true;
-								break;
-							case REMOVE_PLAYER:
-								break;
-							case ROLL_HOUSE:
-								break;
-							case ROLL_PLAYER:
-								initialDelay = fromClientInt.readInt();
-								finalDelay = fromClientInt.readInt();
-								delayIncrement = fromClientInt.readInt();
-								gameEngine.rollPlayer(player, initialDelay, finalDelay, delayIncrement);
-								break;
-							default:
-								break;
-						}
-					} catch (ClassNotFoundException e) {
-						e.printStackTrace();
-					}
-				} while (quit == false);
-
-				clientSocket.close();
-				
-//				
-//				// add the player to the gameEngineImpl
-//				gameEngine.addPlayer(simplePlayer);
-//				
-////				// 2. place a bet
-//				System.out.println("waiting for client to place a bet");
-//				bet = fromClientInt.readInt();
-//				System.out.println("received bet, placing bet...");
-//				gameEngine.placeBet(simplePlayer, bet);
-////				
-////				// 3. roll player
-//				System.out.println("waiting for player roll...");
-//				initialDelay = fromClientInt.readInt();
-//				finalDelay = fromClientInt.readInt();
-//				delayIncrement = fromClientInt.readInt();
-//				System.out.println("got roll. trying to roll...");
-//				gameEngine.rollPlayer(simplePlayer, initialDelay, finalDelay, delayIncrement);
-////				
 			} catch (IOException e) {
 				System.out.println("Read failed: " + e.getMessage());
 				System.exit(-1);
 			}
+
+			// receive commands from clients
+			do {
+				try {
+					command = (Command)fromClientObject.readObject();
+					
+					switch (command) {
+						case ADD_GAME_ENGINE_CALLBACK:
+							break;
+						case ADD_PLAYER:
+							player = (Player)fromClientObject.readObject();
+							gameEngine.addPlayer(player);
+							// set hashmap to map player to socket in the server side callback
+							((ServerSideGameEngineCallback)((GameEngineImpl)gameEngine).getGameEngineCallback()).addToMap(player, new GameEngineCallbackServer());
+							break;
+						case ADD_POINTS:
+							break;
+						case CALCULATE_RESULT:
+							break;
+						case GET_ALL_PLAYERS:
+							break;
+						case PLACE_BET:
+							bet = fromClientInt.readInt();
+							
+							if (gameEngine.placeBet(player, bet)) {
+								command = Command.SUCCESS;
+								toClientObject.writeObject(command);
+							} else {
+								command = Command.FAIL;
+								toClientObject.writeObject(command);
+							}
+							break;
+						case QUIT:
+							quit = true;
+							break;
+						case REMOVE_PLAYER:
+							break;
+						case ROLL_HOUSE:
+							gameEngine.calculateResult();
+							break;
+						case ROLL_PLAYER:
+							initialDelay = fromClientInt.readInt();
+							finalDelay = fromClientInt.readInt();
+							delayIncrement = fromClientInt.readInt();
+							gameEngine.rollPlayer(player, initialDelay, finalDelay, delayIncrement);
+							break;
+						default:
+							break;
+					}
+				} catch (ClassNotFoundException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			} while (quit == false);
+			
+			try {
+				clientSocket.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}		
 		}
 	}
 }

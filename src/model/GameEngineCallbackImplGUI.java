@@ -2,10 +2,12 @@ package model;
 
 import java.awt.Color;
 import java.lang.reflect.InvocationTargetException;
+import java.net.Socket;
 
 import javax.swing.SwingUtilities;
 
 import view.MainFrame;
+import model.Commands.Command;
 import model.interfaces.DicePair;
 import model.interfaces.GameEngine;
 import model.interfaces.GameEngineCallback;

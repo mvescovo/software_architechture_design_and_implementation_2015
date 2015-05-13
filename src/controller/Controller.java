@@ -33,8 +33,8 @@ public class Controller {
 		placeBetButtonListener = new PlaceBetButtonListener(gameEngine, mainFrame);
 		betTextFieldListener = new BetTextFieldListener(mainFrame);
 		rollPlayerButtonListener = new RollPlayerButtonListener(gameEngine, mainFrame);
-		rollHouseButtonListener = new RollHouseButtonListener(gameEngine, mainFrame, this);
-		quitButtonListener = new QuitButtonListener(gameEngine, mainFrame, this);
+		rollHouseButtonListener = new RollHouseButtonListener(gameEngine, mainFrame);
+		quitButtonListener = new QuitButtonListener(gameEngine, mainFrame);
 		exitButtonListener = new ExitButtonListener(mainFrame);
 		addPointsButtonListener = new AddPointsButtonListener(gameEngine, mainFrame);
 		addPointsTextFieldListener = new AddPointsTextFieldListener(mainFrame);

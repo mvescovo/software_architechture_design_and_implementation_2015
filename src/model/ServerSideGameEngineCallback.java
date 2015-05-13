@@ -3,9 +3,6 @@
  */
 package model;
 
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,44 +16,63 @@ import model.interfaces.Player;
  *
  */
 public class ServerSideGameEngineCallback implements GameEngineCallback {
-	Map<Player, DataOutputStream> hashMapInt = new HashMap<Player, DataOutputStream>();
-	Map<Player, ObjectOutputStream> hashMapObject = new HashMap<Player, ObjectOutputStream>();
+	Map<Player, GameEngineCallbackServer> hashMap = new HashMap<Player, GameEngineCallbackServer>();
 
-	public void addToMapInt(Player player, DataOutputStream dataOutputStream) {
-		this.hashMapInt.put(player, dataOutputStream);
-	}
-	
-	public void addToMapObject(Player player, ObjectOutputStream objectOutputStream) {
-		this.hashMapObject.put(player, objectOutputStream);
-	}
+	public void addToMap(Player player, GameEngineCallbackServer gameEngineCallbackServer) {
+	this.hashMap.put(player, gameEngineCallbackServer);
+}
 	
 	@Override
 	public void intermediateResult(Player player, DicePair dicePair,
 			GameEngine gameEngine) {
-		int total = dicePair.getDice1() + dicePair.getDice2();
-
-		try {
-			hashMapObject.get(player).writeObject(dicePair);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		hashMap.get(player).sendIntermediateResult(dicePair);
+//		try {
+//			command = Command.INTERMEDIATE_RESULT;
+//			hashMapObject.get(player).writeObject(command);
+//			hashMapObject.get(player).writeObject(dicePair);
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
 	}
 
 	@Override
 	public void result(Player player, DicePair result, GameEngine engine) {
-		// TODO Auto-generated method stub
-		
+//		try {
+//			command = Command.RESULT;
+//			hashMapObject.get(player).writeObject(command);
+//			hashMapObject.get(player).writeObject(result);
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
 	}
 
 	@Override
 	public void intermediateHouseResult(DicePair dicePair, GameEngine engine) {
-		// TODO Auto-generated method stub
-		
+//		Collection<Player> players = engine.getAllPlayers();
+//		
+//		for (Player player: players) {
+//			try {
+//				command = Command.INTERMEDIATE_HOUSE;
+//				hashMapObject.get(player).writeObject(command);
+//				hashMapObject.get(player).writeObject(dicePair);
+//			} catch (IOException e) {
+//				e.printStackTrace();
+//			}
+//		}
 	}
 
 	@Override
 	public void houseResult(DicePair result, GameEngine engine) {
-		// TODO Auto-generated method stub
-		
+//		Collection<Player> players = engine.getAllPlayers();
+//		
+//		for (Player player: players) {
+//			try {
+//				command = Command.HOUSE_RESULT;
+//				hashMapObject.get(player).writeObject(command);
+//				hashMapObject.get(player).writeObject(result);
+//			} catch (IOException e) {
+//				e.printStackTrace();
+//			}
+//		}
 	}
 }

@@ -3,15 +3,12 @@
  */
 package model;
 
-import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.net.UnknownHostException;
 import java.util.Collection;
 
 import model.Commands.Command;
@@ -26,21 +23,24 @@ import model.interfaces.Player;
  */
 public class GameEngineClientStub implements GameEngine {
 	// gameEngine variables
-	GameEngineCallback gameEngineCallback = null;
+	public GameEngineCallback gameEngineCallback = null;
 	Player player = null;
 	
-	// socket variables
+	// socket variables for gameEngineServerStub
 	Socket socket;
 	String serverName = "localhost";
 	int port = 10000;
 	
-	// streams
+	// socket variables for gameEngineCallbackServer
+	Socket socketCallback;
+	int portCallback = 10001;
+	
+	// streams for gameEngineServerStub
 	PrintWriter toServer = null;
 	DataOutputStream toServerInt = null;
 	ObjectOutputStream toServerObject = null;
 	ObjectInputStream fromServerObject = null;
 //	BufferedReader fromServer = null;
-
 	
 	Command command = null;
 //	String line;
@@ -48,12 +48,7 @@ public class GameEngineClientStub implements GameEngine {
 	public GameEngineClientStub() {	
 		try {
 			// connect to the server
-			try {
-				socket = new Socket(serverName, port);
-			} catch (IOException e) {
-				System.out.println("Could not connect to server: " + e.getMessage());
-				System.exit(-1);
-			}
+			socket = new Socket(serverName, port);
 			
 			// setup streams
 			toServer = new PrintWriter(socket.getOutputStream(), true);
@@ -61,16 +56,12 @@ public class GameEngineClientStub implements GameEngine {
 			toServerObject = new ObjectOutputStream(socket.getOutputStream());
 			fromServerObject = new ObjectInputStream(socket.getInputStream());
 //			fromServer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-
-		} catch (UnknownHostException e) {
-			System.out.println("Unknown host: " + serverName);
-			System.exit(-1);
 		} catch (IOException e) {
-			System.out.println("No I/O");
+			System.out.println("Could not connect to server: " + e.getMessage());
 			System.exit(-1);
 		}
 	}
-	
+
 	@Override
 	public void rollPlayer(Player playerTest, int initialDelay, int finalDelay,
 			int delayIncrement) {
@@ -89,9 +80,14 @@ public class GameEngineClientStub implements GameEngine {
 
 		// get dice roll from server and pass to GUI callback
 		try {
-			for (int i = 0; i < 10; i++) {
+			command = (Command)fromServerObject.readObject();
+			
+			if (command == Command.INTERMEDIATE_RESULT) {
 				dicePair = (DicePair)fromServerObject.readObject();
 				gameEngineCallback.intermediateResult(this.player, dicePair, this);
+			} else if (command == Command.RESULT) {
+				dicePair = (DicePair)fromServerObject.readObject();
+				gameEngineCallback.result(this.player, dicePair, this);
 			}
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
@@ -102,14 +98,14 @@ public class GameEngineClientStub implements GameEngine {
 
 	@Override
 	public void rollHouse(int initialDelay, int finalDelay, int delayIncrement) {
-		// TODO Auto-generated method stub
-
+		// not used in client engine
 	}
 
 	@Override
 	public void addPlayer(Player player) {
 		// set local gameEngine player
 		this.player = player;
+		boolean connected = false;
 		
 		// add player to the server
 		try {
@@ -118,6 +114,25 @@ public class GameEngineClientStub implements GameEngine {
 			toServerObject.writeObject(player);
 		} catch (IOException e) {
 			e.printStackTrace();
+		}
+		
+		// connect to gameEngineCallbackServer
+		while (!connected) {
+			try {
+				socketCallback = new Socket(serverName, portCallback);
+				HandleServerCallback task = new HandleServerCallback(socket, this);
+				new Thread(task).start();
+				System.out.println("Connected to callbacksocket");
+				connected = true;
+			} catch (IOException e) {
+				System.out.println("Could not connect to server: " + e.getMessage());
+				try {
+					System.out.println("Sleeping for 35 ms");
+					Thread.sleep(35);
+				} catch (InterruptedException e1) {
+					e1.printStackTrace();
+				}
+			}
 		}
 	}
 
@@ -129,8 +144,32 @@ public class GameEngineClientStub implements GameEngine {
 
 	@Override
 	public void calculateResult() {
-		// TODO Auto-generated method stub
-
+		DicePair dicePair;
+		
+		// request server to calculate results (including roll house)
+		try {
+			command = Command.CALCULATE_RESULT;
+			toServerObject.writeObject(command);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		// get dice roll from server and pass to GUI callback
+		try {
+			command = (Command)fromServerObject.readObject();
+			
+			if (command == Command.INTERMEDIATE_HOUSE) {
+				dicePair = (DicePair)fromServerObject.readObject();
+				gameEngineCallback.intermediateHouseResult(dicePair, this);
+			} else if (command == Command.HOUSE_RESULT) {
+				dicePair = (DicePair)fromServerObject.readObject();
+				gameEngineCallback.houseResult(dicePair, this);
+			}
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -175,5 +214,83 @@ public class GameEngineClientStub implements GameEngine {
 	public void addPoints(int points) {
 		player.setPoints(player.getPoints() + points);
 		
+	}
+	
+	public class HandleServerCallback implements Runnable {
+		private Socket socket;
+		GameEngine gameEngine = null;
+		
+		// streams for gameEngineCallbackServer
+		PrintWriter toServerCallback = null;
+		DataOutputStream toServerIntCallback = null;
+		ObjectOutputStream toServerObjectCallback = null;
+		ObjectInputStream fromServerObjectCallback = null;
+//		BufferedReader fromServer = null;
+		
+		Command command = null;
+
+		DicePair dicePair = null;
+		
+		// create a new thread
+		public HandleServerCallback(Socket socket, GameEngine gameEngine) {
+			this.socket = socket;
+			this.gameEngine = gameEngine;
+		}
+		
+		@Override
+		public void run() {
+			try {
+				// setup streams
+				toServerCallback = new PrintWriter(socketCallback.getOutputStream(), true);
+				toServerIntCallback = new DataOutputStream(socketCallback.getOutputStream());
+				toServerObjectCallback = new ObjectOutputStream(socketCallback.getOutputStream());
+				fromServerObjectCallback = new ObjectInputStream(socketCallback.getInputStream());
+//				fromServer = new BufferedReader(new InputStreamReader(socketCallback.getInputStream()));
+				
+			} catch (IOException e) {
+				System.out.println("Read failed: " + e.getMessage());
+				System.exit(-1);
+			}
+
+			// receive commands from server callback
+			do {
+				try {
+					command = (Command)fromServerObjectCallback.readObject();
+					
+					switch (command) {
+						case ADD_GAME_ENGINE_CALLBACK:
+							break;
+						case ADD_PLAYER:
+							break;
+						case ADD_POINTS:
+							break;
+						case CALCULATE_RESULT:
+							break;
+						case GET_ALL_PLAYERS:
+							break;
+						case PLACE_BET:
+							break;
+						case QUIT:
+							break;
+						case REMOVE_PLAYER:
+							break;
+						case ROLL_HOUSE:
+							break;
+						case ROLL_PLAYER:
+							break;
+						case INTERMEDIATE_RESULT:
+							dicePair = (DicePair)fromServerObjectCallback.readObject();
+							((GameEngineClientStub)gameEngine).gameEngineCallback.intermediateResult(player, dicePair, gameEngine);
+							break;
+						default:
+							break;
+					}
+				} catch (ClassNotFoundException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			} while (true);
+		}
 	}
 }
