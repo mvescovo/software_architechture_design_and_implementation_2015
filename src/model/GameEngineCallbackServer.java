@@ -21,7 +21,7 @@ import model.interfaces.DicePair;
  */
 public class GameEngineCallbackServer {
 	ServerSocket serverSocket = null;
-	int port = 10001;
+	int callbackPort = 0;
 	Socket clientSocket = null;
 	
 	// streams
@@ -34,12 +34,14 @@ public class GameEngineCallbackServer {
 
 	Command command = null;
 	
-	public GameEngineCallbackServer() {
+	public GameEngineCallbackServer(int callbackPort) {
+		this.callbackPort = callbackPort;
+		
 		// create a server socket
 		try {
-			serverSocket = new ServerSocket(port);
+			serverSocket = new ServerSocket(callbackPort);
 		} catch(IOException e) {
-			System.out.println("Could not listen on port " + port);
+			System.out.println("Could not listen on port " + callbackPort);
 			System.exit(-1);
 		}
 		
@@ -55,7 +57,7 @@ public class GameEngineCallbackServer {
 //			toClientInt = new DataOutputStream(clientSocket.getOutputStream());
 //			toClient = new PrintWriter(clientSocket.getOutputStream(), true);
 		} catch (IOException e) {
-			System.out.println("Accept failed: " + port);
+			System.out.println("Accept failed: " + callbackPort);
 			System.exit(-1);
 		}
 	}
@@ -63,6 +65,36 @@ public class GameEngineCallbackServer {
 	public void sendIntermediateResult(DicePair dicePair) {
 		try {
 			command = Command.INTERMEDIATE_RESULT;
+			toClientObject.writeObject(command);
+			toClientObject.writeObject(dicePair);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void sendResult(DicePair dicePair) {
+		try {
+			command = Command.RESULT;
+			toClientObject.writeObject(command);
+			toClientObject.writeObject(dicePair);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void sendIntermediateHouseResult(DicePair dicePair) {
+		try {
+			command = Command.INTERMEDIATE_HOUSE_RESULT;
+			toClientObject.writeObject(command);
+			toClientObject.writeObject(dicePair);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void sendHouseResult(DicePair dicePair) {
+		try {
+			command = Command.HOUSE_RESULT;
 			toClientObject.writeObject(command);
 			toClientObject.writeObject(dicePair);
 		} catch (IOException e) {

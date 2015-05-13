@@ -3,6 +3,7 @@
  */
 package model;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,53 +27,28 @@ public class ServerSideGameEngineCallback implements GameEngineCallback {
 	public void intermediateResult(Player player, DicePair dicePair,
 			GameEngine gameEngine) {
 		hashMap.get(player).sendIntermediateResult(dicePair);
-//		try {
-//			command = Command.INTERMEDIATE_RESULT;
-//			hashMapObject.get(player).writeObject(command);
-//			hashMapObject.get(player).writeObject(dicePair);
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
 	}
 
 	@Override
 	public void result(Player player, DicePair result, GameEngine engine) {
-//		try {
-//			command = Command.RESULT;
-//			hashMapObject.get(player).writeObject(command);
-//			hashMapObject.get(player).writeObject(result);
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
+		hashMap.get(player).sendResult(result);
 	}
 
 	@Override
 	public void intermediateHouseResult(DicePair dicePair, GameEngine engine) {
-//		Collection<Player> players = engine.getAllPlayers();
-//		
-//		for (Player player: players) {
-//			try {
-//				command = Command.INTERMEDIATE_HOUSE;
-//				hashMapObject.get(player).writeObject(command);
-//				hashMapObject.get(player).writeObject(dicePair);
-//			} catch (IOException e) {
-//				e.printStackTrace();
-//			}
-//		}
+		Collection<Player> players = engine.getAllPlayers();
+		
+		for (Player player: players) {
+			hashMap.get(player).sendIntermediateHouseResult(dicePair);
+		}
 	}
 
 	@Override
 	public void houseResult(DicePair result, GameEngine engine) {
-//		Collection<Player> players = engine.getAllPlayers();
-//		
-//		for (Player player: players) {
-//			try {
-//				command = Command.HOUSE_RESULT;
-//				hashMapObject.get(player).writeObject(command);
-//				hashMapObject.get(player).writeObject(result);
-//			} catch (IOException e) {
-//				e.printStackTrace();
-//			}
-//		}
+		Collection<Player> players = engine.getAllPlayers();
+		
+		for (Player player: players) {
+			hashMap.get(player).sendIntermediateHouseResult(result);
+		}
 	}
 }

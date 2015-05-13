@@ -132,14 +132,12 @@ public class GameEngineImpl implements GameEngine {
 
 	@Override
 	public boolean placeBet(Player player, int bet) {
-		try {
-			player.placeBet(bet);
+		if (player.placeBet(bet)) {
 			System.out.println("placed bet on server");
-		} catch (IllegalArgumentException e) {
+			return true;
+		} else {
 			System.out.println("failed to place bet on server");
-			System.err.println(e.getMessage() + player.getPlayerName());
 			return false;
 		}
-		return true;
 	}
 }

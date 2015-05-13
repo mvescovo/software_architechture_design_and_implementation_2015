@@ -35,7 +35,7 @@ public class Controller {
 		rollPlayerButtonListener = new RollPlayerButtonListener(gameEngine, mainFrame);
 		rollHouseButtonListener = new RollHouseButtonListener(gameEngine, mainFrame);
 		quitButtonListener = new QuitButtonListener(gameEngine, mainFrame);
-		exitButtonListener = new ExitButtonListener(mainFrame);
+		exitButtonListener = new ExitButtonListener(gameEngine, mainFrame);
 		addPointsButtonListener = new AddPointsButtonListener(gameEngine, mainFrame);
 		addPointsTextFieldListener = new AddPointsTextFieldListener(mainFrame);
 		playerNameTextFieldListener = new PlayerNameTextFieldListener(mainFrame);

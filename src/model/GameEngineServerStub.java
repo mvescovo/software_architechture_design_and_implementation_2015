@@ -26,6 +26,7 @@ import model.interfaces.Player;
  */
 public class GameEngineServerStub {
 	GameEngine gameEngine;
+	int callbackPort = 10001;
 	
 	@SuppressWarnings("resource")
 	public GameEngineServerStub(GameEngine gameEngine) {
@@ -48,7 +49,8 @@ public class GameEngineServerStub {
 				Socket clientSocket = serverSocket.accept();
 				
 				// create a new thread for the connection and start it
-				HandleAClient task = new HandleAClient(clientSocket);
+				HandleAClient task = new HandleAClient(clientSocket, callbackPort);
+				callbackPort++;
 				new Thread(task).start();
 			} catch (IOException e) {
 				System.out.println("Accept failed: " + port);
@@ -59,6 +61,7 @@ public class GameEngineServerStub {
 	
 	private class HandleAClient implements Runnable {
 		private Socket clientSocket;
+		private int callbackPort;
 		
 		// streams
 		BufferedReader fromClient = null;
@@ -78,8 +81,9 @@ public class GameEngineServerStub {
 		boolean quit = false;
 		
 		// create a new thread
-		public HandleAClient(Socket socket) {
+		public HandleAClient(Socket socket, int callbackPort) {
 			this.clientSocket = socket;
+			this.callbackPort = callbackPort;
 		}
 		
 		@Override
@@ -109,16 +113,18 @@ public class GameEngineServerStub {
 							player = (Player)fromClientObject.readObject();
 							gameEngine.addPlayer(player);
 							// set hashmap to map player to socket in the server side callback
-							((ServerSideGameEngineCallback)((GameEngineImpl)gameEngine).getGameEngineCallback()).addToMap(player, new GameEngineCallbackServer());
+							((ServerSideGameEngineCallback)((GameEngineImpl)gameEngine).getGameEngineCallback()).addToMap(player, new GameEngineCallbackServer(callbackPort));
 							break;
 						case ADD_POINTS:
 							break;
 						case CALCULATE_RESULT:
+							gameEngine.calculateResult();
 							break;
 						case GET_ALL_PLAYERS:
 							break;
 						case PLACE_BET:
 							bet = fromClientInt.readInt();
+							System.out.println("server stub got bet " + bet);
 							
 							if (gameEngine.placeBet(player, bet)) {
 								command = Command.SUCCESS;
@@ -129,7 +135,14 @@ public class GameEngineServerStub {
 							}
 							break;
 						case QUIT:
+//							quit = true;
+							System.out.println("quit");
+
+							break;
+						case EXIT:
+							System.out.println("exit pressed");
 							quit = true;
+							clientSocket.close();
 							break;
 						case REMOVE_PLAYER:
 							break;

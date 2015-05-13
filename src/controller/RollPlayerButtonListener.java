@@ -25,11 +25,6 @@ public class RollPlayerButtonListener implements ActionListener, KeyListener {
 			public void run() {
 				// player roll
 				gameEngine.rollPlayer(null, 1, 200, 20);
-				
-				// change view after roll has finished
-				mainFrame.getTableAndToolbarContainerPanel().getToolBar().getRollHouseButton().setEnabled(true);
-				mainFrame.getMenu().getRollHouseMenuItem().setEnabled(true);
-				mainFrame.getTableAndToolbarContainerPanel().getToolBar().getRollHouseButton().requestFocusInWindow();
 			}
 		});
 		

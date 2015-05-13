@@ -65,8 +65,6 @@ public class GameEngineClientStub implements GameEngine {
 	@Override
 	public void rollPlayer(Player playerTest, int initialDelay, int finalDelay,
 			int delayIncrement) {
-		DicePair dicePair = null;
-		
 		// send the roll to the server
 		try {
 			command = Command.ROLL_PLAYER;
@@ -74,23 +72,6 @@ public class GameEngineClientStub implements GameEngine {
 			toServerInt.writeInt(initialDelay);
 			toServerInt.writeInt(finalDelay);
 			toServerInt.writeInt(delayIncrement);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-		// get dice roll from server and pass to GUI callback
-		try {
-			command = (Command)fromServerObject.readObject();
-			
-			if (command == Command.INTERMEDIATE_RESULT) {
-				dicePair = (DicePair)fromServerObject.readObject();
-				gameEngineCallback.intermediateResult(this.player, dicePair, this);
-			} else if (command == Command.RESULT) {
-				dicePair = (DicePair)fromServerObject.readObject();
-				gameEngineCallback.result(this.player, dicePair, this);
-			}
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -144,29 +125,10 @@ public class GameEngineClientStub implements GameEngine {
 
 	@Override
 	public void calculateResult() {
-		DicePair dicePair;
-		
 		// request server to calculate results (including roll house)
 		try {
 			command = Command.CALCULATE_RESULT;
 			toServerObject.writeObject(command);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
-		// get dice roll from server and pass to GUI callback
-		try {
-			command = (Command)fromServerObject.readObject();
-			
-			if (command == Command.INTERMEDIATE_HOUSE) {
-				dicePair = (DicePair)fromServerObject.readObject();
-				gameEngineCallback.intermediateHouseResult(dicePair, this);
-			} else if (command == Command.HOUSE_RESULT) {
-				dicePair = (DicePair)fromServerObject.readObject();
-				gameEngineCallback.houseResult(dicePair, this);
-			}
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -214,6 +176,17 @@ public class GameEngineClientStub implements GameEngine {
 	public void addPoints(int points) {
 		player.setPoints(player.getPoints() + points);
 		
+	}
+	
+	public void exitGame() {
+		command = Command.EXIT;
+		
+		try {
+			toServerObject.writeObject(command);
+			System.exit(0);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public class HandleServerCallback implements Runnable {
@@ -281,6 +254,18 @@ public class GameEngineClientStub implements GameEngine {
 						case INTERMEDIATE_RESULT:
 							dicePair = (DicePair)fromServerObjectCallback.readObject();
 							((GameEngineClientStub)gameEngine).gameEngineCallback.intermediateResult(player, dicePair, gameEngine);
+							break;
+						case RESULT:
+							dicePair = (DicePair)fromServerObjectCallback.readObject();
+							((GameEngineClientStub)gameEngine).gameEngineCallback.result(player, dicePair, gameEngine);
+							break;
+						case INTERMEDIATE_HOUSE_RESULT:
+							dicePair = (DicePair)fromServerObjectCallback.readObject();
+							((GameEngineClientStub)gameEngine).gameEngineCallback.intermediateHouseResult(dicePair, gameEngine);
+							break;
+						case HOUSE_RESULT:
+							dicePair = (DicePair)fromServerObjectCallback.readObject();
+							((GameEngineClientStub)gameEngine).gameEngineCallback.houseResult(dicePair, gameEngine);
 							break;
 						default:
 							break;

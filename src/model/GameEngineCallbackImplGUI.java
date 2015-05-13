@@ -77,6 +77,10 @@ public class GameEngineCallbackImplGUI implements GameEngineCallback {
 					mainFrame.getTableAndToolbarContainerPanel().getGameTablePanel().getGameStatusPanel().setTempPlayerResult(total);
 					mainFrame.getTableAndToolbarContainerPanel().getGameTablePanel().getGameStatusPanel().getPlayerResultLabel().setText(player.getPlayerName() + "'s result: " + total);
 					mainFrame.getTableAndToolbarContainerPanel().getGameTablePanel().getGameStatusPanel().getPlayerResultLabel().setVisible(true);
+					// change view after roll has finished
+					mainFrame.getTableAndToolbarContainerPanel().getToolBar().getRollHouseButton().setEnabled(true);
+					mainFrame.getMenu().getRollHouseMenuItem().setEnabled(true);
+					mainFrame.getTableAndToolbarContainerPanel().getToolBar().getRollHouseButton().requestFocusInWindow();
 				}
 			});
 		} catch (InvocationTargetException e) {
