@@ -23,26 +23,31 @@ public class AddPointsButtonListener implements ActionListener, KeyListener {
 	public AddPointsButtonListener(GameEngine gameEngine, MainFrame mainFrame) {
 		this.gameEngine = (GameEngineClientStub)gameEngine;
 		this.mainFrame = mainFrame;
+		validate = new InputValidation();
 	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		boolean pointsValid = false;
+		int pointsToAdd = 0;
+		int oldPoints;
 		
 		// disable textfield until operation is complete
 		mainFrame.getPlayerPanel().getAddPointsTextField().setEnabled(false);
 		
 		pointsValid = validate.checkJTextFieldPositiveInt(mainFrame.getPlayerPanel().getAddPointsTextField(), mainFrame);
+		pointsToAdd = Integer.parseInt(mainFrame.getPlayerPanel().getAddPointsTextField().getText());
+		oldPoints = Integer.parseInt(mainFrame.getPlayerPanel().getPoints());
 		
 		if (pointsValid) {
 			// change model
-			gameEngine.addPoints(Integer.parseInt(mainFrame.getPlayerPanel().getAddPointsTextField().getText()));
-			
-			// model will tell the view to update if successful
+			gameEngine.addPoints(pointsToAdd);
+			mainFrame.getPlayerPanel().setPoints(Integer.toString(oldPoints + pointsToAdd));
 		}
 		
 		// enable text field again
 		mainFrame.getPlayerPanel().getAddPointsTextField().setEnabled(true);
+		mainFrame.getPlayerPanel().getAddPointsTextField().requestFocusInWindow();
 	}
 
 	@Override

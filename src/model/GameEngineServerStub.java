@@ -77,6 +77,7 @@ public class GameEngineServerStub {
 		int initialDelay;
 		int finalDelay;
 		int delayIncrement;
+		int pointsToAdd = 0;
 		
 		boolean quit = false;
 		
@@ -116,11 +117,15 @@ public class GameEngineServerStub {
 							((ServerSideGameEngineCallback)((GameEngineImpl)gameEngine).getGameEngineCallback()).addToMap(player, new GameEngineCallbackServer(callbackPort));
 							break;
 						case ADD_POINTS:
+							pointsToAdd = fromClientInt.readInt();
+							player.setPoints(player.getPoints() + pointsToAdd);
+							// TODO may need to check what happens if doing this during a round etc
 							break;
 						case CALCULATE_RESULT:
 							gameEngine.calculateResult();
 							System.out.println("new points before sending back: " + player.getPoints());
 							// TODO for some reason this object isn't getting sent but no errors either
+							toClientObject.reset();
 							toClientObject.writeObject(player);
 							break;
 						case GET_ALL_PLAYERS:

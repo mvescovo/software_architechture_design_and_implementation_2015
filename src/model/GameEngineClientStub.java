@@ -189,6 +189,16 @@ public class GameEngineClientStub implements GameEngine {
 	
 	public void addPoints(int points) {
 		player.setPoints(player.getPoints() + points);
+		// send new version to server
+		try {
+			command = Command.ADD_POINTS;
+			toServerObject.writeObject(command);
+			toServerInt.writeInt(points);
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
 	}
 	
 	public void exitGame() {
