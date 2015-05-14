@@ -7,7 +7,7 @@ import javax.swing.JMenuItem;
 public class Menu extends JMenuBar {
 	private static final long serialVersionUID = 2401343171737574518L;
 	private JMenu menu1;
-	private JMenuItem addPlayer;
+	private JMenuItem startGame;
 	private JMenuItem placeBet;
 	private JMenuItem rollPlayer;
 	private JMenuItem rollHouse;
@@ -21,8 +21,8 @@ public class Menu extends JMenuBar {
 		add(menu1);
 		
 		// group of menu items
-		addPlayer = new JMenuItem("Add player");
-		menu1.add(addPlayer);
+		startGame = new JMenuItem("Start Game");
+		menu1.add(startGame);
 		
 		placeBet = new JMenuItem("Place bet");
 		placeBet.setEnabled(false);
@@ -44,8 +44,8 @@ public class Menu extends JMenuBar {
 		menu1.add(exit);
 	}
 	
-	public JMenuItem getAddPlayerMenuItem() {
-		return addPlayer;
+	public JMenuItem getStartGameMenuItem() {
+		return startGame;
 	}
 	
 	public JMenuItem getplaceBetMenuItem() {

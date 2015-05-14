@@ -4,13 +4,18 @@
 package model;
 
 import java.io.BufferedReader;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import model.Commands.Command;
 import model.interfaces.GameEngine;
 import model.interfaces.GameEngineCallback;
 import model.interfaces.Player;
@@ -21,13 +26,12 @@ import model.interfaces.Player;
  */
 public class GameEngineServerStub {
 	GameEngine gameEngine;
-	GameEngineCallback gameEngineCallback = new ServerSideGameEngineCallback();
-	
+	int callbackPort = 10001;
 	
 	@SuppressWarnings("resource")
 	public GameEngineServerStub(GameEngine gameEngine) {
 		this.gameEngine = gameEngine;
-		gameEngine.addGameEngineCallback(gameEngineCallback);
+		gameEngine.addGameEngineCallback(new ServerSideGameEngineCallback());
 		ServerSocket serverSocket = null;
 		int port = 10000;
 		
@@ -45,7 +49,8 @@ public class GameEngineServerStub {
 				Socket clientSocket = serverSocket.accept();
 				
 				// create a new thread for the connection and start it
-				HandleAClient task = new HandleAClient(clientSocket);
+				HandleAClient task = new HandleAClient(clientSocket, callbackPort);
+				callbackPort++;
 				new Thread(task).start();
 			} catch (IOException e) {
 				System.out.println("Accept failed: " + port);
@@ -56,56 +61,122 @@ public class GameEngineServerStub {
 	
 	private class HandleAClient implements Runnable {
 		private Socket clientSocket;
+		private int callbackPort;
+		
+		// streams
 		BufferedReader fromClient = null;
-		PrintWriter toClient = null;
-		String line;
+		DataInputStream fromClientInt = null;
+		ObjectInputStream fromClientObject = null;
+		ObjectOutputStream toClientObject = null;
+//		DataOutputStream toClientInt = null;
+//		PrintWriter toClient = null;
+
+		Command command = null;
 		Player player;
-		ObjectInputStream objectFromClient;
-		int bet;
+		int bet = 0;
 		int initialDelay;
 		int finalDelay;
 		int delayIncrement;
+		int pointsToAdd = 0;
+		
+		boolean quit = false;
 		
 		// create a new thread
-		public HandleAClient(Socket socket) {
+		public HandleAClient(Socket socket, int callbackPort) {
 			this.clientSocket = socket;
+			this.callbackPort = callbackPort;
 		}
 		
 		@Override
 		public void run() {
 			try {
-				// create readers and writers
+				// setup streams
 				fromClient = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-				toClient = new PrintWriter(clientSocket.getOutputStream(), true);
-				objectFromClient = new ObjectInputStream(clientSocket.getInputStream());
-				
-				// 1. add player
-				try {
-					System.out.println("waiting for client to add a player");
-					player = (Player) objectFromClient.readObject();
-				} catch (ClassNotFoundException e) {
-					e.printStackTrace();
-				}
-				// add the player to the gameEngineImpl
-				gameEngine.addPlayer(player);
-
-				// 2. place a bet
-				System.out.println("waiting for client to place a bet");
-				bet = fromClient.read();
-				System.out.println("received bet, plaing bet...");
-				gameEngine.placeBet(player, bet);
-				
-				// 3. roll player
-				System.out.println("waiting for player roll...");
-				initialDelay = fromClient.read();
-				finalDelay = fromClient.read();
-				delayIncrement = fromClient.read();
-				gameEngine.rollPlayer(player, initialDelay, finalDelay, delayIncrement);
-				
+				fromClientInt = new DataInputStream(clientSocket.getInputStream());
+				fromClientObject = new ObjectInputStream(clientSocket.getInputStream());
+				toClientObject = new ObjectOutputStream(clientSocket.getOutputStream());
+//				toClientInt = new DataOutputStream(clientSocket.getOutputStream());
+//				toClient = new PrintWriter(clientSocket.getOutputStream(), true);
 			} catch (IOException e) {
-				System.out.println("Read failed");
+				System.out.println("Read failed: " + e.getMessage());
 				System.exit(-1);
 			}
+
+			// receive commands from clients
+			do {
+				try {
+					command = (Command)fromClientObject.readObject();
+					
+					switch (command) {
+						case ADD_GAME_ENGINE_CALLBACK:
+							break;
+						case ADD_PLAYER:
+							player = (Player)fromClientObject.readObject();
+							gameEngine.addPlayer(player);
+							// set hashmap to map player to socket in the server side callback
+							((ServerSideGameEngineCallback)((GameEngineImpl)gameEngine).getGameEngineCallback()).addToMap(player, new GameEngineCallbackServer(callbackPort));
+							break;
+						case ADD_POINTS:
+							pointsToAdd = fromClientInt.readInt();
+							player.setPoints(player.getPoints() + pointsToAdd);
+							// TODO may need to check what happens if doing this during a round etc
+							break;
+						case CALCULATE_RESULT:
+							gameEngine.calculateResult();
+							System.out.println("new points before sending back: " + player.getPoints());
+							// TODO for some reason this object isn't getting sent but no errors either
+							toClientObject.reset();
+							toClientObject.writeObject(player);
+							break;
+						case GET_ALL_PLAYERS:
+							break;
+						case PLACE_BET:
+							bet = fromClientInt.readInt();
+							
+							if (gameEngine.placeBet(player, bet)) {
+								command = Command.SUCCESS;
+								toClientObject.writeObject(command);
+							} else {
+								command = Command.FAIL;
+								toClientObject.writeObject(command);
+							}
+							break;
+						case QUIT:
+//							quit = true;
+							System.out.println("quit");
+
+							break;
+						case EXIT:
+							System.out.println("exit pressed");
+							quit = true;
+							clientSocket.close();
+							break;
+						case REMOVE_PLAYER:
+							break;
+						case ROLL_HOUSE:
+							gameEngine.calculateResult();
+							break;
+						case ROLL_PLAYER:
+							initialDelay = fromClientInt.readInt();
+							finalDelay = fromClientInt.readInt();
+							delayIncrement = fromClientInt.readInt();
+							gameEngine.rollPlayer(player, initialDelay, finalDelay, delayIncrement);
+							break;
+						default:
+							break;
+					}
+				} catch (ClassNotFoundException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			} while (quit == false);
+			
+			try {
+				clientSocket.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}		
 		}
 	}
 }

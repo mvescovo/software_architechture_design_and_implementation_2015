@@ -6,10 +6,10 @@ import model.interfaces.GameEngine;
 import model.interfaces.Player;
 
 public class Controller {
-	@SuppressWarnings("unused")
+//	@SuppressWarnings("unused")
 	private GameEngine gameEngine;
 	private MainFrame mainFrame;
-	private AddPlayerButtonListener addPlayerButtonListener;
+//	private AddPlayerButtonListener addPlayerButtonListener;
 	private PlaceBetButtonListener placeBetButtonListener;
 	private BetTextFieldListener betTextFieldListener;
 	private RollPlayerButtonListener rollPlayerButtonListener;
@@ -27,21 +27,23 @@ public class Controller {
 		this.gameEngine = gameEngine;
 		this.mainFrame = mainFrame;
 		gameEngine.addGameEngineCallback(new GameEngineCallbackImplGUI(mainFrame));
-		addPlayerButtonListener = new AddPlayerButtonListener(gameEngine, mainFrame, this);
+		
+		// create listeners
+//		addPlayerButtonListener = new AddPlayerButtonListener(gameEngine, mainFrame);
 		placeBetButtonListener = new PlaceBetButtonListener(gameEngine, mainFrame);
 		betTextFieldListener = new BetTextFieldListener(mainFrame);
-		rollPlayerButtonListener = new RollPlayerButtonListener(gameEngine, mainFrame, this);
-		rollHouseButtonListener = new RollHouseButtonListener(gameEngine, mainFrame, this);
-		quitButtonListener = new QuitButtonListener(gameEngine, mainFrame, this);
-		exitButtonListener = new ExitButtonListener(mainFrame);
+		rollPlayerButtonListener = new RollPlayerButtonListener(gameEngine, mainFrame);
+		rollHouseButtonListener = new RollHouseButtonListener(gameEngine, mainFrame);
+		quitButtonListener = new QuitButtonListener(gameEngine, mainFrame);
+		exitButtonListener = new ExitButtonListener(gameEngine, mainFrame);
 		addPointsButtonListener = new AddPointsButtonListener(gameEngine, mainFrame);
 		addPointsTextFieldListener = new AddPointsTextFieldListener(mainFrame);
 		playerNameTextFieldListener = new PlayerNameTextFieldListener(mainFrame);
 		playerPointsTextFieldListener = new PlayerPointsTextFieldListener(mainFrame);
-		startGameButtonListener = new StartGameButtonListener(gameEngine, mainFrame, this);
+		startGameButtonListener = new StartGameButtonListener(gameEngine, mainFrame);
 
 		// register action listeners
-		this.mainFrame.getPlayerPanel().getAddPlayerButton().addActionListener(addPlayerButtonListener);
+//		this.mainFrame.getPlayerPanel().getAddPlayerButton().addActionListener(addPlayerButtonListener);
 		this.mainFrame.getTableAndToolbarContainerPanel().getToolBar().getPlaceBetButton().addActionListener(placeBetButtonListener);
 		this.mainFrame.getTableAndToolbarContainerPanel().getToolBar().getBetTextField().addActionListener(betTextFieldListener);
 		this.mainFrame.getTableAndToolbarContainerPanel().getToolBar().getRollPlayerButton().addActionListener(rollPlayerButtonListener);
@@ -54,8 +56,9 @@ public class Controller {
 		this.mainFrame.getStartGamePanel().getPlayerNameTextField().addActionListener(playerNameTextFieldListener);
 		this.mainFrame.getStartGamePanel().getPlayerPointsTextField().addActionListener(playerPointsTextFieldListener);
 		this.mainFrame.getStartGamePanel().getStartGameButton().addActionListener(startGameButtonListener);
+		
 		// register key listeners
-		this.mainFrame.getPlayerPanel().getAddPlayerButton().addKeyListener(addPlayerButtonListener);
+//		this.mainFrame.getPlayerPanel().getAddPlayerButton().addKeyListener(addPlayerButtonListener);
 		this.mainFrame.getTableAndToolbarContainerPanel().getToolBar().getRollPlayerButton().addKeyListener(rollPlayerButtonListener);
 		this.mainFrame.getTableAndToolbarContainerPanel().getToolBar().getRollHouseButton().addKeyListener(rollHouseButtonListener);
 		this.mainFrame.getTableAndToolbarContainerPanel().getToolBar().getQuitButton().addKeyListener(quitButtonListener);
@@ -63,8 +66,9 @@ public class Controller {
 		this.mainFrame.getStartGamePanel().getQuitGameButton().addKeyListener(exitButtonListener);
 		this.mainFrame.getPlayerPanel().getAddPointsButton().addKeyListener(addPointsButtonListener);
 		this.mainFrame.getStartGamePanel().getStartGameButton().addKeyListener(startGameButtonListener);
+		
 		// menu listeners
-		this.mainFrame.getMenu().getAddPlayerMenuItem().addActionListener(addPlayerButtonListener);
+		this.mainFrame.getMenu().getStartGameMenuItem().addActionListener(startGameButtonListener);
 		this.mainFrame.getMenu().getplaceBetMenuItem().addActionListener(placeBetButtonListener);
 		this.mainFrame.getMenu().getRollPlayerMenuItem().addActionListener(rollPlayerButtonListener);
 		this.mainFrame.getMenu().getRollHouseMenuItem().addActionListener(rollHouseButtonListener);
@@ -72,15 +76,15 @@ public class Controller {
 		this.mainFrame.getMenu().getExitMenuItem().addActionListener(exitButtonListener);
 	}
 	
-	protected void setCurrPlayer(Player player) {
-		this.player = player;
-	}
-	
-	protected Player getCurrPlayer() {
-		return player;
-	}
-	
-	protected void printCurrPlayerName() {
-		System.out.println(player.getPlayerName());
-	}
+//	protected void setCurrPlayer(Player player) {
+//		this.player = player;
+//	}
+//	
+//	protected Player getCurrPlayer() {
+//		return player;
+//	}
+//	
+//	protected void printCurrPlayerName() {
+//		System.out.println(player.getPlayerName());
+//	}
 }

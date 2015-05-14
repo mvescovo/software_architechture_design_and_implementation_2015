@@ -1,8 +1,11 @@
 package model;
 
+import java.io.Serializable;
+
 import model.interfaces.DicePair;
 
-public class DicePairImpl implements DicePair {
+public class DicePairImpl implements DicePair, Serializable {
+	private static final long serialVersionUID = 1696519781925901108L;
 	private int dice1;
 	private int dice2;
 	private int numFaces;

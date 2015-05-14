@@ -8,12 +8,16 @@ import java.awt.event.KeyListener;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
+import model.GameEngineClientStub;
+import model.interfaces.GameEngine;
 import view.MainFrame;
 
 public class ExitButtonListener implements ActionListener, KeyListener {
+	GameEngine gameEngine;
 	MainFrame mainFrame;
 	
-	public ExitButtonListener (MainFrame mainFrame) {
+	public ExitButtonListener (GameEngine gameEngine, MainFrame mainFrame) {
+		this.gameEngine = gameEngine;
 		this.mainFrame = mainFrame;
 	}
 
@@ -21,8 +25,9 @@ public class ExitButtonListener implements ActionListener, KeyListener {
 	public void actionPerformed(ActionEvent e) {
 		JFrame exit = new JFrame();
 		int n = JOptionPane.showConfirmDialog(exit, "Exit the application?", "Exit application confirmation", JOptionPane.YES_NO_OPTION);
-		if (n == 0)
-			System.exit(0);
+		if (n == 0) {
+			((GameEngineClientStub)gameEngine).exitGame();
+		}
 	}
 
 	@Override

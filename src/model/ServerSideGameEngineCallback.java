@@ -3,6 +3,10 @@
  */
 package model;
 
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+
 import model.interfaces.DicePair;
 import model.interfaces.GameEngine;
 import model.interfaces.GameEngineCallback;
@@ -13,44 +17,38 @@ import model.interfaces.Player;
  *
  */
 public class ServerSideGameEngineCallback implements GameEngineCallback {
+	Map<Player, GameEngineCallbackServer> hashMap = new HashMap<Player, GameEngineCallbackServer>();
 
-	/* (non-Javadoc)
-	 * @see model.interfaces.GameEngineCallback#intermediateResult(model.interfaces.Player, model.interfaces.DicePair, model.interfaces.GameEngine)
-	 */
+	public void addToMap(Player player, GameEngineCallbackServer gameEngineCallbackServer) {
+	this.hashMap.put(player, gameEngineCallbackServer);
+}
+	
 	@Override
 	public void intermediateResult(Player player, DicePair dicePair,
-			GameEngine engine) {
-		int total = dicePair.getDice1() + dicePair.getDice2();
-		// need to pass the info to the GUI callback on the client
-		System.out.println(player.getPlayerName() + " ");
-		System.out.println(total + "\n");
+			GameEngine gameEngine) {
+		hashMap.get(player).sendIntermediateResult(dicePair);
 	}
 
-	/* (non-Javadoc)
-	 * @see model.interfaces.GameEngineCallback#result(model.interfaces.Player, model.interfaces.DicePair, model.interfaces.GameEngine)
-	 */
 	@Override
 	public void result(Player player, DicePair result, GameEngine engine) {
-		// TODO Auto-generated method stub
-		
+		hashMap.get(player).sendResult(result);
 	}
 
-	/* (non-Javadoc)
-	 * @see model.interfaces.GameEngineCallback#intermediateHouseResult(model.interfaces.DicePair, model.interfaces.GameEngine)
-	 */
 	@Override
 	public void intermediateHouseResult(DicePair dicePair, GameEngine engine) {
-		// TODO Auto-generated method stub
+		Collection<Player> players = engine.getAllPlayers();
 		
+		for (Player player: players) {
+			hashMap.get(player).sendIntermediateHouseResult(dicePair);
+		}
 	}
 
-	/* (non-Javadoc)
-	 * @see model.interfaces.GameEngineCallback#houseResult(model.interfaces.DicePair, model.interfaces.GameEngine)
-	 */
 	@Override
 	public void houseResult(DicePair result, GameEngine engine) {
-		// TODO Auto-generated method stub
+		Collection<Player> players = engine.getAllPlayers();
 		
+		for (Player player: players) {
+			hashMap.get(player).sendHouseResult(result);
+		}
 	}
-
 }

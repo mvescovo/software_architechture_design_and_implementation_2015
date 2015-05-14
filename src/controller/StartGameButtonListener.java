@@ -11,18 +11,18 @@ import javax.swing.JOptionPane;
 import model.SimplePlayer;
 import model.interfaces.GameEngine;
 import model.interfaces.Player;
+import utility.InputValidation;
 import view.MainFrame;
 
 public class StartGameButtonListener implements ActionListener, KeyListener {
 	GameEngine gameEngine;
 	MainFrame mainFrame;
 	Player player;
-	Controller controller;
+	InputValidation validate;
 	
-	public StartGameButtonListener(GameEngine gameEngine, MainFrame mainFrame, Controller controller) {
+	public StartGameButtonListener(GameEngine gameEngine, MainFrame mainFrame) {
 		this.gameEngine = gameEngine;
 		this.mainFrame = mainFrame;
-		this.controller = controller;
 	}
 	
 	@Override
@@ -35,6 +35,7 @@ public class StartGameButtonListener implements ActionListener, KeyListener {
 		// check name and points are entered correctly before making changes
 		name = mainFrame.getStartGamePanel().getPlayerNameTextField().getText();			
 		
+		// TODO fix up this class!
 		if (!name.isEmpty()) {
 			points = mainFrame.getStartGamePanel().getPlayerPointsTextField().getText();
 			
@@ -69,10 +70,10 @@ public class StartGameButtonListener implements ActionListener, KeyListener {
 				gameEngine.addPlayer(player);
 				
 				// update master controller
-				controller.setCurrPlayer(player);
+//				controller.setCurrPlayer(player);
 				
 				// change view
-				System.out.println("clicked start game");
+//				System.out.println("clicked start game");
 				mainFrame.getTableAndToolbarContainerPanel().setVisible(true);
 				mainFrame.getStartGamePanel().setVisible(false);
 				mainFrame.getPlayerPanel().setVisible(true);
@@ -85,13 +86,13 @@ public class StartGameButtonListener implements ActionListener, KeyListener {
 				mainFrame.getPlayerPanel().showBet();
 				mainFrame.getPlayerPanel().setPoints(points);
 				mainFrame.getPlayerPanel().disableAddPlayerButton();
-				mainFrame.getMenu().getAddPlayerMenuItem().setEnabled(false);
+				mainFrame.getMenu().getStartGameMenuItem().setEnabled(false);
 				mainFrame.getTableAndToolbarContainerPanel().getToolBar().enableBet();
 				mainFrame.getMenu().getplaceBetMenuItem().setEnabled(true);
 				mainFrame.getTableAndToolbarContainerPanel().getToolBar().enableQuit();
 				mainFrame.getMenu().getQuitMenuItem().setEnabled(true);
 				mainFrame.getPlayerPanel().enableAddPoints();
-				System.out.printf("%s%d%s\n", "player has ", player.getPoints(), " points");
+//				System.out.printf("%s%d%s\n", "player has ", player.getPoints(), " points");
 			}
 		} else {
 			JOptionPane.showMessageDialog(mainFrame, "Name empty", "Invalid name", 0);

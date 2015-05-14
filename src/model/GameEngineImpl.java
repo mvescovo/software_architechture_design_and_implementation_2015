@@ -31,6 +31,7 @@ public class GameEngineImpl implements GameEngine {
 				num1 = random.nextInt(NUM_FACES) + minNum;
 				num2 = random.nextInt(NUM_FACES) + minNum;
 				dicePair = new DicePairImpl(num1, num2, NUM_FACES);
+				System.out.println("rolled. sending to callback...");
 				this.gameEngineCallback.intermediateResult(player, dicePair, this);
 				initialDelay += delayIncrement;
 				Thread.sleep(initialDelay);
@@ -100,17 +101,24 @@ public class GameEngineImpl implements GameEngine {
 			int num2 = player.getRollResult().getDice2();
 			int total = num1 + num2;
 			
+			System.out.println("houseTotal: " + houseTotal);
+			System.out.println("playerTotal: " + total);
+			System.out.println("old player points: " + player.getPoints());
+			
 			if (total > houseTotal) {
 				// player won
 				System.out.printf("%s%s\n", player.getPlayerName(), " won");
-				player.setPoints(player.getPoints() + player.getBet() * 2);
+				player.setPoints(player.getPoints() + (player.getBet() * 2));
+				System.out.println("new player points: " + player.getPoints());
 			} else if (total == houseTotal){
 				// draw - return points to player
 				System.out.println("draw");
 				player.setPoints(player.getPoints() + player.getBet());
+				System.out.println("new player points: " + player.getPoints());
 			} else {
 				// player lost.
 				System.out.printf("%s%s\n", player.getPlayerName(), " lost");
+				System.out.println("new player points: " + player.getPoints());
 			}
 		}
 	}
@@ -118,6 +126,10 @@ public class GameEngineImpl implements GameEngine {
 	@Override
 	public void addGameEngineCallback(GameEngineCallback gameEngineCallback) {
 		this.gameEngineCallback = gameEngineCallback;
+	}
+	
+	public GameEngineCallback getGameEngineCallback() {
+		return gameEngineCallback;
 	}
 
 	@Override
@@ -127,14 +139,12 @@ public class GameEngineImpl implements GameEngine {
 
 	@Override
 	public boolean placeBet(Player player, int bet) {
-		try {
-			player.placeBet(bet);
+		if (player.placeBet(bet)) {
 			System.out.println("placed bet on server");
-		} catch (IllegalArgumentException e) {
+			return true;
+		} else {
 			System.out.println("failed to place bet on server");
-			System.err.println(e.getMessage() + player.getPlayerName());
 			return false;
 		}
-		return true;
 	}
 }

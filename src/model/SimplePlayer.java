@@ -37,7 +37,6 @@ public class SimplePlayer implements Player, Serializable {
 	@Override
 	public void setPoints(int points) {
 		this.points = points;
-		
 	}
 
 	@Override
@@ -48,13 +47,13 @@ public class SimplePlayer implements Player, Serializable {
 	@Override
 	public boolean placeBet(int bet) {
 		// pre: bet <= points
-		if (bet > this.points)
-			throw new IllegalArgumentException("Bet too high for: ");
-		
-		this.bet = bet;
-		this.points -= bet;
-		
-		return true;
+		if ((bet > this.points) || (bet < 0)) {
+			return false;
+		} else {
+			this.bet = bet;
+			this.points -= bet;
+			return true;
+		}
 	}
 
 	@Override

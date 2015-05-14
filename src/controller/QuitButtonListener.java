@@ -15,12 +15,10 @@ import view.MainFrame;
 public class QuitButtonListener implements ActionListener, KeyListener {
 	GameEngine gameEngine;
 	MainFrame mainFrame;
-	Controller controller;
 	
-	public QuitButtonListener (GameEngine gameEngine, MainFrame mainFrame, Controller controller) {
+	public QuitButtonListener (GameEngine gameEngine, MainFrame mainFrame) {
 		this.gameEngine = gameEngine;
 		this.mainFrame = mainFrame;
-		this.controller = controller;
 	}
 
 	@Override
@@ -29,10 +27,10 @@ public class QuitButtonListener implements ActionListener, KeyListener {
 		int n = JOptionPane.showConfirmDialog(quit, "Seriously?", "Quit game confirmation", JOptionPane.YES_NO_OPTION);
 		if (n == 0) {
 			// change model
-			gameEngine.removePlayer(controller.getCurrPlayer());
+			gameEngine.removePlayer(null);
 			
 			// update master controller
-			controller.setCurrPlayer(null);
+//			controller.setCurrPlayer(null);
 			
 			// change view
 			mainFrame.getPlayerPanel().setVisible(false);
@@ -52,7 +50,7 @@ public class QuitButtonListener implements ActionListener, KeyListener {
 //			mainFrame.getTableAndToolbarContainerPanel().getGameTablePanel().getDicePanel().getDice1().setText("1");
 //			mainFrame.getTableAndToolbarContainerPanel().getGameTablePanel().getDicePanel().getDice2().setText("1");
 //			mainFrame.getPlayerPanel().enableAddPlayerButton();
-			mainFrame.getMenu().getAddPlayerMenuItem().setEnabled(true);
+			mainFrame.getMenu().getStartGameMenuItem().setEnabled(true);
 //			mainFrame.getPlayerPanel().focusAddPlayerButton();
 			mainFrame.getMenu().getRollPlayerMenuItem().setEnabled(false);
 			mainFrame.getTableAndToolbarContainerPanel().getToolBar().getRollPlayerButton().setEnabled(false);
