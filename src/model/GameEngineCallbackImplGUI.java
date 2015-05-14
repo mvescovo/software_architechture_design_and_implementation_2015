@@ -73,8 +73,6 @@ public class GameEngineCallbackImplGUI implements GameEngineCallback {
 					System.out.println("Am I running on the EDT? " + SwingUtilities.isEventDispatchThread());
 					mainFrame.getTableAndToolbarContainerPanel().getGameTablePanel().getDicePanel().getDice1().setText(Integer.toString(num1));
 					mainFrame.getTableAndToolbarContainerPanel().getGameTablePanel().getDicePanel().getDice2().setText(Integer.toString(num2));
-					// TODO maybe change this part so it's not writing to a GUI object
-					mainFrame.getTableAndToolbarContainerPanel().getGameTablePanel().getGameStatusPanel().setTempPlayerResult(total);
 					mainFrame.getTableAndToolbarContainerPanel().getGameTablePanel().getGameStatusPanel().getPlayerResultLabel().setText(player.getPlayerName() + "'s result: " + total);
 					mainFrame.getTableAndToolbarContainerPanel().getGameTablePanel().getGameStatusPanel().getPlayerResultLabel().setVisible(true);
 					// change view after roll has finished
@@ -94,11 +92,6 @@ public class GameEngineCallbackImplGUI implements GameEngineCallback {
 	public void intermediateHouseResult(DicePair dicePair, GameEngine engine) {
 		final int num1 = dicePair.getDice1();
 		final int num2 = dicePair.getDice2();
-		final int total = num1 + num2;
-		
-		// some console output because it looks cool
-		System.out.print("house intermediate: ");
-		System.out.println(total);
 		
 		// update GUI view
 		try {
@@ -124,13 +117,7 @@ public class GameEngineCallbackImplGUI implements GameEngineCallback {
 		final int num1 = dicePair.getDice1();
 		final int num2 = dicePair.getDice2();
 		final int houseTotal = num1 + num2;
-		// TODO maybe change this part so it's not writing to a GUI object
-		final int playerTotal = mainFrame.getTableAndToolbarContainerPanel().getGameTablePanel().getGameStatusPanel().getTempPlayerResult();
-		
-		// some console output because it looks cool
-		System.out.print("house total: ");
-		System.out.println(houseTotal);
-		
+
 		// update GUI view
 		try {
 			SwingUtilities.invokeAndWait(new Runnable()
@@ -142,32 +129,6 @@ public class GameEngineCallbackImplGUI implements GameEngineCallback {
 					mainFrame.getTableAndToolbarContainerPanel().getGameTablePanel().getDicePanel().getDice2().setText(Integer.toString(num2));
 					mainFrame.getTableAndToolbarContainerPanel().getGameTablePanel().getGameStatusPanel().getHouseResultLabel().setText("House result: " + houseTotal);
 					mainFrame.getTableAndToolbarContainerPanel().getGameTablePanel().getGameStatusPanel().getHouseResultLabel().setVisible(true);
-					if (playerTotal > houseTotal) {
-						mainFrame.getTableAndToolbarContainerPanel().getGameTablePanel().getGameStatusPanel().getGameResultLabel().setText("You won! :)");
-						mainFrame.getTableAndToolbarContainerPanel().getGameTablePanel().getGameStatusPanel().getGameResultLabel().setVisible(true);
-						mainFrame.getTableAndToolbarContainerPanel().getGameTablePanel().getGameStatusPanel().getGameResultLabel().setForeground(new Color(255, 215, 0));
-					} else if (playerTotal == houseTotal) {
-						mainFrame.getTableAndToolbarContainerPanel().getGameTablePanel().getGameStatusPanel().getGameResultLabel().setText("Draw");
-						mainFrame.getTableAndToolbarContainerPanel().getGameTablePanel().getGameStatusPanel().getGameResultLabel().setVisible(true);
-						mainFrame.getTableAndToolbarContainerPanel().getGameTablePanel().getGameStatusPanel().getGameResultLabel().setForeground(Color.WHITE);
-					} else {
-						mainFrame.getTableAndToolbarContainerPanel().getGameTablePanel().getGameStatusPanel().getGameResultLabel().setText("The house won :(");
-						mainFrame.getTableAndToolbarContainerPanel().getGameTablePanel().getGameStatusPanel().getGameResultLabel().setVisible(true);
-						mainFrame.getTableAndToolbarContainerPanel().getGameTablePanel().getGameStatusPanel().getGameResultLabel().setForeground(Color.DARK_GRAY);
-					}
-					
-					mainFrame.getTableAndToolbarContainerPanel().getToolBar().focusActiveBetText();
-					mainFrame.getTableAndToolbarContainerPanel().getGameTablePanel().getGameStatusPanel().getGameStatusLabel().setText("Place another bet to play again");
-					
-					// moved from listener
-					// change view after house has rolled, results calculated, and bet cleared
-					
-					// TODO need to ask the gameEngineImpl about these details
-//					mainFrame.getPlayerPanel().setPoints(Integer.toString(controller.getCurrPlayer().getPoints()));
-//					mainFrame.getPlayerPanel().setBetPoints(controller.getCurrPlayer().getBet());
-					mainFrame.getTableAndToolbarContainerPanel().getToolBar().enableBet();
-					mainFrame.getMenu().getplaceBetMenuItem().setEnabled(true);
-					mainFrame.getTableAndToolbarContainerPanel().getToolBar().focusActiveBetText();
 				}
 			});
 		} catch (InvocationTargetException e) {
@@ -175,5 +136,40 @@ public class GameEngineCallbackImplGUI implements GameEngineCallback {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public void updateResult(Player player) {
+		int oldPoints = Integer.parseInt(mainFrame.getPlayerPanel().getPoints()) + Integer.parseInt(mainFrame.getPlayerPanel().getBetPoints().getText());
+		int newPoints = player.getPoints();
+		
+		System.out.println("oldPoints: " + oldPoints);
+		System.out.println("newPoints: " + newPoints);
+		
+		if (newPoints > oldPoints) {
+			// player won
+			mainFrame.getTableAndToolbarContainerPanel().getGameTablePanel().getGameStatusPanel().getGameResultLabel().setText("You won! :)");
+			mainFrame.getTableAndToolbarContainerPanel().getGameTablePanel().getGameStatusPanel().getGameResultLabel().setVisible(true);
+			mainFrame.getTableAndToolbarContainerPanel().getGameTablePanel().getGameStatusPanel().getGameResultLabel().setForeground(new Color(255, 215, 0));
+		} else if (newPoints == oldPoints) {
+			// draw
+			mainFrame.getTableAndToolbarContainerPanel().getGameTablePanel().getGameStatusPanel().getGameResultLabel().setText("Draw");
+			mainFrame.getTableAndToolbarContainerPanel().getGameTablePanel().getGameStatusPanel().getGameResultLabel().setVisible(true);
+			mainFrame.getTableAndToolbarContainerPanel().getGameTablePanel().getGameStatusPanel().getGameResultLabel().setForeground(Color.WHITE);
+		} else if (newPoints < oldPoints) {
+			// house won
+			mainFrame.getTableAndToolbarContainerPanel().getGameTablePanel().getGameStatusPanel().getGameResultLabel().setText("The house won :(");
+			mainFrame.getTableAndToolbarContainerPanel().getGameTablePanel().getGameStatusPanel().getGameResultLabel().setVisible(true);
+			mainFrame.getTableAndToolbarContainerPanel().getGameTablePanel().getGameStatusPanel().getGameResultLabel().setForeground(Color.DARK_GRAY);
+		}
+		
+		// update GUI points
+		mainFrame.getPlayerPanel().getBetPoints().setText("0");
+		mainFrame.getPlayerPanel().setPoints(Integer.toString(newPoints));
+		
+		mainFrame.getTableAndToolbarContainerPanel().getToolBar().focusActiveBetText();
+		mainFrame.getTableAndToolbarContainerPanel().getGameTablePanel().getGameStatusPanel().getGameStatusLabel().setText("Place another bet to play again");
+		mainFrame.getTableAndToolbarContainerPanel().getToolBar().enableBet();
+		mainFrame.getMenu().getplaceBetMenuItem().setEnabled(true);
+		mainFrame.getTableAndToolbarContainerPanel().getToolBar().focusActiveBetText();
 	}
 }

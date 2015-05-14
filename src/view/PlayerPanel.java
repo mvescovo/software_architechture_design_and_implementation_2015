@@ -138,6 +138,10 @@ public class PlayerPanel extends JPanel {
 		this.points.setText(points);
 	}
 	
+	public String getPoints() {
+		return points.getText();
+	}
+	
 	public void deductPoints(int points) {
 		int currentPoints = Integer.parseInt(this.points.getText());
 		int newPoints = currentPoints - points;
@@ -157,6 +161,10 @@ public class PlayerPanel extends JPanel {
 	public void setBetPoints(int points) {
 		betPointsInt = points;
 		betPoints.setText(Integer.toString(betPointsInt));
+	}
+	
+	public JLabel getBetPoints() {
+		return betPoints;
 	}
 	
 	public void showBet() {

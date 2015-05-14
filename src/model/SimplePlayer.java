@@ -47,13 +47,13 @@ public class SimplePlayer implements Player, Serializable {
 	@Override
 	public boolean placeBet(int bet) {
 		// pre: bet <= points
-		if ((bet > this.points) || (bet < 0))
+		if ((bet > this.points) || (bet < 0)) {
 			return false;
-		
-		this.bet = bet;
-		this.points -= bet;
-		
-		return true;
+		} else {
+			this.bet = bet;
+			this.points -= bet;
+			return true;
+		}
 	}
 
 	@Override

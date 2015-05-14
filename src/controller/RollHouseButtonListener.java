@@ -32,10 +32,6 @@ public class RollHouseButtonListener implements ActionListener, KeyListener {
 			public void run() {
 				// roll house and calculate results
 				gameEngine.calculateResult();
-				
-				// TODO check this is done somewhere else
-				// clear bet
-//				controller.getCurrPlayer().placeBet(0);
 			}
 		});
 		

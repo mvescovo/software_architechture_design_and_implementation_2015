@@ -48,7 +48,7 @@ public class ServerSideGameEngineCallback implements GameEngineCallback {
 		Collection<Player> players = engine.getAllPlayers();
 		
 		for (Player player: players) {
-			hashMap.get(player).sendIntermediateHouseResult(result);
+			hashMap.get(player).sendHouseResult(result);
 		}
 	}
 }

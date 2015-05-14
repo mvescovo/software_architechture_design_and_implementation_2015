@@ -101,17 +101,24 @@ public class GameEngineImpl implements GameEngine {
 			int num2 = player.getRollResult().getDice2();
 			int total = num1 + num2;
 			
+			System.out.println("houseTotal: " + houseTotal);
+			System.out.println("playerTotal: " + total);
+			System.out.println("old player points: " + player.getPoints());
+			
 			if (total > houseTotal) {
 				// player won
 				System.out.printf("%s%s\n", player.getPlayerName(), " won");
-				player.setPoints(player.getPoints() + player.getBet() * 2);
+				player.setPoints(player.getPoints() + (player.getBet() * 2));
+				System.out.println("new player points: " + player.getPoints());
 			} else if (total == houseTotal){
 				// draw - return points to player
 				System.out.println("draw");
 				player.setPoints(player.getPoints() + player.getBet());
+				System.out.println("new player points: " + player.getPoints());
 			} else {
 				// player lost.
 				System.out.printf("%s%s\n", player.getPlayerName(), " lost");
+				System.out.println("new player points: " + player.getPoints());
 			}
 		}
 	}

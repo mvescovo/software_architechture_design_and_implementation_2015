@@ -119,12 +119,14 @@ public class GameEngineServerStub {
 							break;
 						case CALCULATE_RESULT:
 							gameEngine.calculateResult();
+							System.out.println("new points before sending back: " + player.getPoints());
+							// TODO for some reason this object isn't getting sent but no errors either
+							toClientObject.writeObject(player);
 							break;
 						case GET_ALL_PLAYERS:
 							break;
 						case PLACE_BET:
 							bet = fromClientInt.readInt();
-							System.out.println("server stub got bet " + bet);
 							
 							if (gameEngine.placeBet(player, bet)) {
 								command = Command.SUCCESS;

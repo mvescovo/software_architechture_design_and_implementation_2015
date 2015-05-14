@@ -132,6 +132,20 @@ public class GameEngineClientStub implements GameEngine {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		
+		// get the player back to update results
+		try {
+			System.out.println("new player before getting updated version from server points: " + player.getPoints());
+			// TODO player not being updated with the new version!
+			// work around could be to pass the value back instead
+			player = (Player)fromServerObject.readObject();
+			System.out.println("new player from server points: " + player.getPoints());
+			((GameEngineCallbackImplGUI)gameEngineCallback).updateResult(player);
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -175,7 +189,6 @@ public class GameEngineClientStub implements GameEngine {
 	
 	public void addPoints(int points) {
 		player.setPoints(player.getPoints() + points);
-		
 	}
 	
 	public void exitGame() {
