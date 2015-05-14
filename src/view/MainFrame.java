@@ -7,6 +7,7 @@ import javax.swing.*;
 import controller.Controller;
 import model.GameEngineCallbackImplGUI;
 import model.interfaces.GameEngine;
+import model.GameEngineClientStub;
 
 public class MainFrame extends JFrame {
 	private static final long serialVersionUID = -7523238222452192023L;
@@ -20,6 +21,7 @@ public class MainFrame extends JFrame {
 	public MainFrame(GameEngine gameEngine) {
 		this.gameEngine = gameEngine;
 		this.gameEngine.addGameEngineCallback(new GameEngineCallbackImplGUI(this));
+		((GameEngineClientStub)(this.gameEngine)).addGameEngineCallbackToGameEngineCallbackServer();
 		startGamePanel = new StartGamePanel();
 		menu = new Menu();
 		heading = new HeadingPanel();

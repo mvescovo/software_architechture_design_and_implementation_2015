@@ -33,7 +33,7 @@ public class GameEngineServerStub {
 		this.gameEngine = gameEngine;
 		gameEngine.addGameEngineCallback(new ServerSideGameEngineCallback());
 		ServerSocket serverSocket = null;
-		int port = 10000;
+		int port = 10001;
 		
 		// create a server socket
 		try {
@@ -46,8 +46,9 @@ public class GameEngineServerStub {
 		while (true) {
 			try {
 				// listen for a new connection from a client
+				System.out.println("Server listening for connection..");
 				Socket clientSocket = serverSocket.accept();
-				
+
 				// create a new thread for the connection and start it
 				HandleAClient task = new HandleAClient(clientSocket, callbackPort);
 				callbackPort++;
@@ -114,7 +115,7 @@ public class GameEngineServerStub {
 							player = (Player)fromClientObject.readObject();
 							gameEngine.addPlayer(player);
 							// set hashmap to map player to socket in the server side callback
-							((ServerSideGameEngineCallback)((GameEngineImpl)gameEngine).getGameEngineCallback()).addToMap(player, new GameEngineCallbackServer(callbackPort));
+//							((ServerSideGameEngineCallback)((GameEngineImpl)gameEngine).getGameEngineCallback()).addToMap(player, new GameEngineCallbackServer(callbackPort));
 							break;
 						case ADD_POINTS:
 							pointsToAdd = fromClientInt.readInt();

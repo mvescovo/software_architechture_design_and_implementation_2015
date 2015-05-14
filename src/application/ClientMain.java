@@ -16,7 +16,6 @@ public class ClientMain {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				new MainFrame(new GameEngineClientStub());
-//				new MainFrame(new GameEngineImpl());
 			}
 		});
 	}
