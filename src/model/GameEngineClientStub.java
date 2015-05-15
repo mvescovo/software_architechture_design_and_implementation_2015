@@ -22,9 +22,8 @@ import model.interfaces.Player;
  *
  */
 public class GameEngineClientStub implements GameEngine {
+	GameEngineCallback gameEngineCallback = null;
 	GameEngineCallbackServer gameEngineCallbackServer = null;
-	// gameEngine variables
-	public GameEngineCallback gameEngineCallback = null;
 	Player player = null;
 	
 	// socket variables for gameEngineServerStub
@@ -47,7 +46,7 @@ public class GameEngineClientStub implements GameEngine {
 	
 	public GameEngineClientStub() {	
 		// create a GameEngineCallback server
-		gameEngineCallbackServer = new GameEngineCallbackServer();
+		gameEngineCallbackServer = new GameEngineCallbackServer(this);
 		
 		try {
 			// connect to the server
@@ -89,13 +88,14 @@ public class GameEngineClientStub implements GameEngine {
 	public void addPlayer(Player player) {
 		// set local gameEngine player
 		this.player = player;
-		boolean connected = false;
+//		boolean connected = false;
 		
 		// add player to the server
 		try {
 			command = Command.ADD_PLAYER;
 			toServerObject.writeObject(command);
 			toServerObject.writeObject(player);
+			toServerInt.writeInt(this.gameEngineCallbackServer.getPort());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

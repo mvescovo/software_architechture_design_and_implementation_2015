@@ -25,64 +25,110 @@ import model.interfaces.Player;
  */
 public class ServerSideGameEngineCallback implements GameEngineCallback {
 	// socket variables
-	Socket socket;
+//	Socket socket;
 	String serverName = "localhost";
-	int port = 8000;
+//	int port = 0;
 	boolean connected = false;
-	
-	// streams
-	PrintWriter toServer = null;
-	DataOutputStream toServerInt = null;
-	ObjectOutputStream toServerObject = null;
-	ObjectInputStream fromServerObject = null;
-//	BufferedReader fromServer = null;
 	
 	Command command = null;
 	
-	public ServerSideGameEngineCallback() {
-		//create new thread to try and connect to the client server (so this constructor returns)
-		HandleAServer task = new HandleAServer();
-		new Thread(task).start();
-	}
+//	public ServerSideGameEngineCallback() {
+//		//create new thread to try and connect to the client server (so this constructor returns)
+//		HandleAServer task = new HandleAServer();
+//		new Thread(task).start();
+//	}
 	
-	
+	Map<Player, ObjectOutputStream> hashMapObject = new HashMap<Player, ObjectOutputStream>();
+
 //	Map<Player, GameEngineCallbackServer> hashMap = new HashMap<Player, GameEngineCallbackServer>();
 //
 //	public void addToMap(Player player, GameEngineCallbackServer gameEngineCallbackServer) {
 //		this.hashMap.put(player, gameEngineCallbackServer);
 //	}
 	
+	public void connectToServer(Player player, int port) {
+		//create new thread to try and connect to the client server (so this constructor returns)
+		HandleAServer task = new HandleAServer(player, port);
+		new Thread(task).start();
+	}
+	
 	@Override
 	public void intermediateResult(Player player, DicePair dicePair,
 			GameEngine gameEngine) {
+		System.out.println("intermeidate result trying to pass to gameEngineCallbackServer");
 //		hashMap.get(player).sendIntermediateResult(dicePair);
+		command = Command.INTERMEDIATE_RESULT;
+		
+		try {
+			hashMapObject.get(player).writeObject(command);
+			hashMapObject.get(player).writeObject(player);
+			hashMapObject.get(player).writeObject(dicePair);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
 	public void result(Player player, DicePair result, GameEngine engine) {
+		System.out.println("result trying to pass to gameEngineCallbackServer");
 //		hashMap.get(player).sendResult(result);
+		command = Command.RESULT;
+		
+		try {
+			hashMapObject.get(player).writeObject(command);
+			hashMapObject.get(player).writeObject(player);
+			hashMapObject.get(player).writeObject(result);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
 	public void intermediateHouseResult(DicePair dicePair, GameEngine engine) {
-//		Collection<Player> players = engine.getAllPlayers();
-//		
-//		for (Player player: players) {
-//			hashMap.get(player).sendIntermediateHouseResult(dicePair);
-//		}
+		Collection<Player> players = engine.getAllPlayers();
+		command = Command.INTERMEDIATE_HOUSE_RESULT;
+		
+		for (Player player: players) {
+			try {
+				hashMapObject.get(player).writeObject(command);
+				hashMapObject.get(player).writeObject(dicePair);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	@Override
 	public void houseResult(DicePair result, GameEngine engine) {
-//		Collection<Player> players = engine.getAllPlayers();
-//		
-//		for (Player player: players) {
-//			hashMap.get(player).sendHouseResult(result);
-//		}
+		Collection<Player> players = engine.getAllPlayers();
+		command = Command.HOUSE_RESULT;
+		
+		for (Player player: players) {
+			try {
+				hashMapObject.get(player).writeObject(command);
+				hashMapObject.get(player).writeObject(result);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 	
 	private class HandleAServer implements Runnable {
-
+		Player player = null;
+		Socket socket = null;
+		int port = 0;
+		
+		// streams
+//		PrintWriter toServer = null;
+//		DataOutputStream toServerInt = null;
+		ObjectOutputStream toServerObject = null;
+//		ObjectInputStream fromServerObject = null;
+//		BufferedReader fromServer = null;
+		
+		public HandleAServer(Player player, int port) {
+			this.player = player;
+			this.port = port;
+		}
 
 		@Override
 		public void run() {
@@ -94,7 +140,8 @@ public class ServerSideGameEngineCallback implements GameEngineCallback {
 					// setup streams
 //					toServer = new PrintWriter(socket.getOutputStream(), true);
 //					toServerInt = new DataOutputStream(socket.getOutputStream());
-//					toServerObject = new ObjectOutputStream(socket.getOutputStream());
+					toServerObject = new ObjectOutputStream(socket.getOutputStream());
+					hashMapObject.put(player, toServerObject);
 //					fromServerObject = new ObjectInputStream(socket.getInputStream());
 //					fromServer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 					connected = true;

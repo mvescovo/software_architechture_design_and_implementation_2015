@@ -20,6 +20,7 @@ public class RollPlayerButtonListener implements ActionListener, KeyListener {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		// TODO take this out of a new thread but put the gui update on the EDT and put it at the top
 		Thread thread = new Thread(new Runnable() {
 			@Override
 			public void run() {

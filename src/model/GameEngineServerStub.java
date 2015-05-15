@@ -63,6 +63,7 @@ public class GameEngineServerStub {
 	private class HandleAClient implements Runnable {
 		private Socket clientSocket;
 		private int callbackPort;
+		private int callbackServerPort;
 		
 		// streams
 		BufferedReader fromClient = null;
@@ -113,6 +114,8 @@ public class GameEngineServerStub {
 							break;
 						case ADD_PLAYER:
 							player = (Player)fromClientObject.readObject();
+							callbackServerPort = fromClientInt.readInt();
+							((GameEngineImpl)gameEngine).connectCallbackServer(player, callbackServerPort);
 							gameEngine.addPlayer(player);
 							// set hashmap to map player to socket in the server side callback
 //							((ServerSideGameEngineCallback)((GameEngineImpl)gameEngine).getGameEngineCallback()).addToMap(player, new GameEngineCallbackServer(callbackPort));

@@ -36,8 +36,9 @@ public class PlaceBetButtonListener implements ActionListener {
 			try {
 				betInt = Integer.parseInt(bet);
 				
-				// place the bet to the gameEngine
+				// pass the bet to the gameEngine
 				if (gameEngine.placeBet(null, betInt)) {
+					// bet has gone all the way through the chain and back again
 					System.out.println("GUI was told bet ok");
 					
 					// update GUI
@@ -69,6 +70,7 @@ public class PlaceBetButtonListener implements ActionListener {
 						}
 					});
 					
+					// bet has gone all the way through the chain and back again
 					System.out.println("gui was told bet not ok");
 					JOptionPane.showMessageDialog(mainFrame, "Bet must not be less than zero or greater than points.", "Invalid bet", 0);
 					System.out.println("Bet must not be less than zero or greater than points.");

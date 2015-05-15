@@ -4,11 +4,15 @@
 package model;
 
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
 import model.Commands.Command;
+import model.interfaces.DicePair;
+import model.interfaces.GameEngine;
 import model.interfaces.GameEngineCallback;
+import model.interfaces.Player;
 
 /**
  * @author "Michael Vescovo - s3459317"
@@ -16,12 +20,13 @@ import model.interfaces.GameEngineCallback;
  */
 public class GameEngineCallbackServer {
 	GameEngineCallback gameEngineCallback;
-	GameEngineClientStub gameEngineClietStub;
+	GameEngine gameEngine;
 	
-	int port = 8000;
+	int port = 0;
 	ServerSocket serverSocket = null;
 	
-	public GameEngineCallbackServer() {
+	public GameEngineCallbackServer(GameEngine gameEngine) {
+		this.gameEngine = gameEngine;
 		// create a new thread to listen for a connection and handle the client, then start it
 		HandleAClient task = new HandleAClient();
 		new Thread(task).start();
@@ -31,18 +36,26 @@ public class GameEngineCallbackServer {
 		this.gameEngineCallback = gameEngineCallback;
 	}
 	
+	public int getPort() {
+		return port;
+	}
+	
 	private class HandleAClient implements Runnable {
 		private Socket clientSocket = null;
 		
 		// streams
 //		BufferedReader fromClient = null;
 //		DataInputStream fromClientInt = null;
-//		ObjectInputStream fromClientObject = null;
+		ObjectInputStream fromClientObject = null;
 //		ObjectOutputStream toClientObject = null;
 //		DataOutputStream toClientInt = null;
 //		PrintWriter toClient = null;
 		
 		Command command = null;
+		
+		Player player = null;
+		DicePair dicePair = null;
+		
 		
 		boolean quit = false;
 
@@ -51,7 +64,7 @@ public class GameEngineCallbackServer {
 			// create a server socket
 			try {
 				serverSocket = new ServerSocket(port);
-				System.out.println(serverSocket.getLocalPort());
+				port = serverSocket.getLocalPort();
 			} catch(IOException e) {
 				System.out.println("Could not listen on port " + port);
 				System.exit(-1);
@@ -59,11 +72,7 @@ public class GameEngineCallbackServer {
 			
 			try {
 				// listen for a new connection from the server callback
-				System.out.println("client server listening for connection");
-				while(true) {
-					clientSocket = serverSocket.accept();
-				}
-				
+				clientSocket = serverSocket.accept();
 			} catch (IOException e) {
 				System.out.println("Accept failed: " + port);
 				System.exit(-1);
@@ -72,23 +81,73 @@ public class GameEngineCallbackServer {
 			// setup streams
 //			fromClient = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 //			fromClientInt = new DataInputStream(clientSocket.getInputStream());
-//			fromClientObject = new ObjectInputStream(clientSocket.getInputStream());
+			try {
+				fromClientObject = new ObjectInputStream(clientSocket.getInputStream());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 //			toClientObject = new ObjectOutputStream(clientSocket.getOutputStream());
 //			toClientInt = new DataOutputStream(clientSocket.getOutputStream());
 //			toClient = new PrintWriter(clientSocket.getOutputStream(), true);
 			
-			// receive command from server
+			// receive commands from server
 			do {
-//				try {
-//					command = (Command)fromServerObject.readObject();
-//					
-//					switch (command) {
-//						default:
-//							break;
-//					}
-//				} catch (IOException e) {
-//					e.printStackTrace();
-//				}
+				try {
+					command = (Command)fromClientObject.readObject();
+					
+					switch (command) {
+					case ADD_GAME_ENGINE_CALLBACK:
+						break;
+					case ADD_PLAYER:
+						break;
+					case ADD_POINTS:
+						break;
+					case CALCULATE_RESULT:
+						break;
+					case EXIT:
+						break;
+					case FAIL:
+						break;
+					case GET_ALL_PLAYERS:
+						break;
+					case HOUSE_RESULT:
+						dicePair = (DicePair)fromClientObject.readObject();
+						gameEngineCallback.intermediateHouseResult(dicePair, gameEngine);
+						break;
+					case INTERMEDIATE_HOUSE_RESULT:
+						dicePair = (DicePair)fromClientObject.readObject();
+						gameEngineCallback.intermediateHouseResult(dicePair, gameEngine);
+						break;
+					case INTERMEDIATE_RESULT:
+						player = (Player)fromClientObject.readObject();
+						dicePair = (DicePair)fromClientObject.readObject();
+						gameEngineCallback.intermediateResult(player, dicePair, gameEngine);
+						break;
+					case PLACE_BET:
+						break;
+					case QUIT:
+						break;
+					case REMOVE_PLAYER:
+						break;
+					case RESULT:
+						player = (Player)fromClientObject.readObject();
+						dicePair = (DicePair)fromClientObject.readObject();
+						gameEngineCallback.result(player, dicePair, gameEngine);
+						break;
+					case ROLL_HOUSE:
+						break;
+					case ROLL_PLAYER:
+						break;
+					case SUCCESS:
+						break;
+					default:
+						break;
+					}
+				} catch (IOException e) {
+					e.printStackTrace();
+				} catch (ClassNotFoundException e) {
+					e.printStackTrace();
+				}
 			} while (quit == false);
 		}
 	}

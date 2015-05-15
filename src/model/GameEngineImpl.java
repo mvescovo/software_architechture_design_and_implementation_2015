@@ -79,7 +79,7 @@ public class GameEngineImpl implements GameEngine {
 	@Override
 	public void addPlayer(Player player) {
 		this.players.add(player);
-		System.out.println("added player" + player.getPlayerName());
+		System.out.println("added player: " + player.getPlayerName());
 	}
 
 	@Override
@@ -140,11 +140,15 @@ public class GameEngineImpl implements GameEngine {
 	@Override
 	public boolean placeBet(Player player, int bet) {
 		if (player.placeBet(bet)) {
-			System.out.println("placed bet on server");
+			System.out.println("placed bet on server for: " + player.getPlayerName());
 			return true;
 		} else {
-			System.out.println("failed to place bet on server");
+			System.out.println("failed to place bet on server for: " + player.getPlayerName());
 			return false;
 		}
+	}
+	
+	public void connectCallbackServer (Player player, int port) {
+		((ServerSideGameEngineCallback)gameEngineCallback).connectToServer(player, port);
 	}
 }
