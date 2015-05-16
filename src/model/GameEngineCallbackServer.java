@@ -112,7 +112,7 @@ public class GameEngineCallbackServer {
 						break;
 					case HOUSE_RESULT:
 						dicePair = (DicePair)fromClientObject.readObject();
-						gameEngineCallback.intermediateHouseResult(dicePair, gameEngine);
+						gameEngineCallback.houseResult(dicePair, gameEngine);
 						break;
 					case INTERMEDIATE_HOUSE_RESULT:
 						dicePair = (DicePair)fromClientObject.readObject();

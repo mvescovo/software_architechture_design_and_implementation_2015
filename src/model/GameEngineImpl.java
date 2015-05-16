@@ -151,4 +151,8 @@ public class GameEngineImpl implements GameEngine {
 	public void connectCallbackServer (Player player, int port) {
 		((ServerSideGameEngineCallback)gameEngineCallback).connectToServer(player, port);
 	}
+	
+	public void disconnectCallbackServer (Player player) {
+		((ServerSideGameEngineCallback)gameEngineCallback).disconnectToServer(player);
+	}
 }

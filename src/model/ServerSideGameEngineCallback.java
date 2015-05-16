@@ -39,6 +39,7 @@ public class ServerSideGameEngineCallback implements GameEngineCallback {
 //	}
 	
 	Map<Player, ObjectOutputStream> hashMapObject = new HashMap<Player, ObjectOutputStream>();
+	Map<Player, Socket> hashMapSocket = new HashMap<Player, Socket>();
 
 //	Map<Player, GameEngineCallbackServer> hashMap = new HashMap<Player, GameEngineCallbackServer>();
 //
@@ -50,6 +51,15 @@ public class ServerSideGameEngineCallback implements GameEngineCallback {
 		//create new thread to try and connect to the client server (so this constructor returns)
 		HandleAServer task = new HandleAServer(player, port);
 		new Thread(task).start();
+	}
+	
+	public void disconnectToServer(Player player) {
+//		try {
+//			hashMapObject.get(player).close();
+//			hashMapSocket.get(player).close();
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
 	}
 	
 	@Override
@@ -142,6 +152,7 @@ public class ServerSideGameEngineCallback implements GameEngineCallback {
 //					toServerInt = new DataOutputStream(socket.getOutputStream());
 					toServerObject = new ObjectOutputStream(socket.getOutputStream());
 					hashMapObject.put(player, toServerObject);
+					hashMapSocket.put(player, socket);
 //					fromServerObject = new ObjectInputStream(socket.getInputStream());
 //					fromServer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 					connected = true;
@@ -155,7 +166,7 @@ public class ServerSideGameEngineCallback implements GameEngineCallback {
 					}
 				}
 			}
-			
+			connected = false;
 		}
 		
 	}

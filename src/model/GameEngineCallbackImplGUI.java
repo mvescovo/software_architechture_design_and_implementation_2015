@@ -92,7 +92,7 @@ public class GameEngineCallbackImplGUI implements GameEngineCallback {
 	public void intermediateHouseResult(DicePair dicePair, GameEngine engine) {
 		final int num1 = dicePair.getDice1();
 		final int num2 = dicePair.getDice2();
-		
+
 		// update GUI view
 		try {
 			SwingUtilities.invokeAndWait(new Runnable()
@@ -125,6 +125,7 @@ public class GameEngineCallbackImplGUI implements GameEngineCallback {
 				@Override
 				public void run()
 				{
+					System.out.println("trying to update dice for house result on GUI");
 					mainFrame.getTableAndToolbarContainerPanel().getGameTablePanel().getDicePanel().getDice1().setText(Integer.toString(num1));
 					mainFrame.getTableAndToolbarContainerPanel().getGameTablePanel().getDicePanel().getDice2().setText(Integer.toString(num2));
 					mainFrame.getTableAndToolbarContainerPanel().getGameTablePanel().getGameStatusPanel().getHouseResultLabel().setText("House result: " + houseTotal);

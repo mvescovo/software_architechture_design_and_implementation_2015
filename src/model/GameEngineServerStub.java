@@ -156,6 +156,14 @@ public class GameEngineServerStub {
 							clientSocket.close();
 							break;
 						case REMOVE_PLAYER:
+							if (gameEngine.removePlayer(player)) {
+								command = Command.SUCCESS;
+								((GameEngineImpl)gameEngine).disconnectCallbackServer(player);
+								toClientObject.writeObject(command);
+							} else {
+								command = Command.FAIL;
+								toClientObject.writeObject(command);
+							}
 							break;
 						case ROLL_HOUSE:
 							gameEngine.calculateResult();

@@ -94,6 +94,7 @@ public class GameEngineClientStub implements GameEngine {
 		try {
 			command = Command.ADD_PLAYER;
 			toServerObject.writeObject(command);
+			toServerObject.reset();
 			toServerObject.writeObject(player);
 			toServerInt.writeInt(this.gameEngineCallbackServer.getPort());
 		} catch (IOException e) {
@@ -122,8 +123,23 @@ public class GameEngineClientStub implements GameEngine {
 
 	@Override
 	public boolean removePlayer(Player player) {
-		// TODO Auto-generated method stub
-		return false;
+		boolean isSuccess = false;
+		
+		try {
+			command = Command.REMOVE_PLAYER;
+			toServerObject.writeObject(command);
+			command = (Command)fromServerObject.readObject();
+			
+			if (command == Command.SUCCESS) {
+				isSuccess = true;
+			} else {
+				isSuccess = false;
+			}
+		} catch (IOException | ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		
+		return isSuccess;
 	}
 
 	@Override
