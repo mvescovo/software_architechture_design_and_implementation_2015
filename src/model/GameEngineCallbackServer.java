@@ -140,6 +140,14 @@ public class GameEngineCallbackServer {
 						break;
 					case SUCCESS:
 						break;
+					case UPDATE_RESULT:
+						player = (Player)fromClientObject.readObject();
+						((GameEngineCallbackImplGUI)gameEngineCallback).updateResult(player);
+						break;
+					case DISABLE_HOUSE:
+						((GameEngineCallbackImplGUI)gameEngineCallback).disableHouse();
+						System.out.println("trying to disable the house button");
+						break;
 					default:
 						break;
 					}

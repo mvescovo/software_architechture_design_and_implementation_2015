@@ -5,6 +5,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -72,7 +74,7 @@ public class QuitButtonListener implements ActionListener, KeyListener {
 	@Override
 	public void keyPressed(KeyEvent e) {
 		if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-			mainFrame.getTableAndToolbarContainerPanel().getToolBar().clickQuit();;
+			mainFrame.getTableAndToolbarContainerPanel().getToolBar().clickQuit();
 		}
 	}
 

@@ -74,17 +74,8 @@ public class Controller {
 		this.mainFrame.getMenu().getRollHouseMenuItem().addActionListener(rollHouseButtonListener);
 		this.mainFrame.getMenu().getQuitMenuItem().addActionListener(quitButtonListener);
 		this.mainFrame.getMenu().getExitMenuItem().addActionListener(exitButtonListener);
+		
+		// window listener
+		this.mainFrame.addWindowListener(exitButtonListener);
 	}
-	
-//	protected void setCurrPlayer(Player player) {
-//		this.player = player;
-//	}
-//	
-//	protected Player getCurrPlayer() {
-//		return player;
-//	}
-//	
-//	protected void printCurrPlayerName() {
-//		System.out.println(player.getPlayerName());
-//	}
 }

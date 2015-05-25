@@ -123,6 +123,28 @@ public class ServerSideGameEngineCallback implements GameEngineCallback {
 		}
 	}
 	
+	public void updateResult(Player player, GameEngine gameEngine) {
+		command = Command.UPDATE_RESULT;
+		
+		try {
+			hashMapObject.get(player).writeObject(command);
+			hashMapObject.get(player).reset();
+			hashMapObject.get(player).writeObject(player);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void disableRollHouse(Player player) {
+		command = Command.DISABLE_HOUSE;
+		
+		try {
+			hashMapObject.get(player).writeObject(command);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	private class HandleAServer implements Runnable {
 		Player player = null;
 		Socket socket = null;

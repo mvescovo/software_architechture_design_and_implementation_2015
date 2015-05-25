@@ -13,8 +13,7 @@ import java.util.Random;
 public class GameEngineImpl implements GameEngine {
 	Collection<Player> players = new ArrayList<Player>();
 	GameEngineCallback gameEngineCallback;
-	private int houseTotal;
-	public Player currPlayer;
+	private volatile int houseTotal;
 	
 	@Override
 	public void rollPlayer(Player player, int initialDelay, int finalDelay,
@@ -93,14 +92,20 @@ public class GameEngineImpl implements GameEngine {
 	}
 
 	@Override
-	public void calculateResult() {
-		this.rollHouse(1, 200, 20);
+	public synchronized void calculateResult() {
+		// callback to disable roll house for all players
+		for (Player player: players) {
+			((ServerSideGameEngineCallback)gameEngineCallback).disableRollHouse(player);
+		}
 		
+		this.rollHouse(1, 500, 20);
+		
+		// calculate results and send to players
 		for (Player player: players) {
 			int num1 = player.getRollResult().getDice1();
 			int num2 = player.getRollResult().getDice2();
 			int total = num1 + num2;
-			
+						
 			System.out.println("houseTotal: " + houseTotal);
 			System.out.println("playerTotal: " + total);
 			System.out.println("old player points: " + player.getPoints());
@@ -120,6 +125,8 @@ public class GameEngineImpl implements GameEngine {
 				System.out.printf("%s%s\n", player.getPlayerName(), " lost");
 				System.out.println("new player points: " + player.getPoints());
 			}
+			
+			((ServerSideGameEngineCallback)gameEngineCallback).updateResult(player, this);
 		}
 	}
 

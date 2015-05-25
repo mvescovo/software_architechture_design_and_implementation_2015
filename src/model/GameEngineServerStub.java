@@ -127,10 +127,6 @@ public class GameEngineServerStub {
 							break;
 						case CALCULATE_RESULT:
 							gameEngine.calculateResult();
-							System.out.println("new points before sending back: " + player.getPoints());
-							// TODO for some reason this object isn't getting sent but no errors either
-							toClientObject.reset();
-							toClientObject.writeObject(player);
 							break;
 						case GET_ALL_PLAYERS:
 							break;
@@ -166,7 +162,7 @@ public class GameEngineServerStub {
 							}
 							break;
 						case ROLL_HOUSE:
-							gameEngine.calculateResult();
+//							gameEngine.calculateResult();
 							break;
 						case ROLL_PLAYER:
 							initialDelay = fromClientInt.readInt();

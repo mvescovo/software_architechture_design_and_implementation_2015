@@ -31,17 +31,12 @@ public class GameEngineClientStub implements GameEngine {
 	String serverName = "localhost";
 	int port = 10001;
 	
-	// socket variables for gameEngineCallbackServer
-//	Socket socketCallback;
-//	int portCallback = 10001;
-	
 	// streams for gameEngineServerStub
-	PrintWriter toServer = null;
 	DataOutputStream toServerInt = null;
 	ObjectOutputStream toServerObject = null;
 	ObjectInputStream fromServerObject = null;
-//	BufferedReader fromServer = null;
 	
+	AddPlayerCommand addPlayerCommand = null;
 	Command command = null;
 	
 	public GameEngineClientStub() {	
@@ -53,15 +48,15 @@ public class GameEngineClientStub implements GameEngine {
 			socket = new Socket(serverName, port);
 			
 			// setup streams
-			toServer = new PrintWriter(socket.getOutputStream(), true);
 			toServerInt = new DataOutputStream(socket.getOutputStream());
 			toServerObject = new ObjectOutputStream(socket.getOutputStream());
 			fromServerObject = new ObjectInputStream(socket.getInputStream());
-//			fromServer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 		} catch (IOException e) {
 			System.out.println("Could not connect to server: " + e.getMessage());
 			System.exit(-1);
 		}
+		
+		addPlayerCommand = new AddPlayerCommand();
 	}
 
 	@Override
@@ -100,25 +95,6 @@ public class GameEngineClientStub implements GameEngine {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
-		// connect to gameEngineCallbackServer
-//		while (!connected) {
-//			try {
-//				socketCallback = new Socket(serverName, portCallback);
-//				HandleServerCallback task = new HandleServerCallback(socket, this);
-//				new Thread(task).start();
-//				System.out.println("Connected to callbacksocket");
-//				connected = true;
-//			} catch (IOException e) {
-//				System.out.println("Could not connect to server: " + e.getMessage());
-//				try {
-//					System.out.println("Sleeping for 35 ms");
-//					Thread.sleep(35);
-//				} catch (InterruptedException e1) {
-//					e1.printStackTrace();
-//				}
-//			}
-//		}
 	}
 
 	@Override
@@ -151,20 +127,6 @@ public class GameEngineClientStub implements GameEngine {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
-		// get the player back to update results
-		try {
-			System.out.println("new player before getting updated version from server points: " + player.getPoints());
-			// TODO player not being updated with the new version!
-			// work around could be to pass the value back instead
-			player = (Player)fromServerObject.readObject();
-			System.out.println("new player from server points: " + player.getPoints());
-			((GameEngineCallbackImplGUI)gameEngineCallback).updateResult(player);
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 	}
 
 	@Override
@@ -174,7 +136,7 @@ public class GameEngineClientStub implements GameEngine {
 
 	@Override
 	public Collection<Player> getAllPlayers() {
-		
+		// TODO add a comment about this
 		return null;
 	}
 
@@ -234,94 +196,4 @@ public class GameEngineClientStub implements GameEngine {
 			e.printStackTrace();
 		}
 	}
-	
-//	public class HandleServerCallback implements Runnable {
-//		private Socket socket;
-//		GameEngine gameEngine = null;
-//		
-//		// streams for gameEngineCallbackServer
-//		PrintWriter toServerCallback = null;
-//		DataOutputStream toServerIntCallback = null;
-//		ObjectOutputStream toServerObjectCallback = null;
-//		ObjectInputStream fromServerObjectCallback = null;
-////		BufferedReader fromServer = null;
-//		
-//		Command command = null;
-//
-//		DicePair dicePair = null;
-//		
-//		// create a new thread
-//		public HandleServerCallback(Socket socket, GameEngine gameEngine) {
-//			this.socket = socket;
-//			this.gameEngine = gameEngine;
-//		}
-//		
-//		@Override
-//		public void run() {
-////			try {
-////				// setup streams
-////				toServerCallback = new PrintWriter(socketCallback.getOutputStream(), true);
-////				toServerIntCallback = new DataOutputStream(socketCallback.getOutputStream());
-////				toServerObjectCallback = new ObjectOutputStream(socketCallback.getOutputStream());
-////				fromServerObjectCallback = new ObjectInputStream(socketCallback.getInputStream());
-//////				fromServer = new BufferedReader(new InputStreamReader(socketCallback.getInputStream()));
-////				
-////			} catch (IOException e) {
-////				System.out.println("Read failed: " + e.getMessage());
-////				System.exit(-1);
-////			}
-//
-//			// receive commands from server callback
-//			do {
-//				try {
-//					command = (Command)fromServerObjectCallback.readObject();
-//					
-//					switch (command) {
-//						case ADD_GAME_ENGINE_CALLBACK:
-//							break;
-//						case ADD_PLAYER:
-//							break;
-//						case ADD_POINTS:
-//							break;
-//						case CALCULATE_RESULT:
-//							break;
-//						case GET_ALL_PLAYERS:
-//							break;
-//						case PLACE_BET:
-//							break;
-//						case QUIT:
-//							break;
-//						case REMOVE_PLAYER:
-//							break;
-//						case ROLL_HOUSE:
-//							break;
-//						case ROLL_PLAYER:
-//							break;
-//						case INTERMEDIATE_RESULT:
-//							dicePair = (DicePair)fromServerObjectCallback.readObject();
-//							((GameEngineClientStub)gameEngine).gameEngineCallback.intermediateResult(player, dicePair, gameEngine);
-//							break;
-//						case RESULT:
-//							dicePair = (DicePair)fromServerObjectCallback.readObject();
-//							((GameEngineClientStub)gameEngine).gameEngineCallback.result(player, dicePair, gameEngine);
-//							break;
-//						case INTERMEDIATE_HOUSE_RESULT:
-//							dicePair = (DicePair)fromServerObjectCallback.readObject();
-//							((GameEngineClientStub)gameEngine).gameEngineCallback.intermediateHouseResult(dicePair, gameEngine);
-//							break;
-//						case HOUSE_RESULT:
-//							dicePair = (DicePair)fromServerObjectCallback.readObject();
-//							((GameEngineClientStub)gameEngine).gameEngineCallback.houseResult(dicePair, gameEngine);
-//							break;
-//						default:
-//							break;
-//					}
-//				} catch (ClassNotFoundException e) {
-//					e.printStackTrace();
-//				} catch (IOException e) {
-//					e.printStackTrace();
-//				}
-//			} while (true);
-//		}
-//	}
 }

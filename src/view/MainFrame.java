@@ -39,7 +39,7 @@ public class MainFrame extends JFrame {
 		setSize(600, 420);
 //		setLocation(1200, 300);
 		setLocationRelativeTo(null);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 //		setResizable(false);
 		new Controller(this.gameEngine, this);
 		setVisible(true);

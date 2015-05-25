@@ -125,7 +125,6 @@ public class GameEngineCallbackImplGUI implements GameEngineCallback {
 				@Override
 				public void run()
 				{
-					System.out.println("trying to update dice for house result on GUI");
 					mainFrame.getTableAndToolbarContainerPanel().getGameTablePanel().getDicePanel().getDice1().setText(Integer.toString(num1));
 					mainFrame.getTableAndToolbarContainerPanel().getGameTablePanel().getDicePanel().getDice2().setText(Integer.toString(num2));
 					mainFrame.getTableAndToolbarContainerPanel().getGameTablePanel().getGameStatusPanel().getHouseResultLabel().setText("House result: " + houseTotal);
@@ -140,37 +139,58 @@ public class GameEngineCallbackImplGUI implements GameEngineCallback {
 	}
 	
 	public void updateResult(Player player) {
-		int oldPoints = Integer.parseInt(mainFrame.getPlayerPanel().getPoints()) + Integer.parseInt(mainFrame.getPlayerPanel().getBetPoints().getText());
-		int newPoints = player.getPoints();
+		final int oldPoints = Integer.parseInt(mainFrame.getPlayerPanel().getPoints()) + Integer.parseInt(mainFrame.getPlayerPanel().getBetPoints().getText());
+		final int newPoints = player.getPoints();
 		
 		System.out.println("oldPoints: " + oldPoints);
 		System.out.println("newPoints: " + newPoints);
 		
-		if (newPoints > oldPoints) {
-			// player won
-			mainFrame.getTableAndToolbarContainerPanel().getGameTablePanel().getGameStatusPanel().getGameResultLabel().setText("You won! :)");
-			mainFrame.getTableAndToolbarContainerPanel().getGameTablePanel().getGameStatusPanel().getGameResultLabel().setVisible(true);
-			mainFrame.getTableAndToolbarContainerPanel().getGameTablePanel().getGameStatusPanel().getGameResultLabel().setForeground(new Color(255, 215, 0));
-		} else if (newPoints == oldPoints) {
-			// draw
-			mainFrame.getTableAndToolbarContainerPanel().getGameTablePanel().getGameStatusPanel().getGameResultLabel().setText("Draw");
-			mainFrame.getTableAndToolbarContainerPanel().getGameTablePanel().getGameStatusPanel().getGameResultLabel().setVisible(true);
-			mainFrame.getTableAndToolbarContainerPanel().getGameTablePanel().getGameStatusPanel().getGameResultLabel().setForeground(Color.WHITE);
-		} else if (newPoints < oldPoints) {
-			// house won
-			mainFrame.getTableAndToolbarContainerPanel().getGameTablePanel().getGameStatusPanel().getGameResultLabel().setText("The house won :(");
-			mainFrame.getTableAndToolbarContainerPanel().getGameTablePanel().getGameStatusPanel().getGameResultLabel().setVisible(true);
-			mainFrame.getTableAndToolbarContainerPanel().getGameTablePanel().getGameStatusPanel().getGameResultLabel().setForeground(Color.DARK_GRAY);
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				if (newPoints > oldPoints) {
+					// player won
+					mainFrame.getTableAndToolbarContainerPanel().getGameTablePanel().getGameStatusPanel().getGameResultLabel().setText("You won! :)");
+					mainFrame.getTableAndToolbarContainerPanel().getGameTablePanel().getGameStatusPanel().getGameResultLabel().setVisible(true);
+					mainFrame.getTableAndToolbarContainerPanel().getGameTablePanel().getGameStatusPanel().getGameResultLabel().setForeground(new Color(255, 215, 0));
+				} else if (newPoints == oldPoints) {
+					// draw
+					mainFrame.getTableAndToolbarContainerPanel().getGameTablePanel().getGameStatusPanel().getGameResultLabel().setText("Draw");
+					mainFrame.getTableAndToolbarContainerPanel().getGameTablePanel().getGameStatusPanel().getGameResultLabel().setVisible(true);
+					mainFrame.getTableAndToolbarContainerPanel().getGameTablePanel().getGameStatusPanel().getGameResultLabel().setForeground(Color.WHITE);
+				} else if (newPoints < oldPoints) {
+					// house won
+					mainFrame.getTableAndToolbarContainerPanel().getGameTablePanel().getGameStatusPanel().getGameResultLabel().setText("The house won :(");
+					mainFrame.getTableAndToolbarContainerPanel().getGameTablePanel().getGameStatusPanel().getGameResultLabel().setVisible(true);
+					mainFrame.getTableAndToolbarContainerPanel().getGameTablePanel().getGameStatusPanel().getGameResultLabel().setForeground(Color.DARK_GRAY);
+				}
+				
+				// update GUI points
+				mainFrame.getPlayerPanel().getBetPoints().setText("0");
+				mainFrame.getPlayerPanel().setPoints(Integer.toString(newPoints));
+				
+				mainFrame.getTableAndToolbarContainerPanel().getToolBar().focusActiveBetText();
+				mainFrame.getTableAndToolbarContainerPanel().getGameTablePanel().getGameStatusPanel().getGameStatusLabel().setText("Place another bet to play again");
+				mainFrame.getTableAndToolbarContainerPanel().getToolBar().enableBet();
+				mainFrame.getMenu().getplaceBetMenuItem().setEnabled(true);
+				mainFrame.getTableAndToolbarContainerPanel().getToolBar().focusActiveBetText();
+			}
+		});
+	}
+	
+	public void disableHouse() {
+		try {
+			SwingUtilities.invokeAndWait(new Runnable() {
+				@Override
+				public void run()
+				{
+					// disable roll house button for all players that didn't roll
+					mainFrame.getTableAndToolbarContainerPanel().getToolBar().getRollHouseButton().setEnabled(false);
+					mainFrame.getMenu().getRollHouseMenuItem().setEnabled(false);
+				}
+			});
+		} catch (InvocationTargetException | InterruptedException e) {
+			e.printStackTrace();
 		}
-		
-		// update GUI points
-		mainFrame.getPlayerPanel().getBetPoints().setText("0");
-		mainFrame.getPlayerPanel().setPoints(Integer.toString(newPoints));
-		
-		mainFrame.getTableAndToolbarContainerPanel().getToolBar().focusActiveBetText();
-		mainFrame.getTableAndToolbarContainerPanel().getGameTablePanel().getGameStatusPanel().getGameStatusLabel().setText("Place another bet to play again");
-		mainFrame.getTableAndToolbarContainerPanel().getToolBar().enableBet();
-		mainFrame.getMenu().getplaceBetMenuItem().setEnabled(true);
-		mainFrame.getTableAndToolbarContainerPanel().getToolBar().focusActiveBetText();
 	}
 }
