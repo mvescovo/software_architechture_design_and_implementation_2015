@@ -3,11 +3,8 @@
  */
 package model;
 
-import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Collection;
 import java.util.HashMap;
@@ -25,11 +22,8 @@ import model.interfaces.Player;
  */
 public class ServerSideGameEngineCallback implements GameEngineCallback {
 	// socket variables
-//	Socket socket;
 	String serverName = "localhost";
-//	int port = 0;
 	boolean connected = false;
-	
 	Command command = null;
 	
 //	public ServerSideGameEngineCallback() {

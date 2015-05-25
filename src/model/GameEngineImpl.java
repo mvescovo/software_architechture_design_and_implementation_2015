@@ -162,4 +162,12 @@ public class GameEngineImpl implements GameEngine {
 	public void disconnectCallbackServer (Player player) {
 		((ServerSideGameEngineCallback)gameEngineCallback).disconnectToServer(player);
 	}
+
+	public void addPoints(Player player, int points) {
+		for (Player currPlayer: players) {
+			if (currPlayer == player) {
+				currPlayer.setPoints(currPlayer.getPoints() + points);
+			}
+		}
+	}
 }

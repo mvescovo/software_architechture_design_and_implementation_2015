@@ -37,7 +37,15 @@ public class GameEngineClientStub implements GameEngine {
 	ObjectInputStream fromServerObject = null;
 	
 	AddPlayerCommand addPlayerCommand = null;
-	Command command = null;
+	AddPointsCommand addPointsCommand = null;
+	CalculateResultsCommand calculateResultsCommand = null;
+	GetAllPlayersCommand getAllPlayerCommand = null;
+	PlaceBetCommand placeBetCommand = null;
+	QuitCommand quitCommand = null;
+	ExitCommand exitCommand = null;
+	RemovePlayerCommand removePlayerCommand = null;
+	RollPlayerCommand rollPlayerCommand = null;
+	Response response = null;
 	
 	public GameEngineClientStub() {	
 		// create a GameEngineCallback server
@@ -48,15 +56,12 @@ public class GameEngineClientStub implements GameEngine {
 			socket = new Socket(serverName, port);
 			
 			// setup streams
-			toServerInt = new DataOutputStream(socket.getOutputStream());
 			toServerObject = new ObjectOutputStream(socket.getOutputStream());
 			fromServerObject = new ObjectInputStream(socket.getInputStream());
 		} catch (IOException e) {
 			System.out.println("Could not connect to server: " + e.getMessage());
 			System.exit(-1);
 		}
-		
-		addPlayerCommand = new AddPlayerCommand();
 	}
 
 	@Override
@@ -64,11 +69,8 @@ public class GameEngineClientStub implements GameEngine {
 			int delayIncrement) {
 		// send the roll to the server
 		try {
-			command = Command.ROLL_PLAYER;
-			toServerObject.writeObject(command);
-			toServerInt.writeInt(initialDelay);
-			toServerInt.writeInt(finalDelay);
-			toServerInt.writeInt(delayIncrement);
+			rollPlayerCommand = new RollPlayerCommand(player, initialDelay, finalDelay, delayIncrement);
+			toServerObject.writeObject(rollPlayerCommand);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -83,15 +85,11 @@ public class GameEngineClientStub implements GameEngine {
 	public void addPlayer(Player player) {
 		// set local gameEngine player
 		this.player = player;
-//		boolean connected = false;
+		addPlayerCommand = new AddPlayerCommand(player, this.gameEngineCallbackServer.getPort());
 		
 		// add player to the server
 		try {
-			command = Command.ADD_PLAYER;
-			toServerObject.writeObject(command);
-			toServerObject.reset();
-			toServerObject.writeObject(player);
-			toServerInt.writeInt(this.gameEngineCallbackServer.getPort());
+			toServerObject.writeObject(addPlayerCommand);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -100,13 +98,13 @@ public class GameEngineClientStub implements GameEngine {
 	@Override
 	public boolean removePlayer(Player player) {
 		boolean isSuccess = false;
+		removePlayerCommand = new RemovePlayerCommand(player);
 		
 		try {
-			command = Command.REMOVE_PLAYER;
-			toServerObject.writeObject(command);
-			command = (Command)fromServerObject.readObject();
+			toServerObject.writeObject(removePlayerCommand);
+			response = (Response)fromServerObject.readObject();
 			
-			if (command == Command.SUCCESS) {
+			if (response.getResponse()) {
 				isSuccess = true;
 			} else {
 				isSuccess = false;
@@ -122,8 +120,8 @@ public class GameEngineClientStub implements GameEngine {
 	public void calculateResult() {
 		// request server to calculate results (including roll house)
 		try {
-			command = Command.CALCULATE_RESULT;
-			toServerObject.writeObject(command);
+			calculateResultsCommand = new CalculateResultsCommand();
+			toServerObject.writeObject(calculateResultsCommand);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -136,7 +134,7 @@ public class GameEngineClientStub implements GameEngine {
 
 	@Override
 	public Collection<Player> getAllPlayers() {
-		// TODO add a comment about this
+		// TODO implement this
 		return null;
 	}
 
@@ -145,12 +143,11 @@ public class GameEngineClientStub implements GameEngine {
 		boolean betOk = false;
 		
 		try {
-			command = Command.PLACE_BET;
-			toServerObject.writeObject(command);
-			toServerInt.writeInt(bet);
-			command = (Command)fromServerObject.readObject();
+			placeBetCommand = new PlaceBetCommand(this.player, bet);
+			toServerObject.writeObject(placeBetCommand);
+			response = (Response)fromServerObject.readObject();
 			
-			if (command == Command.SUCCESS) {
+			if (response.getResponse()) {
 				betOk = true;
 			} else {
 				betOk = false;
@@ -169,17 +166,17 @@ public class GameEngineClientStub implements GameEngine {
 	}
 	
 	public void addPoints(int points) {
+		// update local player
 		player.setPoints(player.getPoints() + points);
-		// send new version to server
+		
+		addPointsCommand = new AddPointsCommand(player, points);
+		
+		// send points to server version
 		try {
-			command = Command.ADD_POINTS;
-			toServerObject.writeObject(command);
-			toServerInt.writeInt(points);
-			
+			toServerObject.writeObject(addPointsCommand);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
 	}
 	
 	public void addGameEngineCallbackToGameEngineCallbackServer() {
@@ -187,10 +184,10 @@ public class GameEngineClientStub implements GameEngine {
 	}
 	
 	public void exitGame() {
-		command = Command.EXIT;
+		exitCommand = new ExitCommand();
 		
 		try {
-			toServerObject.writeObject(command);
+			toServerObject.writeObject(exitCommand);
 			System.exit(0);
 		} catch (IOException e) {
 			e.printStackTrace();
