@@ -7,12 +7,9 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Collection;
 
-import model.Commands.Command;
-import model.interfaces.DicePair;
 import model.interfaces.GameEngine;
 import model.interfaces.GameEngineCallback;
 import model.interfaces.Player;
@@ -36,6 +33,7 @@ public class GameEngineClientStub implements GameEngine {
 	ObjectOutputStream toServerObject = null;
 	ObjectInputStream fromServerObject = null;
 	
+	// command objects for communicating with the server
 	AddPlayerCommand addPlayerCommand = null;
 	AddPointsCommand addPointsCommand = null;
 	CalculateResultsCommand calculateResultsCommand = null;
@@ -85,7 +83,11 @@ public class GameEngineClientStub implements GameEngine {
 	public void addPlayer(Player player) {
 		// set local gameEngine player
 		this.player = player;
-		addPlayerCommand = new AddPlayerCommand(player, this.gameEngineCallbackServer.getPort());
+		
+		// start the GameEngineCallbackServer so the client can receive callbacks
+		gameEngineCallbackServer.startServer();
+		
+		addPlayerCommand = new AddPlayerCommand(player, gameEngineCallbackServer.getPort());
 		
 		// add player to the server
 		try {
@@ -192,5 +194,9 @@ public class GameEngineClientStub implements GameEngine {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public GameEngineCallback getGameEngineCallback() {
+		return gameEngineCallback;
 	}
 }

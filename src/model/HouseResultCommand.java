@@ -6,14 +6,20 @@ package model;
 import java.io.Serializable;
 
 import model.interfaces.CommandInterface;
+import model.interfaces.DicePair;
 import model.interfaces.GameEngine;
 
 /**
  * @author "Michael Vescovo - s3459317"
  *
  */
-public class GetAllPlayersCommand implements Serializable, CommandInterface {
-	private static final long serialVersionUID = 3947096863737072918L;
+public class HouseResultCommand implements Serializable, CommandInterface {
+	private static final long serialVersionUID = 2831773661962563318L;
+	private DicePair dicePair = null;
+	
+	public HouseResultCommand(DicePair dicePair) {
+		this.dicePair = dicePair;
+	}
 
 	@Override
 	public void execute(GameEngine gameEngine, HandleAClient handleAClient) {
@@ -22,7 +28,6 @@ public class GetAllPlayersCommand implements Serializable, CommandInterface {
 
 	@Override
 	public void execute(GameEngine gameEngine, HandleAClient2 handleAClient) {
-		// TODO Auto-generated method stub
-		
+		((GameEngineClientStub)gameEngine).getGameEngineCallback().houseResult(dicePair, gameEngine);
 	}
 }

@@ -5,7 +5,6 @@ package model;
 
 import java.io.Serializable;
 
-import model.GameEngineServerStub.HandleAClient;
 import model.interfaces.CommandInterface;
 import model.interfaces.GameEngine;
 import model.interfaces.Player;
@@ -28,16 +27,15 @@ public class AddPlayerCommand implements CommandInterface, Serializable {
 		return player;
 	}
 	
-//	public void setPlayer(Player player) {
-//		this.player = player;
-//	}
-//	
 	@Override
 	public void execute(GameEngine gameEngine, HandleAClient handleAClient) {
-//		addPlayerOnServerStub(player, port);
-		System.out.println("got add player object");
 		((GameEngineImpl)gameEngine).connectCallbackServer(player, port);
+		System.out.println("add player connected call back server and will now try to add player");
 		gameEngine.addPlayer(player);
-		
+	}
+
+	@Override
+	public void execute(GameEngine gameEngine, HandleAClient2 handleAClient) {
+		// TODO Auto-generated method stub
 	}
 }

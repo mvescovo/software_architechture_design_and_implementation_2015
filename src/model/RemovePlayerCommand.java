@@ -6,7 +6,6 @@ package model;
 import java.io.IOException;
 import java.io.Serializable;
 
-import model.GameEngineServerStub.HandleAClient;
 import model.interfaces.CommandInterface;
 import model.interfaces.GameEngine;
 import model.interfaces.Player;
@@ -38,5 +37,11 @@ public class RemovePlayerCommand implements Serializable, CommandInterface {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	@Override
+	public void execute(GameEngine gameEngine, HandleAClient2 handleAClient) {
+		// TODO Auto-generated method stub
+		
 	}
 }

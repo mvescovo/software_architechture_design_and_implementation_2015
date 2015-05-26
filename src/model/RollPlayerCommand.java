@@ -5,7 +5,6 @@ package model;
 
 import java.io.Serializable;
 
-import model.GameEngineServerStub.HandleAClient;
 import model.interfaces.CommandInterface;
 import model.interfaces.GameEngine;
 import model.interfaces.Player;
@@ -32,5 +31,11 @@ public class RollPlayerCommand implements Serializable, CommandInterface {
 	@Override
 	public void execute(GameEngine gameEngine, HandleAClient handleAClient) {
 		gameEngine.rollPlayer(player, initialDelay, finalDelay, delayIncrement);
+	}
+
+	@Override
+	public void execute(GameEngine gameEngine, HandleAClient2 handleAClient) {
+		// TODO Auto-generated method stub
+		
 	}
 }

@@ -5,7 +5,6 @@ package model;
 
 import java.io.Serializable;
 
-import model.GameEngineServerStub.HandleAClient;
 import model.interfaces.CommandInterface;
 import model.interfaces.GameEngine;
 
@@ -19,5 +18,11 @@ public class QuitCommand implements Serializable, CommandInterface {
 	@Override
 	public void execute(GameEngine gameEngine, HandleAClient handleAClient) {
 		handleAClient.quit();
+	}
+
+	@Override
+	public void execute(GameEngine gameEngine, HandleAClient2 handleAClient) {
+		// TODO Auto-generated method stub
+		
 	}
 }

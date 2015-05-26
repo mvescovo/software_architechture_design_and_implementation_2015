@@ -160,7 +160,7 @@ public class GameEngineImpl implements GameEngine {
 	}
 	
 	public void disconnectCallbackServer (Player player) {
-		((ServerSideGameEngineCallback)gameEngineCallback).disconnectToServer(player);
+		((ServerSideGameEngineCallback)gameEngineCallback).disconnectFromServer(player);
 	}
 
 	public void addPoints(Player player, int points) {

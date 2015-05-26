@@ -5,7 +5,6 @@ package model;
 
 import java.io.Serializable;
 
-import model.GameEngineServerStub.HandleAClient;
 import model.interfaces.CommandInterface;
 import model.interfaces.GameEngine;
 import model.interfaces.Player;
@@ -27,5 +26,11 @@ public class AddPointsCommand implements CommandInterface, Serializable {
 	public void execute(GameEngine gameEngine, HandleAClient handleAClient) {
 		((GameEngineImpl)gameEngine).addPoints(player, points);
 //		// TODO may need to check what happens if doing this during a round etc
+	}
+
+	@Override
+	public void execute(GameEngine gameEngine, HandleAClient2 handleAClient) {
+		// TODO Auto-generated method stub
+		
 	}
 }

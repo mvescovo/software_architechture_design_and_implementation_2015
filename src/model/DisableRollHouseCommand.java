@@ -12,17 +12,16 @@ import model.interfaces.GameEngine;
  * @author "Michael Vescovo - s3459317"
  *
  */
-public class CalculateResultsCommand implements Serializable, CommandInterface {
-	private static final long serialVersionUID = -3136688335648899058L;
+public class DisableRollHouseCommand implements Serializable, CommandInterface {
+	private static final long serialVersionUID = -44237342306094052L;
 
 	@Override
 	public void execute(GameEngine gameEngine, HandleAClient handleAClient) {
-		gameEngine.calculateResult();
+		// TODO Auto-generated method stub
 	}
 
 	@Override
 	public void execute(GameEngine gameEngine, HandleAClient2 handleAClient) {
-		// TODO Auto-generated method stub
-		
+		((GameEngineCallbackImplGUI)((GameEngineClientStub)gameEngine).getGameEngineCallback()).disableHouse();
 	}
 }
