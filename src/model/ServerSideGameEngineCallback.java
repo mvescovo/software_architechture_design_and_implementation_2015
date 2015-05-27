@@ -22,20 +22,19 @@ import model.interfaces.Player;
  */
 public class ServerSideGameEngineCallback implements GameEngineCallback {
 	CommandInterface commandObject = null;
-	
 	Map<Player, ObjectOutputStream> hashMapObject = new HashMap<Player, ObjectOutputStream>();
 	Map<Player, Socket> hashMapSocket = new HashMap<Player, Socket>();
 	
 	public void connectToServer(Player player, int port) {
-		//create new thread to try and connect to the client server 
+		//create new thread to connect to the client server 
 		HandleAServer task = new HandleAServer(player, port, hashMapObject, hashMapSocket);
 		new Thread(task).start();
 	}
 	
 	public void disconnectFromServer(Player player) {
 		try {
-			hashMapObject.get(player).close();
-			hashMapSocket.get(player).close();
+			commandObject = new QuitCommand();
+			hashMapObject.get(player).writeObject(commandObject);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

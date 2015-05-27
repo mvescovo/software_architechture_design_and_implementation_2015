@@ -15,10 +15,10 @@ import model.interfaces.Player;
  *
  */
 public class HandleAServer implements Runnable {
-	String serverName = "localhost";
-	Player player = null;
 	Socket socket = null;
+	String serverName = "localhost";
 	int port;
+	Player player = null;
 	boolean connected = false;
 	Map<Player, ObjectOutputStream> hashMapObject;
 	Map<Player, Socket> hashMapSocket;
@@ -38,14 +38,14 @@ public class HandleAServer implements Runnable {
 
 	@Override
 	public void run() {
-		while (!connected) {
+//		while (!connected) {
 			try {
 				// connect to the server
 				socket = new Socket(serverName, port);
 				
 				// setup streams
 				toServerObject = new ObjectOutputStream(socket.getOutputStream());
-				
+			
 				hashMapObject.put(player, toServerObject);
 				hashMapSocket.put(player, socket);
 				connected = true;
@@ -58,7 +58,7 @@ public class HandleAServer implements Runnable {
 					e1.printStackTrace();
 				}
 			}
-		}
-		connected = false;
+//		}
+//		connected = false;
 	}
 }

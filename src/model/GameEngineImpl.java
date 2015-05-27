@@ -166,6 +166,7 @@ public class GameEngineImpl implements GameEngine {
 	public void addPoints(Player player, int points) {
 		for (Player currPlayer: players) {
 			if (currPlayer == player) {
+				System.out.println("added " + points + " points to player: " + player.getPlayerName());
 				currPlayer.setPoints(currPlayer.getPoints() + points);
 			}
 		}

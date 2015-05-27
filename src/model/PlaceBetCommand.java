@@ -39,10 +39,4 @@ public class PlaceBetCommand implements Serializable, CommandInterface {
 			e.printStackTrace();
 		}
 	}
-
-	@Override
-	public void execute(GameEngine gameEngine, HandleAClient2 handleAClient) {
-		// TODO Auto-generated method stub
-		
-	}
 }

@@ -19,10 +19,4 @@ public class CalculateResultsCommand implements Serializable, CommandInterface {
 	public void execute(GameEngine gameEngine, HandleAClient handleAClient) {
 		gameEngine.calculateResult();
 	}
-
-	@Override
-	public void execute(GameEngine gameEngine, HandleAClient2 handleAClient) {
-		// TODO Auto-generated method stub
-		
-	}
 }

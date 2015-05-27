@@ -27,10 +27,4 @@ public class AddPointsCommand implements CommandInterface, Serializable {
 		((GameEngineImpl)gameEngine).addPoints(player, points);
 //		// TODO may need to check what happens if doing this during a round etc
 	}
-
-	@Override
-	public void execute(GameEngine gameEngine, HandleAClient2 handleAClient) {
-		// TODO Auto-generated method stub
-		
-	}
 }

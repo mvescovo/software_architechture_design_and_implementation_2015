@@ -32,10 +32,4 @@ public class RollPlayerCommand implements Serializable, CommandInterface {
 	public void execute(GameEngine gameEngine, HandleAClient handleAClient) {
 		gameEngine.rollPlayer(player, initialDelay, finalDelay, delayIncrement);
 	}
-
-	@Override
-	public void execute(GameEngine gameEngine, HandleAClient2 handleAClient) {
-		// TODO Auto-generated method stub
-		
-	}
 }

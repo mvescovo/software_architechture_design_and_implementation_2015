@@ -15,9 +15,7 @@ import model.interfaces.GameEngine;
  */
 public class GameEngineServerStub {
 	GameEngine gameEngine = null;
-	int port = 10001;
-	// TODO remove references to this callbackport if not needed (once everything is working)
-	int callbackPort = 10001;
+	int port = 10000;
 	ServerSocket serverSocket = null;
 	Socket clientSocket = null;
 	
@@ -41,8 +39,7 @@ public class GameEngineServerStub {
 				System.out.println("Server accepted a client connection");
 
 				// create a new thread for the connection and start it
-				HandleAClient task = new HandleAClient(gameEngine, clientSocket, callbackPort);
-//				callbackPort++;
+				HandleAClient task = new HandleAClient(gameEngine, clientSocket);
 				new Thread(task).start();
 			} catch (IOException e) {
 				System.out.println("Accept failed: " + port);

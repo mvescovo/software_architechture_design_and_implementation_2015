@@ -24,6 +24,7 @@ public class GameEngineCallbackServer {
 	public GameEngineCallbackServer(GameEngine gameEngine) {
 		this.gameEngine = gameEngine;
 	}
+	
 	public void startServer() {
 		// create a server socket
 		try {
@@ -34,7 +35,7 @@ public class GameEngineCallbackServer {
 			System.exit(-1);
 		}
 		
-		// wait for connection in new thread so the method returns
+		// create new thread to wait for connection so the method returns
 		Thread thread = new Thread(new Runnable() {
 			@Override
 			public void run() {			
@@ -44,7 +45,7 @@ public class GameEngineCallbackServer {
 					clientSocket = serverSocket.accept();
 					
 					// create a new thread for the connection and start it
-					HandleAClient2 task = new HandleAClient2(gameEngine, clientSocket);
+					HandleAClient task = new HandleAClient(gameEngine, clientSocket);
 					new Thread(task).start();
 				} catch (IOException e) {
 					System.out.println("Accept failed: " + port);
@@ -54,6 +55,15 @@ public class GameEngineCallbackServer {
 		});
 		
 		thread.start();
+	}
+	
+	public void stopServer() {
+		try {
+			serverSocket.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		port = 0;
 	}
 	
 	public void addGameEngineCallback(GameEngineCallback gameEngineCallback) {

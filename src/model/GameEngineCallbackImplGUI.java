@@ -25,7 +25,7 @@ public class GameEngineCallbackImplGUI implements GameEngineCallback {
 		final int total = num1 + num2;
 		final String statusText = player.getPlayerName() + " is rolling...";
 		
-		// some console output because it looks cool
+		// some console output
 		System.out.print(player.getPlayerName() + " intermediate: ");
 		System.out.println(total);
 		
@@ -56,7 +56,7 @@ public class GameEngineCallbackImplGUI implements GameEngineCallback {
 		final int num2 = dicePair.getDice2();
 		final int total = num1 + num2;
 		
-		// some console output because it looks cool
+		// some console output
 		System.out.print(player.getPlayerName() + " total: ");
 		System.out.println(total);
 		

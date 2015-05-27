@@ -17,11 +17,6 @@ public class DisableRollHouseCommand implements Serializable, CommandInterface {
 
 	@Override
 	public void execute(GameEngine gameEngine, HandleAClient handleAClient) {
-		// TODO Auto-generated method stub
-	}
-
-	@Override
-	public void execute(GameEngine gameEngine, HandleAClient2 handleAClient) {
 		((GameEngineCallbackImplGUI)((GameEngineClientStub)gameEngine).getGameEngineCallback()).disableHouse();
 	}
 }

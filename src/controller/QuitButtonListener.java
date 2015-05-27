@@ -31,35 +31,30 @@ public class QuitButtonListener implements ActionListener, KeyListener {
 			// change model
 			if (gameEngine.removePlayer(null)) {
 				System.out.println("GUI was told player removed from server");
-				
 				// change view
 				mainFrame.getPlayerPanel().setVisible(false);
 				mainFrame.getTableAndToolbarContainerPanel().setVisible(false);
 				mainFrame.getStartGamePanel().setVisible(true);
-				// reset the centre panel of the mainFrame borderlayout as there can only be one
-				mainFrame.add(mainFrame.getStartGamePanel(), BorderLayout.CENTER);
-				
-				mainFrame.getPlayerPanel().setPlayerName("No player");
-//				mainFrame.getPlayerPanel().hidePoints();
-//				mainFrame.getPlayerPanel().hideBet();
-				mainFrame.getTableAndToolbarContainerPanel().getToolBar().setBetTextField("");
-				mainFrame.getTableAndToolbarContainerPanel().getToolBar().disableBet();
+				mainFrame.getTableAndToolbarContainerPanel().getGameTablePanel().getGameStatusPanel().getPlayerResultLabel().setVisible(false);
+				mainFrame.getTableAndToolbarContainerPanel().getGameTablePanel().getGameStatusPanel().getHouseResultLabel().setVisible(false);
+				mainFrame.getTableAndToolbarContainerPanel().getGameTablePanel().getGameStatusPanel().getGameResultLabel().setVisible(false);
 				mainFrame.getMenu().getplaceBetMenuItem().setEnabled(false);
-//				mainFrame.getTableAndToolbarContainerPanel().getToolBar().disableQuit();
-				mainFrame.getMenu().getQuitMenuItem().setEnabled(false);
-//				mainFrame.getTableAndToolbarContainerPanel().getGameTablePanel().getDicePanel().getDice1().setText("1");
-//				mainFrame.getTableAndToolbarContainerPanel().getGameTablePanel().getDicePanel().getDice2().setText("1");
-//				mainFrame.getPlayerPanel().enableAddPlayerButton();
-				mainFrame.getMenu().getStartGameMenuItem().setEnabled(true);
-//				mainFrame.getPlayerPanel().focusAddPlayerButton();
 				mainFrame.getMenu().getRollPlayerMenuItem().setEnabled(false);
+				mainFrame.getMenu().getQuitMenuItem().setEnabled(false);
+				mainFrame.getTableAndToolbarContainerPanel().getToolBar().disableBet();
 				mainFrame.getTableAndToolbarContainerPanel().getToolBar().getRollPlayerButton().setEnabled(false);
 				mainFrame.getPlayerPanel().disableAddPoints();
-
+				mainFrame.getMenu().getStartGameMenuItem().setEnabled(true);
+				// reset the centre panel of the mainFrame borderlayout as there can only be one
+				mainFrame.add(mainFrame.getStartGamePanel(), BorderLayout.CENTER);
+				// reset values
+				mainFrame.getTableAndToolbarContainerPanel().getToolBar().setBetTextField(null);
+				mainFrame.getPlayerPanel().getAddPointsTextField().setText(null);
+				mainFrame.getTableAndToolbarContainerPanel().getGameTablePanel().getDicePanel().getDice1().setText("1");
+				mainFrame.getTableAndToolbarContainerPanel().getGameTablePanel().getDicePanel().getDice2().setText("1");
 				mainFrame.getTableAndToolbarContainerPanel().getGameTablePanel().getGameStatusPanel().getGameStatusLabel().setText("Place a bet to play");
-//				mainFrame.getTableAndToolbarContainerPanel().getGameTablePanel().getGameStatusPanel().getPlayerResultLabel().setText("Player result: N/A");
-//				mainFrame.getTableAndToolbarContainerPanel().getGameTablePanel().getGameStatusPanel().getHouseResultLabel().setText("House result: N/A");
-//				mainFrame.getTableAndToolbarContainerPanel().getGameTablePanel().getGameStatusPanel().getGameResultLabel().setText("Winner: N/A");
+				mainFrame.getStartGamePanel().getPlayerNameTextField().setText(null);
+				mainFrame.getStartGamePanel().getPlayerPointsTextField().setText(null);
 			} else {
 				System.out.println("GUI was told player not removed from server");
 			}

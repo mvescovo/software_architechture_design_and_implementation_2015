@@ -24,11 +24,6 @@ public class IntermediateHouseResultCommand implements Serializable,
 
 	@Override
 	public void execute(GameEngine gameEngine, HandleAClient handleAClient) {
-		// TODO Auto-generated method stub
-	}
-
-	@Override
-	public void execute(GameEngine gameEngine, HandleAClient2 handleAClient) {
 		((GameEngineClientStub)gameEngine).getGameEngineCallback().intermediateHouseResult(dicePair, gameEngine);
 	}
 }

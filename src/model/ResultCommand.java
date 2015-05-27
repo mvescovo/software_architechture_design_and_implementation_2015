@@ -26,11 +26,6 @@ public class ResultCommand implements Serializable, CommandInterface {
 
 	@Override
 	public void execute(GameEngine gameEngine, HandleAClient handleAClient) {
-		// TODO Auto-generated method stub
-	}
-
-	@Override
-	public void execute(GameEngine gameEngine, HandleAClient2 handleAClient) {
 		((GameEngineClientStub)gameEngine).getGameEngineCallback().result(player, dicePair, gameEngine);
 	}
 }

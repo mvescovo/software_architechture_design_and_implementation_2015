@@ -24,7 +24,7 @@ public class HandleAClient implements Runnable {
 	boolean quit = false;
 	
 	// create a new thread
-	public HandleAClient(GameEngine gameEngine, Socket socket, int callbackPort) {
+	public HandleAClient(GameEngine gameEngine, Socket socket) {
 		this.gameEngine = gameEngine;
 		this.clientSocket = socket;
 	}
@@ -67,9 +67,11 @@ public class HandleAClient implements Runnable {
 				e.printStackTrace();
 			}
 		} while (quit == false);
-		
 		try {
+			toClientObject.close();
+			System.out.println("closed object stream");
 			clientSocket.close();
+			System.out.println("closed socket");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}		

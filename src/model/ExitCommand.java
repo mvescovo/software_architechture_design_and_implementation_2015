@@ -20,10 +20,4 @@ public class ExitCommand implements Serializable, CommandInterface {
 		handleAClient.quit();
 		handleAClient.closeSocket();
 	}
-
-	@Override
-	public void execute(GameEngine gameEngine, HandleAClient2 handleAClient) {
-		// TODO Auto-generated method stub
-		
-	}
 }

@@ -26,10 +26,9 @@ public class GameEngineClientStub implements GameEngine {
 	// socket variables for gameEngineServerStub
 	Socket socket;
 	String serverName = "localhost";
-	int port = 10001;
+	int port = 10000;
 	
 	// streams for gameEngineServerStub
-	DataOutputStream toServerInt = null;
 	ObjectOutputStream toServerObject = null;
 	ObjectInputStream fromServerObject = null;
 	
@@ -100,13 +99,19 @@ public class GameEngineClientStub implements GameEngine {
 	@Override
 	public boolean removePlayer(Player player) {
 		boolean isSuccess = false;
-		removePlayerCommand = new RemovePlayerCommand(player);
+		// passed in player is null. use local gameEngine player.
+		removePlayerCommand = new RemovePlayerCommand(this.player);
 		
 		try {
 			toServerObject.writeObject(removePlayerCommand);
 			response = (Response)fromServerObject.readObject();
 			
-			if (response.getResponse()) {
+			if (response.getResponse()) {	
+				// close server socket as the game server no longer
+				// has a player to reference the connection
+				gameEngineCallbackServer.stopServer();
+								
+				this.player = null;
 				isSuccess = true;
 			} else {
 				isSuccess = false;

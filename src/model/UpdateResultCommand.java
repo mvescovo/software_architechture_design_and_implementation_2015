@@ -23,11 +23,6 @@ public class UpdateResultCommand implements Serializable, CommandInterface {
 
 	@Override
 	public void execute(GameEngine gameEngine, HandleAClient handleAClient) {
-		// TODO Auto-generated method stub
-	}
-
-	@Override
-	public void execute(GameEngine gameEngine, HandleAClient2 handleAClient) {
 		((GameEngineCallbackImplGUI)((GameEngineClientStub)gameEngine).getGameEngineCallback()).updateResult(player);
 	}
 }

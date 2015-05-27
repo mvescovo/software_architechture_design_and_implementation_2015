@@ -33,9 +33,4 @@ public class AddPlayerCommand implements CommandInterface, Serializable {
 		System.out.println("add player connected call back server and will now try to add player");
 		gameEngine.addPlayer(player);
 	}
-
-	@Override
-	public void execute(GameEngine gameEngine, HandleAClient2 handleAClient) {
-		// TODO Auto-generated method stub
-	}
 }

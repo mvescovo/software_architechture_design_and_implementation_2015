@@ -9,5 +9,4 @@ package model.interfaces;
  */
 public interface CommandInterface {
 	public void execute(GameEngine gameEngine, model.HandleAClient handleAClient);
-	public void execute(GameEngine gameEngine, model.HandleAClient2 handleAClient);
 }
