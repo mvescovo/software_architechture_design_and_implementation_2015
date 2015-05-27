@@ -3,7 +3,6 @@
  */
 package model;
 
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -42,6 +41,7 @@ public class GameEngineClientStub implements GameEngine {
 	ExitCommand exitCommand = null;
 	RemovePlayerCommand removePlayerCommand = null;
 	RollPlayerCommand rollPlayerCommand = null;
+	CheckHouseRollingCommand checkHouseRollingCommand = null;
 	Response response = null;
 	
 	public GameEngineClientStub() {	
@@ -75,7 +75,7 @@ public class GameEngineClientStub implements GameEngine {
 
 	@Override
 	public void rollHouse(int initialDelay, int finalDelay, int delayIncrement) {
-		// not used in client engine
+		// not used in client engine, see calculateResult instead.
 	}
 
 	@Override
@@ -203,5 +203,22 @@ public class GameEngineClientStub implements GameEngine {
 	
 	public GameEngineCallback getGameEngineCallback() {
 		return gameEngineCallback;
+	}
+	
+	public boolean checkHouseRolling() {
+		checkHouseRollingCommand = new CheckHouseRollingCommand();
+		
+		try {
+			toServerObject.writeObject(checkHouseRollingCommand);
+			response = (Response)fromServerObject.readObject();
+		} catch (IOException | ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		
+		if (response.getResponse()) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 }

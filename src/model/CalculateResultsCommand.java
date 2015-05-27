@@ -17,6 +17,10 @@ public class CalculateResultsCommand implements Serializable, CommandInterface {
 
 	@Override
 	public void execute(GameEngine gameEngine, HandleAClient handleAClient) {
-		gameEngine.calculateResult();
+		if (((GameEngineImpl)gameEngine).setHouseRolling()) {
+			gameEngine.calculateResult();
+		} else {
+			// house was already rolling, abort roll attempt
+		}
 	}
 }

@@ -11,9 +11,11 @@ import model.interfaces.Player;
 import java.util.Random;
 
 public class GameEngineImpl implements GameEngine {
-	Collection<Player> players = new ArrayList<Player>();
-	GameEngineCallback gameEngineCallback;
-	private volatile int houseTotal;
+	private Collection<Player> players = new ArrayList<Player>();
+	private GameEngineCallback gameEngineCallback;
+	private int houseTotal;
+	private volatile boolean houseRolling = false;
+	private Object lock = new Object();
 	
 	@Override
 	public void rollPlayer(Player player, int initialDelay, int finalDelay,
@@ -23,6 +25,8 @@ public class GameEngineImpl implements GameEngine {
 		final int minNum = 1;
 		Random random = new Random();
 		DicePair dicePair = null;
+		
+		((SimplePlayer)player).setRolling();
 		
 		// roll the dice and update views
 		try {
@@ -44,6 +48,11 @@ public class GameEngineImpl implements GameEngine {
 		dicePair = new DicePairImpl(num1, num2, NUM_FACES);
 		player.setRollResult(dicePair);
 		this.gameEngineCallback.result(player, dicePair, this);
+		
+		((SimplePlayer)player).setNotRolling();
+		synchronized(this) {
+			this.notify();
+		}
 	}
 
 	@Override
@@ -92,10 +101,23 @@ public class GameEngineImpl implements GameEngine {
 	}
 
 	@Override
-	public synchronized void calculateResult() {
-		// callback to disable roll house for all players
+	public synchronized void calculateResult() {		
+		// disable all house roll buttons on clients
 		for (Player player: players) {
 			((ServerSideGameEngineCallback)gameEngineCallback).disableRollHouse(player);
+		}
+		
+		// ensure all players have finished rolling
+		for (Player player: players) {
+			while (((SimplePlayer)player).getIsRolling()) {
+				try {
+					System.out.println(player.getPlayerName() + " is still rolling");
+					//TODO send a callback to all players to let them know the server is waiting for players to finish in progress rolling
+					wait();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
 		}
 		
 		this.rollHouse(1, 500, 20);
@@ -128,6 +150,8 @@ public class GameEngineImpl implements GameEngine {
 			
 			((ServerSideGameEngineCallback)gameEngineCallback).updateResult(player, this);
 		}
+		
+		houseRolling = false;
 	}
 
 	@Override
@@ -166,9 +190,27 @@ public class GameEngineImpl implements GameEngine {
 	public void addPoints(Player player, int points) {
 		for (Player currPlayer: players) {
 			if (currPlayer == player) {
-				System.out.println("added " + points + " points to player: " + player.getPlayerName());
 				currPlayer.setPoints(currPlayer.getPoints() + points);
+				System.out.println("added " + points + " points to player: " + player.getPlayerName());
+				continue;
 			}
 		}
+	}
+	
+	public boolean setHouseRolling() {
+		synchronized (lock) {
+			if (houseRolling) {
+				// if house already rolling then it wasn't set
+				return false;
+			} else {
+				// set house to rolling
+				houseRolling = true;
+				return true;
+			}
+		}
+	}
+	
+	public boolean isHouseRolling() {
+		return houseRolling;
 	}
 }

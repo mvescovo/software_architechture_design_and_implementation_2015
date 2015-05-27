@@ -51,7 +51,7 @@ public class GameEngineCallbackImplGUI implements GameEngineCallback {
 	}
 
 	@Override
-	public void result(final Player player, DicePair dicePair, GameEngine engine) {
+	public void result(final Player player, DicePair dicePair, final GameEngine gameEngine) {
 		final int num1 = dicePair.getDice1();
 		final int num2 = dicePair.getDice2();
 		final int total = num1 + num2;
@@ -67,15 +67,21 @@ public class GameEngineCallbackImplGUI implements GameEngineCallback {
 				@Override
 				public void run()
 				{
-					System.out.println("Am I running on the EDT? " + SwingUtilities.isEventDispatchThread());
+//					System.out.println("Am I running on the EDT? " + SwingUtilities.isEventDispatchThread());
 					mainFrame.getTableAndToolbarContainerPanel().getGameTablePanel().getDicePanel().getDice1().setText(Integer.toString(num1));
 					mainFrame.getTableAndToolbarContainerPanel().getGameTablePanel().getDicePanel().getDice2().setText(Integer.toString(num2));
 					mainFrame.getTableAndToolbarContainerPanel().getGameTablePanel().getGameStatusPanel().getPlayerResultLabel().setText(player.getPlayerName() + "'s result: " + total);
 					mainFrame.getTableAndToolbarContainerPanel().getGameTablePanel().getGameStatusPanel().getPlayerResultLabel().setVisible(true);
-					// change view after roll has finished
-					mainFrame.getTableAndToolbarContainerPanel().getToolBar().getRollHouseButton().setEnabled(true);
-					mainFrame.getMenu().getRollHouseMenuItem().setEnabled(true);
-					mainFrame.getTableAndToolbarContainerPanel().getToolBar().getRollHouseButton().requestFocusInWindow();
+					
+					// check if house has been pressed by another player
+					if (((GameEngineClientStub)gameEngine).checkHouseRolling()) {
+						// don't enable house roll
+					} else {
+						// enable roll house
+						mainFrame.getTableAndToolbarContainerPanel().getToolBar().getRollHouseButton().setEnabled(true);
+						mainFrame.getMenu().getRollHouseMenuItem().setEnabled(true);
+						mainFrame.getTableAndToolbarContainerPanel().getToolBar().getRollHouseButton().requestFocusInWindow();
+					}
 				}
 			});
 		} catch (InvocationTargetException e) {
@@ -165,7 +171,7 @@ public class GameEngineCallbackImplGUI implements GameEngineCallback {
 				// update GUI points
 				mainFrame.getPlayerPanel().getBetPoints().setText("0");
 				mainFrame.getPlayerPanel().setPoints(Integer.toString(newPoints));
-				
+				// update GUI item status
 				mainFrame.getTableAndToolbarContainerPanel().getToolBar().focusActiveBetText();
 				mainFrame.getTableAndToolbarContainerPanel().getGameTablePanel().getGameStatusPanel().getGameStatusLabel().setText("Place another bet to play again");
 				mainFrame.getTableAndToolbarContainerPanel().getToolBar().enableBet();

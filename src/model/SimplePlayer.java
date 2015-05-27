@@ -7,11 +7,12 @@ import model.interfaces.Player;
 
 public class SimplePlayer implements Player, Serializable {
 	private static final long serialVersionUID = -1656658223445569521L;
-	private String playerId;
-	private String playerName;
+	private String playerId = null;
+	private String playerName = null;
 	private int points;
 	private int bet;
-	private DicePair rollResult;
+	private DicePair rollResult = null;
+	private boolean isRolling = false;
 	
 	public SimplePlayer(String playerId, String playerName, int points) {
 		this.playerId = playerId;
@@ -70,5 +71,17 @@ public class SimplePlayer implements Player, Serializable {
 	public void setRollResult(DicePair rollResult) {
 		this.rollResult = rollResult;
 		
+	}
+	
+	public void setRolling() {
+		isRolling = true;
+	}
+	
+	public void setNotRolling() {
+		isRolling = false;
+	}
+	
+	public boolean getIsRolling() {
+		return isRolling;
 	}
 }

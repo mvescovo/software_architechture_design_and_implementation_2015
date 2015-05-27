@@ -25,7 +25,7 @@ public class RollPlayerButtonListener implements ActionListener, KeyListener {
 			@Override
 			public void run() {
 				// player roll
-				gameEngine.rollPlayer(null, 1, 200, 20);
+				gameEngine.rollPlayer(null, 1, 500, 20);
 			}
 		});
 		
