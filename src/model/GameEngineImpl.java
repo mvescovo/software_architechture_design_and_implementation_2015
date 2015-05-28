@@ -11,7 +11,7 @@ import model.interfaces.Player;
 import java.util.Random;
 
 public class GameEngineImpl implements GameEngine {
-	private Collection<Player> players = new ArrayList<Player>();
+	private volatile Collection<Player> players = new ArrayList<Player>();
 	private GameEngineCallback gameEngineCallback;
 	private int houseTotal;
 	private volatile boolean houseRolling = false;
@@ -27,6 +27,7 @@ public class GameEngineImpl implements GameEngine {
 		DicePair dicePair = null;
 		
 		((SimplePlayer)player).setRolling();
+		((SimplePlayer)player).setParticipatingInRound(true);
 		
 		// roll the dice and update views
 		try {
@@ -102,9 +103,9 @@ public class GameEngineImpl implements GameEngine {
 
 	@Override
 	public synchronized void calculateResult() {		
-		// disable all house roll buttons on clients
+		// disable clients while house is rolling
 		for (Player player: players) {
-			((ServerSideGameEngineCallback)gameEngineCallback).disableRollHouse(player);
+			((ServerSideGameEngineCallback)gameEngineCallback).disableClientForHouseRoll(player);
 		}
 		
 		// ensure all players have finished rolling
@@ -124,31 +125,39 @@ public class GameEngineImpl implements GameEngine {
 		
 		// calculate results and send to players
 		for (Player player: players) {
-			int num1 = player.getRollResult().getDice1();
-			int num2 = player.getRollResult().getDice2();
-			int total = num1 + num2;
-						
-			System.out.println("houseTotal: " + houseTotal);
-			System.out.println("playerTotal: " + total);
-			System.out.println("old player points: " + player.getPoints());
-			
-			if (total > houseTotal) {
-				// player won
-				System.out.printf("%s%s\n", player.getPlayerName(), " won");
-				player.setPoints(player.getPoints() + (player.getBet() * 2));
-				System.out.println("new player points: " + player.getPoints());
-			} else if (total == houseTotal){
-				// draw - return points to player
-				System.out.println("draw");
-				player.setPoints(player.getPoints() + player.getBet());
-				System.out.println("new player points: " + player.getPoints());
-			} else {
-				// player lost.
-				System.out.printf("%s%s\n", player.getPlayerName(), " lost");
-				System.out.println("new player points: " + player.getPoints());
-			}
+			if (((SimplePlayer)player).getIsParticipatingInRound()) {
+				System.out.println("going to calculate results");
+				System.out.println(player.getPlayerName() + " participating: " + ((SimplePlayer)player).getIsParticipatingInRound());
+				int num1 = player.getRollResult().getDice1();
+				int num2 = player.getRollResult().getDice2();
+				int total = num1 + num2;
+							
+				System.out.println("houseTotal: " + houseTotal);
+				System.out.println("playerTotal: " + total);
+				System.out.println("old player points: " + player.getPoints());
+				
+				if (total > houseTotal) {
+					// player won
+					System.out.printf("%s%s\n", player.getPlayerName(), " won");
+					player.setPoints(player.getPoints() + (player.getBet() * 2));
+					System.out.println("new player points: " + player.getPoints());
+				} else if (total == houseTotal){
+					// draw - return points to player
+					System.out.println("draw");
+					player.setPoints(player.getPoints() + player.getBet());
+					System.out.println("new player points: " + player.getPoints());
+				} else {
+					// player lost.
+					System.out.printf("%s%s\n", player.getPlayerName(), " lost");
+					System.out.println("new player points: " + player.getPoints());
+				}	
+				
+				// clear bet if the user was in the round
+				player.placeBet(0);
+			}			
 			
 			((ServerSideGameEngineCallback)gameEngineCallback).updateResult(player, this);
+			((SimplePlayer)player).setParticipatingInRound(false);
 		}
 		
 		houseRolling = false;

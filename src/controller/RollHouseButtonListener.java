@@ -40,6 +40,10 @@ public class RollHouseButtonListener implements ActionListener, KeyListener {
 		// change view immediately
 		mainFrame.getTableAndToolbarContainerPanel().getToolBar().getRollHouseButton().setEnabled(false);
 		mainFrame.getMenu().getRollHouseMenuItem().setEnabled(false);
+		mainFrame.getTableAndToolbarContainerPanel().getToolBar().getQuitButton().setEnabled(false);
+		mainFrame.getMenu().getQuitMenuItem().setEnabled(false);
+		mainFrame.getTableAndToolbarContainerPanel().getToolBar().getExitButton().setEnabled(false);
+		mainFrame.getMenu().getExitMenuItem().setEnabled(false);
 	}
 
 	@Override

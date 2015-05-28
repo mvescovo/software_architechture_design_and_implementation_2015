@@ -104,8 +104,8 @@ public class ServerSideGameEngineCallback implements GameEngineCallback {
 		}
 	}
 	
-	public void disableRollHouse(Player player) {
-		commandObject = new DisableRollHouseCommand();
+	public void disableClientForHouseRoll(Player player) {
+		commandObject = new DisableClientForHouseRollCommand();
 		
 		try {
 			hashMapObject.get(player).writeObject(commandObject);

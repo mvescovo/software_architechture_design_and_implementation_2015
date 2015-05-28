@@ -13,6 +13,7 @@ public class SimplePlayer implements Player, Serializable {
 	private int bet;
 	private DicePair rollResult = null;
 	private boolean isRolling = false;
+	private boolean isParticipatingInRound = false;
 	
 	public SimplePlayer(String playerId, String playerName, int points) {
 		this.playerId = playerId;
@@ -83,5 +84,13 @@ public class SimplePlayer implements Player, Serializable {
 	
 	public boolean getIsRolling() {
 		return isRolling;
+	}
+	
+	public void setParticipatingInRound(boolean value) {
+		isParticipatingInRound = value;
+	}
+	
+	public boolean getIsParticipatingInRound() {
+		return isParticipatingInRound;
 	}
 }

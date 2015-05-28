@@ -34,6 +34,13 @@ public class RollPlayerButtonListener implements ActionListener, KeyListener {
 		// change view immediately
 		mainFrame.getTableAndToolbarContainerPanel().getToolBar().getRollPlayerButton().setEnabled(false);
 		mainFrame.getMenu().getRollPlayerMenuItem().setEnabled(false);
+		// disable quit and exit
+		mainFrame.getTableAndToolbarContainerPanel().getToolBar().getQuitButton().setEnabled(false);
+		mainFrame.getMenu().getQuitMenuItem().setEnabled(false);
+		mainFrame.getTableAndToolbarContainerPanel().getToolBar().getExitButton().setEnabled(false);
+		mainFrame.getMenu().getExitMenuItem().setEnabled(false);
+		// disable add points
+		mainFrame.getPlayerPanel().getAddPointsButton().setEnabled(false);
 	}
 
 	@Override

@@ -62,11 +62,16 @@ public class GameEngineClientStub implements GameEngine {
 	}
 
 	@Override
-	public void rollPlayer(Player playerTest, int initialDelay, int finalDelay,
+	public void rollPlayer(Player nullPlayer, int initialDelay, int finalDelay,
 			int delayIncrement) {
+		((SimplePlayer)player).setParticipatingInRound(true);
+		System.out.println("just set " + player.getPlayerName() + " participating: " + ((SimplePlayer)player).getIsParticipatingInRound());
+
+		
 		// send the roll to the server
 		try {
 			rollPlayerCommand = new RollPlayerCommand(player, initialDelay, finalDelay, delayIncrement);
+//			toServerObject.reset();
 			toServerObject.writeObject(rollPlayerCommand);
 		} catch (IOException e) {
 			e.printStackTrace();
