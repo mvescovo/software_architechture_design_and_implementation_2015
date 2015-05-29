@@ -4,6 +4,8 @@
 package model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
 
 import model.interfaces.CommandInterface;
 import model.interfaces.GameEngine;
@@ -15,14 +17,16 @@ import model.interfaces.Player;
  */
 public class RollPlayerCommand implements Serializable, CommandInterface {
 	private static final long serialVersionUID = -2847156363711340833L;
-	private Player player = null;
+	private String playerId = null;
 	private int initialDelay;
 	private int finalDelay;
 	private int delayIncrement;
+	private Collection<Player> players = null;
+
 	
-	public RollPlayerCommand(Player player, int initialDelay, int finalDelay,
+	public RollPlayerCommand(String playerId, int initialDelay, int finalDelay,
 			int delayIncrement) {
-		this.player = player;
+		this.playerId = playerId;
 		this.initialDelay = initialDelay;
 		this.finalDelay = finalDelay;
 		this.delayIncrement = delayIncrement;
@@ -30,6 +34,14 @@ public class RollPlayerCommand implements Serializable, CommandInterface {
 	
 	@Override
 	public void execute(GameEngine gameEngine, HandleAClient handleAClient) {
-		gameEngine.rollPlayer(player, initialDelay, finalDelay, delayIncrement);
+		players = gameEngine.getAllPlayers();
+		
+		for (Player player: players) {
+			if (player.getPlayerId().contentEquals(playerId)) {
+				// found the player, roll them
+				gameEngine.rollPlayer(player, initialDelay, finalDelay, delayIncrement);
+				break;
+			}
+		}
 	}
 }

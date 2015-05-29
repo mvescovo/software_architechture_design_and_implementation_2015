@@ -16,6 +16,7 @@ public class GameEngineImpl implements GameEngine {
 	private int houseTotal;
 	private volatile boolean houseRolling = false;
 	private Object lock = new Object();
+	private int nextAvailableId = 0;
 	
 	@Override
 	public void rollPlayer(Player player, int initialDelay, int finalDelay,
@@ -28,6 +29,12 @@ public class GameEngineImpl implements GameEngine {
 		
 		((SimplePlayer)player).setRolling();
 		((SimplePlayer)player).setParticipatingInRound(true);
+		
+		if (((SimplePlayer)player).getIsParticipatingInRound()){
+			System.out.println(player.getPlayerName() + " is participating this round (before player roll)");
+		} else {
+			System.out.println(player.getPlayerName() + " not participating this round (before player roll)");
+		}
 		
 		// roll the dice and update views
 		try {
@@ -51,6 +58,13 @@ public class GameEngineImpl implements GameEngine {
 		this.gameEngineCallback.result(player, dicePair, this);
 		
 		((SimplePlayer)player).setNotRolling();
+		
+		if (((SimplePlayer)player).getIsParticipatingInRound()){
+			System.out.println(player.getPlayerName() + " is participating this round (after player roll)");
+		} else {
+			System.out.println(player.getPlayerName() + " not participating this round (after player roll)");
+		}
+		
 		synchronized(this) {
 			this.notify();
 		}
@@ -94,6 +108,7 @@ public class GameEngineImpl implements GameEngine {
 	@Override
 	public boolean removePlayer(Player player) {
 		if (this.players.contains(player)) {
+			setNextAvailableId(player.getPlayerId());
 			this.players.remove(player);
 			return true;
 		} else {
@@ -118,6 +133,12 @@ public class GameEngineImpl implements GameEngine {
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
+			}
+			
+			if (((SimplePlayer)player).getIsParticipatingInRound()){
+				System.out.println(player.getPlayerName() + " is participating this round (before house roll)");
+			} else {
+				System.out.println(player.getPlayerName() + " not participating this round (before house roll)");
 			}
 		}
 		
@@ -154,7 +175,9 @@ public class GameEngineImpl implements GameEngine {
 				
 				// clear bet if the user was in the round
 				player.placeBet(0);
-			}			
+			} else {
+				System.out.println(player.getPlayerName() + " not participating this round (after house roll)");
+			}
 			
 			((ServerSideGameEngineCallback)gameEngineCallback).updateResult(player, this);
 			((SimplePlayer)player).setParticipatingInRound(false);
@@ -221,5 +244,30 @@ public class GameEngineImpl implements GameEngine {
 	
 	public boolean isHouseRolling() {
 		return houseRolling;
+	}
+	
+	public String takeNextAvailableId() {
+		String newId = Integer.toString(nextAvailableId);
+		boolean newIdUpdated;
+
+		// update the next available id for the next player
+		do {
+			nextAvailableId++;
+			newIdUpdated = true;
+			
+			for (Player player: players) {
+				if (Integer.parseInt(player.getPlayerId()) == nextAvailableId) {
+					newIdUpdated = false;
+					break;
+				}
+			}
+		} while (!newIdUpdated);
+
+		return newId;
+	}
+	
+	public void setNextAvailableId(String nextAvailableId) {
+		// reuse the id's from removed players
+		this.nextAvailableId = Integer.parseInt(nextAvailableId);
 	}
 }

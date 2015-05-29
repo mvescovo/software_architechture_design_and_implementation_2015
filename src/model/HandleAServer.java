@@ -23,7 +23,6 @@ public class HandleAServer implements Runnable {
 	Map<Player, ObjectOutputStream> hashMapObject;
 	Map<Player, Socket> hashMapSocket;
 
-	
 	// streams
 	ObjectOutputStream toServerObject = null;
 	
@@ -38,27 +37,24 @@ public class HandleAServer implements Runnable {
 
 	@Override
 	public void run() {
-//		while (!connected) {
-			try {
-				// connect to the server
-				socket = new Socket(serverName, port);
+		try {
+			// connect to the server
+			socket = new Socket(serverName, port);
 				
-				// setup streams
-				toServerObject = new ObjectOutputStream(socket.getOutputStream());
+			// setup streams
+			toServerObject = new ObjectOutputStream(socket.getOutputStream());
 			
-				hashMapObject.put(player, toServerObject);
-				hashMapSocket.put(player, socket);
-				connected = true;
-			} catch (IOException e) {
-				System.out.println("Could not connect to server: " + e.getMessage());
-				try {
-					System.out.println("Sleeping for 35 ms");
-					Thread.sleep(35);
-				} catch (InterruptedException e1) {
-					e1.printStackTrace();
-				}
+			hashMapObject.put(player, toServerObject);
+			hashMapSocket.put(player, socket);
+			connected = true;
+		} catch (IOException e) {
+			System.out.println("Could not connect to server: " + e.getMessage());
+			try {
+				System.out.println("Sleeping for 35 ms");
+				Thread.sleep(35);
+			} catch (InterruptedException e1) {
+				e1.printStackTrace();
 			}
-//		}
-//		connected = false;
+		}
 	}
 }

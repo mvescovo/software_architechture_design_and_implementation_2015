@@ -43,25 +43,29 @@ public class ServerSideGameEngineCallback implements GameEngineCallback {
 	@Override
 	public void intermediateResult(Player player, DicePair dicePair,
 			GameEngine gameEngine) {
-		System.out.println("intermeidate result trying to pass to gameEngineCallbackServer");
+		Collection<Player> players = gameEngine.getAllPlayers();
 		commandObject = new IntermediateResultCommand(player, dicePair);
 		
-		try {
-			hashMapObject.get(player).writeObject(commandObject);
-		} catch (IOException e) {
-			e.printStackTrace();
+		for (Player currPlayer: players) {
+			try {
+				hashMapObject.get(currPlayer).writeObject(commandObject);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
 	@Override
 	public void result(Player player, DicePair result, GameEngine engine) {
-		System.out.println("result trying to pass to gameEngineCallbackServer");
+		Collection<Player> players = engine.getAllPlayers();
 		commandObject = new ResultCommand(player, result);
 		
-		try {
-			hashMapObject.get(player).writeObject(commandObject);
-		} catch (IOException e) {
-			e.printStackTrace();
+		for (Player currPlayer: players) {
+			try {
+				hashMapObject.get(currPlayer).writeObject(commandObject);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 

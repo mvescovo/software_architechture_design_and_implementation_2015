@@ -27,6 +27,14 @@ public class IntermediateResultCommand implements Serializable,
 
 	@Override
 	public void execute(GameEngine gameEngine, HandleAClient handleAClient) {
-		((GameEngineClientStub)gameEngine).getGameEngineCallback().intermediateResult(player, dicePair, gameEngine);
+		if (player.getPlayerId().contentEquals(((GameEngineClientStub)gameEngine).getPlayer().getPlayerId())) {
+			// if it's the player, update GUI
+			((GameEngineClientStub)gameEngine).getGameEngineCallback().intermediateResult(player, dicePair, gameEngine);
+		} else {
+			int total = dicePair.getDice1() + dicePair.getDice2();
+			
+			// else output to console for other players
+			System.out.println("Intermediate result for player " + player.getPlayerName() + ": " + total);
+		}
 	}
 }

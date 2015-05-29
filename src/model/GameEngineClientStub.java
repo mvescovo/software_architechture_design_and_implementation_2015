@@ -67,10 +67,9 @@ public class GameEngineClientStub implements GameEngine {
 		((SimplePlayer)player).setParticipatingInRound(true);
 		System.out.println("just set " + player.getPlayerName() + " participating: " + ((SimplePlayer)player).getIsParticipatingInRound());
 
-		
 		// send the roll to the server
 		try {
-			rollPlayerCommand = new RollPlayerCommand(player, initialDelay, finalDelay, delayIncrement);
+			rollPlayerCommand = new RollPlayerCommand(player.getPlayerId(), initialDelay, finalDelay, delayIncrement);
 //			toServerObject.reset();
 			toServerObject.writeObject(rollPlayerCommand);
 		} catch (IOException e) {
@@ -91,12 +90,14 @@ public class GameEngineClientStub implements GameEngine {
 		// start the GameEngineCallbackServer so the client can receive callbacks
 		gameEngineCallbackServer.startServer();
 		
-		addPlayerCommand = new AddPlayerCommand(player, gameEngineCallbackServer.getPort());
+		addPlayerCommand = new AddPlayerCommand(this.player, gameEngineCallbackServer.getPort());
 		
 		// add player to the server
 		try {
 			toServerObject.writeObject(addPlayerCommand);
-		} catch (IOException e) {
+			// receive back new version of player with unique id
+			this.player = (Player)fromServerObject.readObject();
+		} catch (IOException | ClassNotFoundException e) {
 			e.printStackTrace();
 		}
 	}
@@ -105,7 +106,7 @@ public class GameEngineClientStub implements GameEngine {
 	public boolean removePlayer(Player player) {
 		boolean isSuccess = false;
 		// passed in player is null. use local gameEngine player.
-		removePlayerCommand = new RemovePlayerCommand(this.player);
+		removePlayerCommand = new RemovePlayerCommand(this.player.getPlayerId());
 		
 		try {
 			toServerObject.writeObject(removePlayerCommand);
@@ -146,7 +147,7 @@ public class GameEngineClientStub implements GameEngine {
 
 	@Override
 	public Collection<Player> getAllPlayers() {
-		// TODO implement this
+		// nothing to do here
 		return null;
 	}
 
@@ -155,7 +156,7 @@ public class GameEngineClientStub implements GameEngine {
 		boolean betOk = false;
 		
 		try {
-			placeBetCommand = new PlaceBetCommand(this.player, bet);
+			placeBetCommand = new PlaceBetCommand(this.player.getPlayerId(), bet);
 			toServerObject.writeObject(placeBetCommand);
 			response = (Response)fromServerObject.readObject();
 			
@@ -181,7 +182,7 @@ public class GameEngineClientStub implements GameEngine {
 		// update local player
 		player.setPoints(player.getPoints() + points);
 		
-		addPointsCommand = new AddPointsCommand(player, points);
+		addPointsCommand = new AddPointsCommand(player.getPlayerId(), points);
 		
 		// send points to server version
 		try {

@@ -149,6 +149,7 @@ public class GameEngineCallbackImplGUI implements GameEngineCallback {
 				@Override
 				public void run()
 				{
+					// update house result
 					mainFrame.getTableAndToolbarContainerPanel().getGameTablePanel().getDicePanel().getDice1().setText(Integer.toString(num1));
 					mainFrame.getTableAndToolbarContainerPanel().getGameTablePanel().getDicePanel().getDice2().setText(Integer.toString(num2));
 					mainFrame.getTableAndToolbarContainerPanel().getGameTablePanel().getGameStatusPanel().getHouseResultLabel().setText("House result: " + houseTotal);
@@ -264,7 +265,7 @@ public class GameEngineCallbackImplGUI implements GameEngineCallback {
 					mainFrame.getTableAndToolbarContainerPanel().getToolBar().getExitButton().setEnabled(false);
 					mainFrame.getMenu().getExitMenuItem().setEnabled(false);
 					
-					// reset game result
+					// hide previous game result
 					mainFrame.getTableAndToolbarContainerPanel().getGameTablePanel().getGameStatusPanel().getGameResultLabel().setVisible(false);
 				}
 			});

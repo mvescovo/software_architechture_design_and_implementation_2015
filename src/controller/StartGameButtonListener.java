@@ -69,9 +69,6 @@ public class StartGameButtonListener implements ActionListener, KeyListener {
 				player = new SimplePlayer("1", name, pointsInt);
 				gameEngine.addPlayer(player);
 				
-				// update master controller
-//				controller.setCurrPlayer(player);
-				
 				// change view
 //				System.out.println("clicked start game");
 				mainFrame.getTableAndToolbarContainerPanel().setVisible(true);

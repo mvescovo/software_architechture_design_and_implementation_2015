@@ -36,11 +36,11 @@ public class AddPointsButtonListener implements ActionListener, KeyListener {
 		mainFrame.getPlayerPanel().getAddPointsTextField().setEnabled(false);
 		
 		pointsValid = validate.checkJTextFieldPositiveInt(mainFrame.getPlayerPanel().getAddPointsTextField(), mainFrame);
-		pointsToAdd = Integer.parseInt(mainFrame.getPlayerPanel().getAddPointsTextField().getText());
 		oldPoints = Integer.parseInt(mainFrame.getPlayerPanel().getPoints());
 		
 		if (pointsValid) {
 			// change model
+			pointsToAdd = Integer.parseInt(mainFrame.getPlayerPanel().getAddPointsTextField().getText());
 			gameEngine.addPoints(pointsToAdd);
 			mainFrame.getPlayerPanel().setPoints(Integer.toString(oldPoints + pointsToAdd));
 		}

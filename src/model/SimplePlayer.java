@@ -93,4 +93,8 @@ public class SimplePlayer implements Player, Serializable {
 	public boolean getIsParticipatingInRound() {
 		return isParticipatingInRound;
 	}
+	
+	public void setPlayerId(String playerId) {
+		this.playerId = playerId;
+	}
 }

@@ -26,6 +26,14 @@ public class ResultCommand implements Serializable, CommandInterface {
 
 	@Override
 	public void execute(GameEngine gameEngine, HandleAClient handleAClient) {
-		((GameEngineClientStub)gameEngine).getGameEngineCallback().result(player, dicePair, gameEngine);
+		if (player.getPlayerId().contentEquals(((GameEngineClientStub)gameEngine).getPlayer().getPlayerId())) {
+			// if it's the player, update GUI
+			((GameEngineClientStub)gameEngine).getGameEngineCallback().result(player, dicePair, gameEngine);
+		} else {
+			int total = dicePair.getDice1() + dicePair.getDice2();
+			
+			// else output to console for other players
+			System.out.println("Result for player: " + player.getPlayerName() + ": " + total);
+		}
 	}
 }
