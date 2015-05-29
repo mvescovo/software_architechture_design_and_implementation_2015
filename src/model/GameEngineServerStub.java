@@ -14,13 +14,11 @@ import model.interfaces.GameEngine;
  *
  */
 public class GameEngineServerStub {
-	GameEngine gameEngine = null;
-	int port = 10000;
-	ServerSocket serverSocket = null;
-	Socket clientSocket = null;
+	private int port = 10000;
+	private ServerSocket serverSocket = null;
+	private Socket clientSocket = null;
 	
 	public GameEngineServerStub(GameEngine gameEngine) {
-		this.gameEngine = gameEngine;
 		gameEngine.addGameEngineCallback(new ServerSideGameEngineCallback());
 
 		// create a server socket

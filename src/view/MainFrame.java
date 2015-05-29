@@ -11,12 +11,12 @@ import model.GameEngineClientStub;
 
 public class MainFrame extends JFrame {
 	private static final long serialVersionUID = -7523238222452192023L;
-	GameEngine gameEngine;
-	StartGamePanel startGamePanel;
-	Menu menu;
-	HeadingPanel heading;
-	PlayerPanel playerPanel;
-	TableAndToolbarContainerPanel tableAndToolbarContainerPanel;
+	private GameEngine gameEngine;
+	private StartGamePanel startGamePanel;
+	private Menu menu;
+	private HeadingPanel heading;
+	private PlayerPanel playerPanel;
+	private TableAndToolbarContainerPanel tableAndToolbarContainerPanel;
 	
 	public MainFrame(GameEngine gameEngine) {
 		this.gameEngine = gameEngine;
@@ -37,7 +37,6 @@ public class MainFrame extends JFrame {
 		// set details of main frame
 		setTitle("Dice Game");
 		setSize(600, 420);
-//		setLocation(1200, 300);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 //		setResizable(false);

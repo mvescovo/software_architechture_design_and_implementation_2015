@@ -7,11 +7,10 @@ import java.awt.event.KeyListener;
 
 import view.MainFrame;
 import model.interfaces.GameEngine;
-import model.interfaces.Player;
 
 public class RollPlayerButtonListener implements ActionListener, KeyListener {
-	GameEngine gameEngine;
-	MainFrame mainFrame;
+	private GameEngine gameEngine;
+	private MainFrame mainFrame;
 	
 	public RollPlayerButtonListener(GameEngine gameEngine, MainFrame mainFrame) {
 		this.gameEngine = gameEngine;
@@ -20,7 +19,6 @@ public class RollPlayerButtonListener implements ActionListener, KeyListener {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO take this out of a new thread but put the gui update on the EDT and put it at the top
 		Thread thread = new Thread(new Runnable() {
 			@Override
 			public void run() {

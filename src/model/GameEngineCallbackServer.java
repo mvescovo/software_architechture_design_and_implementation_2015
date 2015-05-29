@@ -15,11 +15,11 @@ import model.interfaces.GameEngineCallback;
  *
  */
 public class GameEngineCallbackServer {
-	GameEngine gameEngine = null;
-	GameEngineCallback gameEngineCallback = null;
-	int port = 0;
-	ServerSocket serverSocket = null;
-	Socket clientSocket = null;
+	private GameEngine gameEngine = null;
+	private GameEngineCallback gameEngineCallback = null;
+	private int port = 0;
+	private ServerSocket serverSocket = null;
+	private Socket clientSocket = null;
 	
 	public GameEngineCallbackServer(GameEngine gameEngine) {
 		this.gameEngine = gameEngine;
@@ -72,5 +72,9 @@ public class GameEngineCallbackServer {
 	
 	public int getPort() {
 		return port;
+	}
+
+	public GameEngineCallback getGameEngineCallback() {
+		return gameEngineCallback;
 	}
 }

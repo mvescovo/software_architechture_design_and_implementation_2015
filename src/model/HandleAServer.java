@@ -15,13 +15,12 @@ import model.interfaces.Player;
  *
  */
 public class HandleAServer implements Runnable {
-	Socket socket = null;
-	String serverName = "localhost";
-	int port;
-	Player player = null;
-	boolean connected = false;
-	Map<Player, ObjectOutputStream> hashMapObject;
-	Map<Player, Socket> hashMapSocket;
+	private Socket socket = null;
+	private String serverName = "localhost";
+	private int port;
+	private Player player = null;
+	private Map<Player, ObjectOutputStream> hashMapObject;
+	private Map<Player, Socket> hashMapSocket;
 
 	// streams
 	ObjectOutputStream toServerObject = null;
@@ -46,7 +45,6 @@ public class HandleAServer implements Runnable {
 			
 			hashMapObject.put(player, toServerObject);
 			hashMapSocket.put(player, socket);
-			connected = true;
 		} catch (IOException e) {
 			System.out.println("Could not connect to server: " + e.getMessage());
 			try {

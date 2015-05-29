@@ -13,8 +13,8 @@ import javax.swing.JPanel;
  */
 public class TableAndToolbarContainerPanel extends JPanel {
 	private static final long serialVersionUID = -9048676903836093197L;
-	GameTablePanel gameTablePanel;
-	ToolBarPanel toolBarPanel;
+	private GameTablePanel gameTablePanel;
+	private ToolBarPanel toolBarPanel;
 	
 	public TableAndToolbarContainerPanel() {
 		setLayout(new BorderLayout());

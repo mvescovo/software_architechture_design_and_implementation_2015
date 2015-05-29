@@ -4,21 +4,15 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.ArrayList;
-import java.util.Collection;
-
-import javax.swing.JOptionPane;
-
 import utility.InputValidation;
 import view.MainFrame;
 import model.GameEngineClientStub;
 import model.interfaces.GameEngine;
-import model.interfaces.Player;
 
 public class AddPointsButtonListener implements ActionListener, KeyListener {
-	GameEngineClientStub gameEngine;
-	MainFrame mainFrame;
-	InputValidation validate;
+	private GameEngineClientStub gameEngine;
+	private MainFrame mainFrame;
+	private InputValidation validate;
 	
 	public AddPointsButtonListener(GameEngine gameEngine, MainFrame mainFrame) {
 		this.gameEngine = (GameEngineClientStub)gameEngine;

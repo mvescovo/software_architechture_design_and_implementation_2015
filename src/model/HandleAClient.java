@@ -16,12 +16,12 @@ import model.interfaces.GameEngine;
  *
  */
 public class HandleAClient implements Runnable {
-	GameEngine gameEngine = null;
+	private GameEngine gameEngine = null;
 	private Socket clientSocket;
 	private ObjectInputStream fromClientObject = null;
 	private ObjectOutputStream toClientObject = null;
 	private CommandInterface commandObject = null;
-	boolean quit = false;
+	private boolean quit = false;
 	
 	// create a new thread
 	public HandleAClient(GameEngine gameEngine, Socket socket) {

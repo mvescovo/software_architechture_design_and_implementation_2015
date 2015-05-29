@@ -36,24 +36,16 @@ public class StartGamePanel extends JPanel {
 		c1.gridy = 0; // row 0
 		c1.gridwidth = 1;
 		c1.gridheight = 1;
-//		c1.fill = GridBagConstraints.HORIZONTAL;
-//		c1.ipadx = 0; // increase component width
-//		c1.ipady = 0; // increase component height
-		c1.insets = new Insets(0, 0, 5, 5); // for all components
 		c1.anchor = GridBagConstraints.SOUTHEAST;
 		c1.weightx = 1.0;
 		c1.weighty = 1.0;
 		add(playerNameLabel, c1);
 		
 		playerNameTextField = new JTextField(8);
-//		playerNameTextField.setMaximumSize(new Dimension(100, 20));
 		c2.gridx = 1; // column 0
 		c2.gridy = 0; // row 1
 		c2.gridwidth = 1;
 		c2.gridheight = 1;
-//		c2.fill = GridBagConstraints.HORIZONTAL;
-//		c2.ipadx = 0;
-//		c2.ipady = 0;
 		c2.insets = new Insets(0, 5, 5, 0);
 		c2.anchor = GridBagConstraints.SOUTHWEST;
 		c2.weightx = 1.0;
@@ -66,9 +58,6 @@ public class StartGamePanel extends JPanel {
 		c3.gridy = 1;
 		c3.gridwidth = 1;
 		c3.gridheight = 1;
-//		c3.fill = GridBagConstraints.HORIZONTAL;
-//		c3.ipadx = 0;
-//		c3.ipady = 0;
 		c3.insets = new Insets(5, 0, 0, 5);
 		c3.anchor = GridBagConstraints.EAST;
 		c3.weightx = 1.0;
@@ -80,9 +69,6 @@ public class StartGamePanel extends JPanel {
 		c4.gridy = 1;
 		c4.gridwidth = 1;
 		c4.gridheight = 1;
-//		c4.fill = GridBagConstraints.HORIZONTAL;
-//		c4.ipadx = 0;
-//		c4.ipady = 0;
 		c4.insets = new Insets(5, 5, 0, 0);
 		c4.anchor = GridBagConstraints.WEST;
 		c4.weightx = 1.0;
@@ -97,9 +83,6 @@ public class StartGamePanel extends JPanel {
 		c5.gridy = 2;
 		c5.gridwidth = 2;
 		c5.gridheight = 1;
-//		c5.fill = GridBagConstraints.HORIZONTAL;
-//		c5.ipadx = 0;
-//		c5.ipady = 0;
 		c5.insets = new Insets(15, 0, 0, 0);
 		c5.anchor = GridBagConstraints.NORTH;
 		c5.weightx = 1.0;
@@ -114,9 +97,6 @@ public class StartGamePanel extends JPanel {
 		c6.gridy = 3;
 		c6.gridwidth = 2;
 		c6.gridheight = 1;
-//		c6.fill = GridBagConstraints.SOUTH;
-//		c6.ipadx = 0;
-//		c6.ipady = 0;
 		c6.insets = new Insets(0, 0, 20, 20);
 		c6.anchor = GridBagConstraints.SOUTHEAST;
 		c6.weightx = 1.0;

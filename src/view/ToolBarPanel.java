@@ -9,13 +9,13 @@ import javax.swing.JToolBar;
 
 public class ToolBarPanel extends JPanel {
 	private static final long serialVersionUID = -1874776971025449948L;
-	JToolBar toolBar;
-	JButton placeBetButton;
-	JTextField betTextField;
-	JButton playerRollsButton;
-	JButton houseRollsButton;
-	JButton quitButton;
-	JButton exitButton;
+	private JToolBar toolBar;
+	private JButton placeBetButton;
+	private JTextField betTextField;
+	private JButton playerRollsButton;
+	private JButton houseRollsButton;
+	private JButton quitButton;
+	private JButton exitButton;
 	
 	public ToolBarPanel() {
 		setBackground(new Color(151, 42, 39));
@@ -100,14 +100,6 @@ public class ToolBarPanel extends JPanel {
 		placeBetButton.setEnabled(false);
 		betTextField.setEnabled(false);
 	}
-	
-//	public void enableRoll() {
-//		playerRollsButton.setEnabled(true);
-//	}
-	
-//	public void disableRoll() {
-//		playerRollsButton.setEnabled(false);
-//	}
 	
 	public void focusActiveBetText() {
 		betTextField.requestFocusInWindow();

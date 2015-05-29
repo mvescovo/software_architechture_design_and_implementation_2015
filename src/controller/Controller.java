@@ -3,11 +3,8 @@ package controller;
 import view.MainFrame;
 import model.GameEngineCallbackImplGUI;
 import model.interfaces.GameEngine;
-import model.interfaces.Player;
 
 public class Controller {
-//	@SuppressWarnings("unused")
-	private GameEngine gameEngine = null;
 	private MainFrame mainFrame = null;
 	private PlaceBetButtonListener placeBetButtonListener = null;
 	private BetTextFieldListener betTextFieldListener = null;
@@ -21,10 +18,8 @@ public class Controller {
 	private PlayerPointsTextFieldListener playerPointsTextFieldListener = null;
 	private StartGameButtonListener startGameButtonListener = null;
 	private RefreshButtonListener refreshButtonListener = null;
-//	private Player player = null;
 	
 	public Controller(GameEngine gameEngine, MainFrame mainFrame) {
-		this.gameEngine = gameEngine;
 		this.mainFrame = mainFrame;
 		gameEngine.addGameEngineCallback(new GameEngineCallbackImplGUI(mainFrame));
 		
@@ -40,7 +35,7 @@ public class Controller {
 		playerNameTextFieldListener = new PlayerNameTextFieldListener(mainFrame);
 		playerPointsTextFieldListener = new PlayerPointsTextFieldListener(mainFrame);
 		startGameButtonListener = new StartGameButtonListener(gameEngine, mainFrame);
-		refreshButtonListener = new RefreshButtonListener(gameEngine, mainFrame);
+		refreshButtonListener = new RefreshButtonListener();
 
 		// register action listeners
 		this.mainFrame.getTableAndToolbarContainerPanel().getToolBar().getPlaceBetButton().addActionListener(placeBetButtonListener);

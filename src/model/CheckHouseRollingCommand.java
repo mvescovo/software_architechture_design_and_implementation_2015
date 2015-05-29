@@ -15,7 +15,7 @@ import model.interfaces.GameEngine;
  */
 public class CheckHouseRollingCommand implements Serializable, CommandInterface {
 	private static final long serialVersionUID = -8201161496001261313L;
-	Response response = null;
+	private Response response = null;
 
 	@Override
 	public void execute(GameEngine gameEngine, HandleAClient handleAClient) {

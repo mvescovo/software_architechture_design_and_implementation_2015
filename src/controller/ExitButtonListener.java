@@ -15,8 +15,8 @@ import model.interfaces.GameEngine;
 import view.MainFrame;
 
 public class ExitButtonListener implements ActionListener, KeyListener, WindowListener {
-	GameEngine gameEngine;
-	MainFrame mainFrame;
+	private GameEngine gameEngine;
+	private MainFrame mainFrame;
 	
 	public ExitButtonListener (GameEngine gameEngine, MainFrame mainFrame) {
 		this.gameEngine = gameEngine;

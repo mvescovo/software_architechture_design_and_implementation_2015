@@ -5,9 +5,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
-
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
@@ -15,8 +12,8 @@ import model.interfaces.GameEngine;
 import view.MainFrame;
 
 public class QuitButtonListener implements ActionListener, KeyListener {
-	GameEngine gameEngine;
-	MainFrame mainFrame;
+	private GameEngine gameEngine;
+	private MainFrame mainFrame;
 	
 	public QuitButtonListener (GameEngine gameEngine, MainFrame mainFrame) {
 		this.gameEngine = gameEngine;
@@ -30,7 +27,7 @@ public class QuitButtonListener implements ActionListener, KeyListener {
 		if (n == 0) {
 			// change model
 			if (gameEngine.removePlayer(null)) {
-				System.out.println("GUI was told player removed from server");
+//				System.out.println("GUI was told player removed from server");
 				// change view
 				mainFrame.getPlayerPanel().setVisible(false);
 				mainFrame.getTableAndToolbarContainerPanel().setVisible(false);
@@ -56,7 +53,7 @@ public class QuitButtonListener implements ActionListener, KeyListener {
 				mainFrame.getStartGamePanel().getPlayerNameTextField().setText(null);
 				mainFrame.getStartGamePanel().getPlayerPointsTextField().setText(null);
 			} else {
-				System.out.println("GUI was told player not removed from server");
+//				System.out.println("GUI was told player not removed from server");
 			}
 		}
 	}

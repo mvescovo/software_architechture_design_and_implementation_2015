@@ -10,15 +10,14 @@ import java.awt.event.KeyListener;
 
 import view.MainFrame;
 import model.interfaces.GameEngine;
-import model.interfaces.Player;
 
 /**
  * @author "Michael Vescovo - s3459317"
  *
  */
 public class RollHouseButtonListener implements ActionListener, KeyListener {
-	GameEngine gameEngine;
-	MainFrame mainFrame;
+	private GameEngine gameEngine;
+	private MainFrame mainFrame;
 	
 	RollHouseButtonListener(GameEngine gameEngine, MainFrame mainFrame) {
 		this.gameEngine = gameEngine;

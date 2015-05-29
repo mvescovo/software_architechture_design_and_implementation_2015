@@ -16,8 +16,8 @@ import model.interfaces.Player;
  */
 public class AddPlayerCommand implements CommandInterface, Serializable {
 	private static final long serialVersionUID = -2908872413858147838L;
-	Player player = null;
-	int port;
+	private Player player = null;
+	private int port;
 	
 	public AddPlayerCommand(Player player, int port) {
 		this.player = player;

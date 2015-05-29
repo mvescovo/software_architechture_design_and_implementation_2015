@@ -17,6 +17,7 @@ public class GameEngineImpl implements GameEngine {
 	private volatile boolean houseRolling = false;
 	private Object lock = new Object();
 	private int nextAvailableId = 0;
+	private String playerIdWhoRolledHouse = null;
 	
 	@Override
 	public void rollPlayer(Player player, int initialDelay, int finalDelay,
@@ -30,19 +31,13 @@ public class GameEngineImpl implements GameEngine {
 		((SimplePlayer)player).setRolling();
 		((SimplePlayer)player).setParticipatingInRound(true);
 		
-		if (((SimplePlayer)player).getIsParticipatingInRound()){
-			System.out.println(player.getPlayerName() + " is participating this round (before player roll)");
-		} else {
-			System.out.println(player.getPlayerName() + " not participating this round (before player roll)");
-		}
-		
 		// roll the dice and update views
 		try {
 			while (initialDelay < finalDelay) {
 				num1 = random.nextInt(NUM_FACES) + minNum;
 				num2 = random.nextInt(NUM_FACES) + minNum;
 				dicePair = new DicePairImpl(num1, num2, NUM_FACES);
-				System.out.println("rolled. sending to callback...");
+//				System.out.println("rolled. sending to callback...");
 				this.gameEngineCallback.intermediateResult(player, dicePair, this);
 				initialDelay += delayIncrement;
 				Thread.sleep(initialDelay);
@@ -58,12 +53,6 @@ public class GameEngineImpl implements GameEngine {
 		this.gameEngineCallback.result(player, dicePair, this);
 		
 		((SimplePlayer)player).setNotRolling();
-		
-		if (((SimplePlayer)player).getIsParticipatingInRound()){
-			System.out.println(player.getPlayerName() + " is participating this round (after player roll)");
-		} else {
-			System.out.println(player.getPlayerName() + " not participating this round (after player roll)");
-		}
 		
 		synchronized(this) {
 			this.notify();
@@ -128,17 +117,19 @@ public class GameEngineImpl implements GameEngine {
 			while (((SimplePlayer)player).getIsRolling()) {
 				try {
 					System.out.println(player.getPlayerName() + " is still rolling");
-					//TODO send a callback to all players to let them know the server is waiting for players to finish in progress rolling
+					
+					// send callback to the player that rolled house to let them know the server is waiting for players to finish in progress rolling
+					for (Player currPlayer: players) {
+						if (currPlayer.getPlayerId().contentEquals(playerIdWhoRolledHouse)) {
+							((ServerSideGameEngineCallback)gameEngineCallback).notifyPlayersStillRolling(currPlayer);
+						}
+						break;
+					}
+					
 					wait();
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
-			}
-			
-			if (((SimplePlayer)player).getIsParticipatingInRound()){
-				System.out.println(player.getPlayerName() + " is participating this round (before house roll)");
-			} else {
-				System.out.println(player.getPlayerName() + " not participating this round (before house roll)");
 			}
 		}
 		
@@ -147,36 +138,32 @@ public class GameEngineImpl implements GameEngine {
 		// calculate results and send to players
 		for (Player player: players) {
 			if (((SimplePlayer)player).getIsParticipatingInRound()) {
-				System.out.println("going to calculate results");
-				System.out.println(player.getPlayerName() + " participating: " + ((SimplePlayer)player).getIsParticipatingInRound());
 				int num1 = player.getRollResult().getDice1();
 				int num2 = player.getRollResult().getDice2();
 				int total = num1 + num2;
 							
-				System.out.println("houseTotal: " + houseTotal);
-				System.out.println("playerTotal: " + total);
-				System.out.println("old player points: " + player.getPoints());
+//				System.out.println("houseTotal: " + houseTotal);
+//				System.out.println("playerTotal: " + total);
+//				System.out.println("old player points: " + player.getPoints());
 				
 				if (total > houseTotal) {
 					// player won
-					System.out.printf("%s%s\n", player.getPlayerName(), " won");
+//					System.out.printf("%s%s\n", player.getPlayerName(), " won");
 					player.setPoints(player.getPoints() + (player.getBet() * 2));
-					System.out.println("new player points: " + player.getPoints());
+//					System.out.println("new player points: " + player.getPoints());
 				} else if (total == houseTotal){
 					// draw - return points to player
-					System.out.println("draw");
+//					System.out.println("draw");
 					player.setPoints(player.getPoints() + player.getBet());
-					System.out.println("new player points: " + player.getPoints());
+//					System.out.println("new player points: " + player.getPoints());
 				} else {
-					// player lost.
-					System.out.printf("%s%s\n", player.getPlayerName(), " lost");
-					System.out.println("new player points: " + player.getPoints());
+					// player lost. don't add any points back.
+//					System.out.printf("%s%s\n", player.getPlayerName(), " lost");
+//					System.out.println("new player points: " + player.getPoints());
 				}	
 				
 				// clear bet if the user was in the round
 				player.placeBet(0);
-			} else {
-				System.out.println(player.getPlayerName() + " not participating this round (after house roll)");
 			}
 			
 			((ServerSideGameEngineCallback)gameEngineCallback).updateResult(player, this);
@@ -203,7 +190,7 @@ public class GameEngineImpl implements GameEngine {
 	@Override
 	public boolean placeBet(Player player, int bet) {
 		if (player.placeBet(bet)) {
-			System.out.println("placed bet on server for: " + player.getPlayerName());
+//			System.out.println("placed bet on server for: " + player.getPlayerName());
 			return true;
 		} else {
 			System.out.println("failed to place bet on server for: " + player.getPlayerName());
@@ -269,5 +256,9 @@ public class GameEngineImpl implements GameEngine {
 	public void setNextAvailableId(String nextAvailableId) {
 		// reuse the id's from removed players
 		this.nextAvailableId = Integer.parseInt(nextAvailableId);
+	}
+	
+	public void setPlayerIdWhoRolledHouse(String playerId) {
+		playerIdWhoRolledHouse = playerId;
 	}
 }

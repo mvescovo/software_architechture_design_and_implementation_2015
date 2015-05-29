@@ -2,20 +2,15 @@ package controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.Collection;
-
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
 import view.MainFrame;
-import model.GameEngineClientStub;
 import model.interfaces.GameEngine;
-import model.interfaces.Player;
 
 public class PlaceBetButtonListener implements ActionListener {
-	GameEngine gameEngine;
-	MainFrame mainFrame;
+	private GameEngine gameEngine;
+	private MainFrame mainFrame;
 	
 	public PlaceBetButtonListener(GameEngine gameEngine, MainFrame mainFrame) {
 		this.gameEngine = gameEngine;
@@ -26,9 +21,7 @@ public class PlaceBetButtonListener implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		String bet = null;
 		final int betInt;
-		boolean betOk = true;
 
-		// TODO fix this later to do validation using the validation class. maybe look at doing more error checking on sever
 		// get bet from user
 		bet = mainFrame.getTableAndToolbarContainerPanel().getToolBar().getBetTextField().getText();
 		
@@ -39,7 +32,7 @@ public class PlaceBetButtonListener implements ActionListener {
 				// pass the bet to the gameEngine
 				if (gameEngine.placeBet(null, betInt)) {
 					// bet has gone all the way through the chain and back again
-					System.out.println("GUI was told bet ok");
+//					System.out.println("GUI was told bet ok");
 					
 					// update GUI
 					SwingUtilities.invokeLater(new Runnable() {
@@ -71,10 +64,9 @@ public class PlaceBetButtonListener implements ActionListener {
 					});
 					
 					// bet has gone all the way through the chain and back again
-					System.out.println("gui was told bet not ok");
+//					System.out.println("gui was told bet not ok");
 					JOptionPane.showMessageDialog(mainFrame, "Bet must not be less than zero or greater than points.", "Invalid bet", 0);
-					System.out.println("Bet must not be less than zero or greater than points.");
-					betOk = false;
+//					System.out.println("Bet must not be less than zero or greater than points.");
 				}
 			} catch (NumberFormatException e2){
 				SwingUtilities.invokeLater(new Runnable() {
@@ -84,8 +76,7 @@ public class PlaceBetButtonListener implements ActionListener {
 				});
 				
 				JOptionPane.showMessageDialog(mainFrame, "Bet needs to be a number.", "Invalid bet", 0);
-				System.out.println("bet not a number");
-				betOk = false;
+//				System.out.println("bet not a number");
 			}
 		}
 	}

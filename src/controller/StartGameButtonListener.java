@@ -11,14 +11,12 @@ import javax.swing.JOptionPane;
 import model.SimplePlayer;
 import model.interfaces.GameEngine;
 import model.interfaces.Player;
-import utility.InputValidation;
 import view.MainFrame;
 
 public class StartGameButtonListener implements ActionListener, KeyListener {
-	GameEngine gameEngine;
-	MainFrame mainFrame;
-	Player player;
-	InputValidation validate;
+	private GameEngine gameEngine;
+	private MainFrame mainFrame;
+	private Player player;
 	
 	public StartGameButtonListener(GameEngine gameEngine, MainFrame mainFrame) {
 		this.gameEngine = gameEngine;
@@ -35,7 +33,6 @@ public class StartGameButtonListener implements ActionListener, KeyListener {
 		// check name and points are entered correctly before making changes
 		name = mainFrame.getStartGamePanel().getPlayerNameTextField().getText();			
 		
-		// TODO fix up this class!
 		if (!name.isEmpty()) {
 			points = mainFrame.getStartGamePanel().getPlayerPointsTextField().getText();
 			
@@ -44,7 +41,7 @@ public class StartGameButtonListener implements ActionListener, KeyListener {
 					pointsInt = Integer.parseInt(points);
 				} catch (NumberFormatException e2) {
 					JOptionPane.showMessageDialog(mainFrame, "Points needs to be a number.", "Invalid points", 0);
-					System.out.println("not a number");
+//					System.out.println("not a number");
 					mainFrame.getStartGamePanel().getPlayerPointsTextField().requestFocusInWindow();
 					mainFrame.getStartGamePanel().getPlayerPointsTextField().setText(null);
 					pointsOk = false;
@@ -52,7 +49,7 @@ public class StartGameButtonListener implements ActionListener, KeyListener {
 				
 				if ((pointsOk == true) && (pointsInt < 1)) {
 					JOptionPane.showMessageDialog(mainFrame, "Points must be greater than 0.", "Invalid points", 0);
-					System.out.println("points must be greater than 0");
+//					System.out.println("points must be greater than 0");
 					mainFrame.getStartGamePanel().getPlayerPointsTextField().requestFocusInWindow();
 					mainFrame.getStartGamePanel().getPlayerPointsTextField().setText(null);
 					pointsOk = false;
@@ -60,7 +57,7 @@ public class StartGameButtonListener implements ActionListener, KeyListener {
 			} else {
 				pointsOk = false;
 				JOptionPane.showMessageDialog(mainFrame, "Points empty.", "Invalid points", 0);
-				System.out.println("Points empty");
+//				System.out.println("Points empty");
 				mainFrame.getStartGamePanel().getPlayerPointsTextField().requestFocusInWindow();
 			}
 			
@@ -70,7 +67,6 @@ public class StartGameButtonListener implements ActionListener, KeyListener {
 				gameEngine.addPlayer(player);
 				
 				// change view
-//				System.out.println("clicked start game");
 				mainFrame.getTableAndToolbarContainerPanel().setVisible(true);
 				mainFrame.getStartGamePanel().setVisible(false);
 				mainFrame.getPlayerPanel().setVisible(true);
@@ -89,11 +85,10 @@ public class StartGameButtonListener implements ActionListener, KeyListener {
 				mainFrame.getTableAndToolbarContainerPanel().getToolBar().enableQuit();
 				mainFrame.getMenu().getQuitMenuItem().setEnabled(true);
 				mainFrame.getPlayerPanel().enableAddPoints();
-//				System.out.printf("%s%d%s\n", "player has ", player.getPoints(), " points");
 			}
 		} else {
 			JOptionPane.showMessageDialog(mainFrame, "Name empty", "Invalid name", 0);
-			System.out.println("Name empty");
+//			System.out.println("Name empty");
 			mainFrame.getStartGamePanel().getPlayerNameTextField().requestFocusInWindow();
 		}
 	}

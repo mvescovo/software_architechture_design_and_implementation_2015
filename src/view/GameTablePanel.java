@@ -6,8 +6,8 @@ import javax.swing.JPanel;
 
 public class GameTablePanel extends JPanel {
 	private static final long serialVersionUID = 6100878331293031579L;
-	GameStatusPanel gameStatusPanel;
-	DicePanel dicePanel;
+	private GameStatusPanel gameStatusPanel;
+	private DicePanel dicePanel;
 	
 	public GameTablePanel() {
 		setLayout(new BorderLayout());

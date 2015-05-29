@@ -27,8 +27,6 @@ public class IntermediateHouseResultCommand implements Serializable,
 	@Override
 	public void execute(GameEngine gameEngine, HandleAClient handleAClient) {
 		player = ((GameEngineClientStub)gameEngine).getPlayer();
-		System.out.println("intermediateHouseResultCommand message");
-		System.out.println(player.getPlayerName() + " participating: " + ((SimplePlayer)player).getIsParticipatingInRound());
 		
 		((GameEngineCallbackImplGUI)((GameEngineClientStub)gameEngine).getGameEngineCallback()).showSittingPlayerMessage(player);
 		((GameEngineClientStub)gameEngine).getGameEngineCallback().intermediateHouseResult(dicePair, gameEngine);

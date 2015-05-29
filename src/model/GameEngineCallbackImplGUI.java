@@ -11,7 +11,7 @@ import model.interfaces.GameEngineCallback;
 import model.interfaces.Player;
 
 public class GameEngineCallbackImplGUI implements GameEngineCallback {
-	MainFrame mainFrame;
+	private MainFrame mainFrame;
 	
 	public GameEngineCallbackImplGUI(MainFrame mainFrame) {
 		this.mainFrame = mainFrame;
@@ -25,9 +25,9 @@ public class GameEngineCallbackImplGUI implements GameEngineCallback {
 		final int total = num1 + num2;
 		final String statusText = player.getPlayerName() + " is rolling...";
 		
-		// some console output
-		System.out.print(player.getPlayerName() + " intermediate: ");
-		System.out.println(total);
+		// some console output for this player
+//		System.out.print(player.getPlayerName() + " intermediate: ");
+//		System.out.println(total);
 		
 		// update GUI view
 		try {
@@ -56,9 +56,9 @@ public class GameEngineCallbackImplGUI implements GameEngineCallback {
 		final int num2 = dicePair.getDice2();
 		final int total = num1 + num2;
 		
-		// some console output
-		System.out.print(player.getPlayerName() + " total: ");
-		System.out.println(total);
+		// some console output for this player
+//		System.out.print(player.getPlayerName() + " total: ");
+//		System.out.println(total);
 		
 		// update GUI view
 		try {
@@ -173,15 +173,9 @@ public class GameEngineCallbackImplGUI implements GameEngineCallback {
 	}
 	
 	public void updateResult(final Player player, GameEngine gameEngine) {
-		System.out.println("updating result");
-		System.out.println(player.getPlayerName() + " participating: " + ((SimplePlayer)player).getIsParticipatingInRound());
-
 		if (((SimplePlayer)player).getIsParticipatingInRound()) {
 			final int oldPoints = Integer.parseInt(mainFrame.getPlayerPanel().getPoints()) + Integer.parseInt(mainFrame.getPlayerPanel().getBetPoints().getText());
 			final int newPoints = player.getPoints();
-			
-			System.out.println("oldPoints: " + oldPoints);
-			System.out.println("newPoints: " + newPoints);
 			
 			SwingUtilities.invokeLater(new Runnable() {
 				@Override
@@ -238,7 +232,6 @@ public class GameEngineCallbackImplGUI implements GameEngineCallback {
 				}
 			});
 		}
-		System.out.println(player.getPlayerName() + " participating: " + ((SimplePlayer)player).getIsParticipatingInRound());
 	}
 	
 	public void disableClientforHouseRoll() {
@@ -275,8 +268,6 @@ public class GameEngineCallbackImplGUI implements GameEngineCallback {
 	}
 	
 	public void showSittingPlayerMessage(final Player player) {
-		System.out.println("sitting player message");
-		System.out.println(player.getPlayerName() + " participating: " + ((SimplePlayer)player).getIsParticipatingInRound());
 		if (!((SimplePlayer)player).getIsParticipatingInRound()) {
 			try {
 				SwingUtilities.invokeAndWait(new Runnable() {
@@ -290,6 +281,21 @@ public class GameEngineCallbackImplGUI implements GameEngineCallback {
 			} catch (InvocationTargetException | InterruptedException e) {
 				e.printStackTrace();
 			}
+		}
+	}
+	
+	public void notifyPlayersStillRolling() {
+		try {
+			SwingUtilities.invokeAndWait(new Runnable() {
+				@Override
+				public void run()
+				{
+					// let player that rolled house know that other players have in-progress rolls still happening
+					mainFrame.getTableAndToolbarContainerPanel().getGameTablePanel().getGameStatusPanel().getGameStatusLabel().setText("Waiting for rolls to finish...");
+				}
+			});
+		} catch (InvocationTargetException | InterruptedException e) {
+			e.printStackTrace();
 		}
 	}
 }

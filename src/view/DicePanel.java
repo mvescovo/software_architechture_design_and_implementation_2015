@@ -12,9 +12,9 @@ import javax.swing.SwingConstants;
 
 public class DicePanel extends JPanel {
 	private static final long serialVersionUID = 5943364367155114789L;
-	JLabel dice1Label;
-	JLabel dice2Label;
-	Font font;
+	private JLabel dice1Label;
+	private JLabel dice2Label;
+	private Font font;
 	
 	DicePanel() {
 		font = new Font("SansSerif", Font.BOLD, 48);

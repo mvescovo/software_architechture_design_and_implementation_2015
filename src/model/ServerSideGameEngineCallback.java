@@ -21,9 +21,9 @@ import model.interfaces.Player;
  *
  */
 public class ServerSideGameEngineCallback implements GameEngineCallback {
-	CommandInterface commandObject = null;
-	Map<Player, ObjectOutputStream> hashMapObject = new HashMap<Player, ObjectOutputStream>();
-	Map<Player, Socket> hashMapSocket = new HashMap<Player, Socket>();
+	private CommandInterface commandObject = null;
+	private Map<Player, ObjectOutputStream> hashMapObject = new HashMap<Player, ObjectOutputStream>();
+	private Map<Player, Socket> hashMapSocket = new HashMap<Player, Socket>();
 	
 	public void connectToServer(Player player, int port) {
 		//create new thread to connect to the client server 
@@ -110,6 +110,16 @@ public class ServerSideGameEngineCallback implements GameEngineCallback {
 	
 	public void disableClientForHouseRoll(Player player) {
 		commandObject = new DisableClientForHouseRollCommand();
+		
+		try {
+			hashMapObject.get(player).writeObject(commandObject);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void notifyPlayersStillRolling(Player player) {
+		commandObject = new NotifyPlayersStillRolling();
 		
 		try {
 			hashMapObject.get(player).writeObject(commandObject);

@@ -17,8 +17,8 @@ import model.interfaces.Player;
 public class IntermediateResultCommand implements Serializable,
 		CommandInterface {
 	private static final long serialVersionUID = -6927655603196819235L;
-	Player player = null;
-	DicePair dicePair = null;
+	private Player player = null;
+	private DicePair dicePair = null;
 	
 	public IntermediateResultCommand(Player player, DicePair dicePair) {
 		this.player = player;

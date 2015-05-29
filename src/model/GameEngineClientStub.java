@@ -18,31 +18,29 @@ import model.interfaces.Player;
  *
  */
 public class GameEngineClientStub implements GameEngine {
-	GameEngineCallback gameEngineCallback = null;
-	GameEngineCallbackServer gameEngineCallbackServer = null;
-	Player player = null;
+	private GameEngineCallback gameEngineCallback = null;
+	private GameEngineCallbackServer gameEngineCallbackServer = null;
+	private Player player = null;
 	
 	// socket variables for gameEngineServerStub
-	Socket socket;
-	String serverName = "localhost";
-	int port = 10000;
+	private Socket socket;
+	private String serverName = "localhost";
+	private int port = 10000;
 	
 	// streams for gameEngineServerStub
-	ObjectOutputStream toServerObject = null;
-	ObjectInputStream fromServerObject = null;
+	private ObjectOutputStream toServerObject = null;
+	private ObjectInputStream fromServerObject = null;
 	
 	// command objects for communicating with the server
-	AddPlayerCommand addPlayerCommand = null;
-	AddPointsCommand addPointsCommand = null;
-	CalculateResultsCommand calculateResultsCommand = null;
-	GetAllPlayersCommand getAllPlayerCommand = null;
-	PlaceBetCommand placeBetCommand = null;
-	QuitCommand quitCommand = null;
-	ExitCommand exitCommand = null;
-	RemovePlayerCommand removePlayerCommand = null;
-	RollPlayerCommand rollPlayerCommand = null;
-	CheckHouseRollingCommand checkHouseRollingCommand = null;
-	Response response = null;
+	private AddPlayerCommand addPlayerCommand = null;
+	private AddPointsCommand addPointsCommand = null;
+	private CalculateResultsCommand calculateResultsCommand = null;
+	private PlaceBetCommand placeBetCommand = null;
+	private ExitCommand exitCommand = null;
+	private RemovePlayerCommand removePlayerCommand = null;
+	private RollPlayerCommand rollPlayerCommand = null;
+	private CheckHouseRollingCommand checkHouseRollingCommand = null;
+	private Response response = null;
 	
 	public GameEngineClientStub() {	
 		// create a GameEngineCallback server
@@ -65,7 +63,6 @@ public class GameEngineClientStub implements GameEngine {
 	public void rollPlayer(Player nullPlayer, int initialDelay, int finalDelay,
 			int delayIncrement) {
 		((SimplePlayer)player).setParticipatingInRound(true);
-		System.out.println("just set " + player.getPlayerName() + " participating: " + ((SimplePlayer)player).getIsParticipatingInRound());
 
 		// send the roll to the server
 		try {
@@ -133,7 +130,7 @@ public class GameEngineClientStub implements GameEngine {
 	public void calculateResult() {
 		// request server to calculate results (including roll house)
 		try {
-			calculateResultsCommand = new CalculateResultsCommand();
+			calculateResultsCommand = new CalculateResultsCommand(player.getPlayerId());
 			toServerObject.writeObject(calculateResultsCommand);
 		} catch (IOException e) {
 			e.printStackTrace();

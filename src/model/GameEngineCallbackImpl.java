@@ -6,8 +6,6 @@ import model.interfaces.GameEngineCallback;
 import model.interfaces.Player;
 
 public class GameEngineCallbackImpl implements GameEngineCallback {
-//	MainFrame mainFrame;
-
 	@Override
 	public void intermediateResult(Player player, DicePair dicePair,
 			GameEngine engine) {

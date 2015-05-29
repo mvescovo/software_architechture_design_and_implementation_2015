@@ -6,7 +6,7 @@ import java.awt.event.ActionListener;
 import view.MainFrame;
 
 public class BetTextFieldListener implements ActionListener {
-	MainFrame mainFrame;
+	private MainFrame mainFrame;
 	
 	public BetTextFieldListener(MainFrame mainFrame) {
 		this.mainFrame = mainFrame;
