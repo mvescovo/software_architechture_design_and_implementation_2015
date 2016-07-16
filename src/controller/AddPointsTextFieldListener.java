@@ -5,7 +5,7 @@ import java.awt.event.ActionListener;
 import view.MainFrame;
 
 public class AddPointsTextFieldListener implements ActionListener {
-	MainFrame mainFrame;
+	private MainFrame mainFrame;
 	
 	public AddPointsTextFieldListener(MainFrame mainFrame) {
 		this.mainFrame = mainFrame;

@@ -11,34 +11,36 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 
 public class PlayerPanel extends JPanel {
 	private static final long serialVersionUID = 5849689848560582871L;
-	JLabel playerTitle;
-	JLabel playerName;
-	JButton addPlayerButton;
-	JLabel pointsTitle;
-	JLabel points;
-	JLabel betTitle;
-	JLabel betPoints;
-	JButton addPointsButton;
-	JTextField addPointsTextField;
-	int betPointsInt = 0;
+	private JLabel playerTitle = null;
+	private JLabel playerName = null;
+	private JButton addPlayerButton = null;
+	private JLabel pointsTitle = null;
+	private JLabel points = null;
+	private JLabel betTitle = null;
+	private JLabel betPoints = null;
+	private JButton addPointsButton = null;
+	private JTextField addPointsTextField = null;
+	private JButton refreshButton = null;
+	private int betPointsInt = 0;
 	
 	public PlayerPanel() {
-		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 		setBackground(new Color(151, 42, 39));
 		
 		add(Box.createRigidArea(new Dimension(170, 20)));
 		
-		playerTitle = new JLabel("Players:");
+		playerTitle = new JLabel("Player:");
 		playerTitle.setForeground(new Color(255, 215, 0));
 		playerTitle.setAlignmentX(CENTER_ALIGNMENT);
 		add(playerTitle);
 		
 		add(Box.createRigidArea(new Dimension(170, 5)));
 		
-		playerName = new JLabel("No players yet");
+		playerName = new JLabel("No player yet");
 		playerName.setForeground(Color.WHITE);
 		playerName.setAlignmentX(CENTER_ALIGNMENT);
 		add(playerName);
@@ -99,6 +101,18 @@ public class PlayerPanel extends JPanel {
 		addPointsTextField.setVisible(false);
 		add(addPointsTextField);
 		
+		add(Box.createVerticalGlue());
+		
+		refreshButton = new JButton("Refresh");
+		refreshButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		refreshButton.setAlignmentX(CENTER_ALIGNMENT);
+		refreshButton.setVerticalAlignment(SwingConstants.BOTTOM);
+		refreshButton.setEnabled(true);
+		refreshButton.setVisible(true);
+		add(refreshButton);
+		
+		add(Box.createRigidArea(new Dimension(170, 7)));
+
 		setVisible(false);
 	}
 	
@@ -138,6 +152,10 @@ public class PlayerPanel extends JPanel {
 		this.points.setText(points);
 	}
 	
+	public String getPoints() {
+		return points.getText();
+	}
+	
 	public void deductPoints(int points) {
 		int currentPoints = Integer.parseInt(this.points.getText());
 		int newPoints = currentPoints - points;
@@ -157,6 +175,10 @@ public class PlayerPanel extends JPanel {
 	public void setBetPoints(int points) {
 		betPointsInt = points;
 		betPoints.setText(Integer.toString(betPointsInt));
+	}
+	
+	public JLabel getBetPoints() {
+		return betPoints;
 	}
 	
 	public void showBet() {
@@ -201,5 +223,9 @@ public class PlayerPanel extends JPanel {
 		addPointsButton.setVisible(false);
 		addPointsTextField.setEnabled(false);
 		addPointsTextField.setVisible(false);
+	}
+	
+	public JButton getRefreshButton() {
+		return refreshButton;
 	}
 }

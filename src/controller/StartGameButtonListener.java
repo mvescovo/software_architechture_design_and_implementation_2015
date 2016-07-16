@@ -14,15 +14,13 @@ import model.interfaces.Player;
 import view.MainFrame;
 
 public class StartGameButtonListener implements ActionListener, KeyListener {
-	GameEngine gameEngine;
-	MainFrame mainFrame;
-	Player player;
-	Controller controller;
+	private GameEngine gameEngine;
+	private MainFrame mainFrame;
+	private Player player;
 	
-	public StartGameButtonListener(GameEngine gameEngine, MainFrame mainFrame, Controller controller) {
+	public StartGameButtonListener(GameEngine gameEngine, MainFrame mainFrame) {
 		this.gameEngine = gameEngine;
 		this.mainFrame = mainFrame;
-		this.controller = controller;
 	}
 	
 	@Override
@@ -43,7 +41,7 @@ public class StartGameButtonListener implements ActionListener, KeyListener {
 					pointsInt = Integer.parseInt(points);
 				} catch (NumberFormatException e2) {
 					JOptionPane.showMessageDialog(mainFrame, "Points needs to be a number.", "Invalid points", 0);
-					System.out.println("not a number");
+//					System.out.println("not a number");
 					mainFrame.getStartGamePanel().getPlayerPointsTextField().requestFocusInWindow();
 					mainFrame.getStartGamePanel().getPlayerPointsTextField().setText(null);
 					pointsOk = false;
@@ -51,7 +49,7 @@ public class StartGameButtonListener implements ActionListener, KeyListener {
 				
 				if ((pointsOk == true) && (pointsInt < 1)) {
 					JOptionPane.showMessageDialog(mainFrame, "Points must be greater than 0.", "Invalid points", 0);
-					System.out.println("points must be greater than 0");
+//					System.out.println("points must be greater than 0");
 					mainFrame.getStartGamePanel().getPlayerPointsTextField().requestFocusInWindow();
 					mainFrame.getStartGamePanel().getPlayerPointsTextField().setText(null);
 					pointsOk = false;
@@ -59,7 +57,7 @@ public class StartGameButtonListener implements ActionListener, KeyListener {
 			} else {
 				pointsOk = false;
 				JOptionPane.showMessageDialog(mainFrame, "Points empty.", "Invalid points", 0);
-				System.out.println("Points empty");
+//				System.out.println("Points empty");
 				mainFrame.getStartGamePanel().getPlayerPointsTextField().requestFocusInWindow();
 			}
 			
@@ -68,42 +66,36 @@ public class StartGameButtonListener implements ActionListener, KeyListener {
 				player = new SimplePlayer("1", name, pointsInt);
 				gameEngine.addPlayer(player);
 				
-				// update master controller
-				controller.setCurrPlayer(player);
-				
 				// change view
-				System.out.println("clicked start game");
-				mainFrame.getgameTablePanel().setVisible(true);
+				mainFrame.getTableAndToolbarContainerPanel().setVisible(true);
 				mainFrame.getStartGamePanel().setVisible(false);
 				mainFrame.getPlayerPanel().setVisible(true);
-				mainFrame.getgameTablePanel().getToolBar().setVisible(true);
+				mainFrame.getTableAndToolbarContainerPanel().getToolBar().setVisible(true);
 				// reset the centre panel of the mainFrame borderlayout as there can only be one
-				mainFrame.add(mainFrame.getgameTablePanel(), BorderLayout.CENTER);
-				mainFrame.getgameTablePanel().getToolBar().focusActiveBetText();
+				mainFrame.add(mainFrame.getTableAndToolbarContainerPanel(), BorderLayout.CENTER);
+				mainFrame.getTableAndToolbarContainerPanel().getToolBar().focusActiveBetText();
 				mainFrame.getPlayerPanel().setPlayerName(name);
 				mainFrame.getPlayerPanel().showPoints();
 				mainFrame.getPlayerPanel().showBet();
 				mainFrame.getPlayerPanel().setPoints(points);
 				mainFrame.getPlayerPanel().disableAddPlayerButton();
-				mainFrame.getMenu().disableAddPlayerMenu();
-				mainFrame.getgameTablePanel().getToolBar().enableBet();
-				mainFrame.getMenu().enablePlaceBetMenu();
-				mainFrame.getgameTablePanel().getToolBar().enableQuit();
-				mainFrame.getMenu().enableQuitMenu();
+				mainFrame.getMenu().getStartGameMenuItem().setEnabled(false);
+				mainFrame.getTableAndToolbarContainerPanel().getToolBar().enableBet();
+				mainFrame.getMenu().getplaceBetMenuItem().setEnabled(true);
+				mainFrame.getTableAndToolbarContainerPanel().getToolBar().enableQuit();
+				mainFrame.getMenu().getQuitMenuItem().setEnabled(true);
 				mainFrame.getPlayerPanel().enableAddPoints();
-				System.out.printf("%s%d%s\n", "player has ", player.getPoints(), " points");
 			}
 		} else {
 			JOptionPane.showMessageDialog(mainFrame, "Name empty", "Invalid name", 0);
-			System.out.println("Name empty");
+//			System.out.println("Name empty");
 			mainFrame.getStartGamePanel().getPlayerNameTextField().requestFocusInWindow();
 		}
 	}
 
 	@Override
 	public void keyTyped(KeyEvent e) {
-		// TODO Auto-generated method stub
-		
+		// nothing to do here
 	}
 
 	@Override
@@ -115,7 +107,6 @@ public class StartGameButtonListener implements ActionListener, KeyListener {
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		// TODO Auto-generated method stub
-		
+		// nothing to do here
 	}
 }

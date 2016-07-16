@@ -11,10 +11,13 @@ import model.interfaces.Player;
 import java.util.Random;
 
 public class GameEngineImpl implements GameEngine {
-	Collection<Player> players = new ArrayList<Player>();
-	GameEngineCallback gameEngineCallback;
+	private volatile Collection<Player> players = new ArrayList<Player>();
+	private GameEngineCallback gameEngineCallback;
 	private int houseTotal;
-	public Player currPlayer;
+	private volatile boolean houseRolling = false;
+	private Object lock = new Object();
+	private int nextAvailableId = 0;
+	private String playerIdWhoRolledHouse = null;
 	
 	@Override
 	public void rollPlayer(Player player, int initialDelay, int finalDelay,
@@ -25,25 +28,35 @@ public class GameEngineImpl implements GameEngine {
 		Random random = new Random();
 		DicePair dicePair = null;
 		
+		((SimplePlayer)player).setRolling();
+		((SimplePlayer)player).setParticipatingInRound(true);
+		
 		// roll the dice and update views
-		while (initialDelay < finalDelay) {
-			num1 = random.nextInt(NUM_FACES) + minNum;
-			num2 = random.nextInt(NUM_FACES) + minNum;
-			dicePair = new DicePairImpl(num1, num2, NUM_FACES);
-			this.gameEngineCallback.intermediateResult(player, dicePair, this);
-			try {
+		try {
+			while (initialDelay < finalDelay) {
+				num1 = random.nextInt(NUM_FACES) + minNum;
+				num2 = random.nextInt(NUM_FACES) + minNum;
+				dicePair = new DicePairImpl(num1, num2, NUM_FACES);
+//				System.out.println("rolled. sending to callback...");
+				this.gameEngineCallback.intermediateResult(player, dicePair, this);
+				initialDelay += delayIncrement;
 				Thread.sleep(initialDelay);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
 			}
-			initialDelay += delayIncrement;
-		} 
+		} catch (InterruptedException e) {
+				e.printStackTrace();
+		}
 		
 		num1 = random.nextInt(NUM_FACES) + minNum;
 		num2 = random.nextInt(NUM_FACES) + minNum;
 		dicePair = new DicePairImpl(num1, num2, NUM_FACES);
 		player.setRollResult(dicePair);
 		this.gameEngineCallback.result(player, dicePair, this);
+		
+		((SimplePlayer)player).setNotRolling();
+		
+		synchronized(this) {
+			this.notify();
+		}
 	}
 
 	@Override
@@ -55,19 +68,19 @@ public class GameEngineImpl implements GameEngine {
 		DicePair dicePair = null;
 		
 		// roll the dice and update views
-		while (initialDelay < finalDelay) {
-			num1 = random.nextInt(NUM_FACES) + minNum;
-			num2 = random.nextInt(NUM_FACES) + minNum;
-			dicePair = new DicePairImpl(num1, num2, NUM_FACES);
-			this.gameEngineCallback.intermediateHouseResult(dicePair, this);
-			try {
+		try {
+			while (initialDelay < finalDelay) {
+				num1 = random.nextInt(NUM_FACES) + minNum;
+				num2 = random.nextInt(NUM_FACES) + minNum;
+				dicePair = new DicePairImpl(num1, num2, NUM_FACES);
+				this.gameEngineCallback.intermediateHouseResult(dicePair, this);
+				initialDelay += delayIncrement;
 				Thread.sleep(initialDelay);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-			initialDelay += delayIncrement;
+			}		
+		} catch (InterruptedException e) {
+			e.printStackTrace();
 		}
-		
+
 		num1 = random.nextInt(NUM_FACES) + minNum;
 		num2 = random.nextInt(NUM_FACES) + minNum;
 		dicePair = new DicePairImpl(num1, num2, NUM_FACES);
@@ -78,11 +91,13 @@ public class GameEngineImpl implements GameEngine {
 	@Override
 	public void addPlayer(Player player) {
 		this.players.add(player);
+		System.out.println("added player: " + player.getPlayerName());
 	}
 
 	@Override
 	public boolean removePlayer(Player player) {
 		if (this.players.contains(player)) {
+			setNextAvailableId(player.getPlayerId());
 			this.players.remove(player);
 			return true;
 		} else {
@@ -91,32 +106,80 @@ public class GameEngineImpl implements GameEngine {
 	}
 
 	@Override
-	public void calculateResult() {
-		this.rollHouse(1, 200, 20);
-		
+	public synchronized void calculateResult() {		
+		// disable clients while house is rolling
 		for (Player player: players) {
-			int num1 = player.getRollResult().getDice1();
-			int num2 = player.getRollResult().getDice2();
-			int total = num1 + num2;
-			
-			if (total > houseTotal) {
-				// player won
-				System.out.printf("%s%s\n", player.getPlayerName(), " won");
-				player.setPoints(player.getPoints() + player.getBet() * 2);
-			} else if (total == houseTotal){
-				// draw - return points to player
-				System.out.println("draw");
-				player.setPoints(player.getPoints() + player.getBet());
-			} else {
-				// player lost.
-				System.out.printf("%s%s\n", player.getPlayerName(), " lost");
+			((ServerSideGameEngineCallback)gameEngineCallback).disableClientForHouseRoll(player);
+		}
+		
+		// ensure all players have finished rolling
+		for (Player player: players) {
+			while (((SimplePlayer)player).getIsRolling()) {
+				try {
+					System.out.println(player.getPlayerName() + " is still rolling");
+					
+					// send callback to the player that rolled house to let them know the server is waiting for players to finish in progress rolling
+					for (Player currPlayer: players) {
+						if (currPlayer.getPlayerId().contentEquals(playerIdWhoRolledHouse)) {
+							((ServerSideGameEngineCallback)gameEngineCallback).notifyPlayersStillRolling(currPlayer);
+						}
+						break;
+					}
+					
+					wait();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
 			}
 		}
+		
+		this.rollHouse(1, 500, 20);
+		
+		// calculate results and send to players
+		for (Player player: players) {
+			if (((SimplePlayer)player).getIsParticipatingInRound()) {
+				int num1 = player.getRollResult().getDice1();
+				int num2 = player.getRollResult().getDice2();
+				int total = num1 + num2;
+							
+//				System.out.println("houseTotal: " + houseTotal);
+//				System.out.println("playerTotal: " + total);
+//				System.out.println("old player points: " + player.getPoints());
+				
+				if (total > houseTotal) {
+					// player won
+//					System.out.printf("%s%s\n", player.getPlayerName(), " won");
+					player.setPoints(player.getPoints() + (player.getBet() * 2));
+//					System.out.println("new player points: " + player.getPoints());
+				} else if (total == houseTotal){
+					// draw - return points to player
+//					System.out.println("draw");
+					player.setPoints(player.getPoints() + player.getBet());
+//					System.out.println("new player points: " + player.getPoints());
+				} else {
+					// player lost. don't add any points back.
+//					System.out.printf("%s%s\n", player.getPlayerName(), " lost");
+//					System.out.println("new player points: " + player.getPoints());
+				}	
+				
+				// clear bet if the user was in the round
+				player.placeBet(0);
+			}
+			
+			((ServerSideGameEngineCallback)gameEngineCallback).updateResult(player, this);
+			((SimplePlayer)player).setParticipatingInRound(false);
+		}
+		
+		houseRolling = false;
 	}
 
 	@Override
 	public void addGameEngineCallback(GameEngineCallback gameEngineCallback) {
 		this.gameEngineCallback = gameEngineCallback;
+	}
+	
+	public GameEngineCallback getGameEngineCallback() {
+		return gameEngineCallback;
 	}
 
 	@Override
@@ -126,12 +189,76 @@ public class GameEngineImpl implements GameEngine {
 
 	@Override
 	public boolean placeBet(Player player, int bet) {
-		try {
-			player.placeBet(bet);
-		} catch (IllegalArgumentException e) {
-			System.err.println(e.getMessage() + player.getPlayerName());
+		if (player.placeBet(bet)) {
+//			System.out.println("placed bet on server for: " + player.getPlayerName());
+			return true;
+		} else {
+			System.out.println("failed to place bet on server for: " + player.getPlayerName());
 			return false;
 		}
-		return true;
+	}
+	
+	public void connectCallbackServer (Player player, int port) {
+		((ServerSideGameEngineCallback)gameEngineCallback).connectToServer(player, port);
+	}
+	
+	public void disconnectCallbackServer (Player player) {
+		((ServerSideGameEngineCallback)gameEngineCallback).disconnectFromServer(player);
+	}
+
+	public void addPoints(Player player, int points) {
+		for (Player currPlayer: players) {
+			if (currPlayer == player) {
+				currPlayer.setPoints(currPlayer.getPoints() + points);
+				System.out.println("added " + points + " points to player: " + player.getPlayerName());
+				continue;
+			}
+		}
+	}
+	
+	public boolean setHouseRolling() {
+		synchronized (lock) {
+			if (houseRolling) {
+				// if house already rolling then it wasn't set
+				return false;
+			} else {
+				// set house to rolling
+				houseRolling = true;
+				return true;
+			}
+		}
+	}
+	
+	public boolean isHouseRolling() {
+		return houseRolling;
+	}
+	
+	public String takeNextAvailableId() {
+		String newId = Integer.toString(nextAvailableId);
+		boolean newIdUpdated;
+
+		// update the next available id for the next player
+		do {
+			nextAvailableId++;
+			newIdUpdated = true;
+			
+			for (Player player: players) {
+				if (Integer.parseInt(player.getPlayerId()) == nextAvailableId) {
+					newIdUpdated = false;
+					break;
+				}
+			}
+		} while (!newIdUpdated);
+
+		return newId;
+	}
+	
+	public void setNextAvailableId(String nextAvailableId) {
+		// reuse the id's from removed players
+		this.nextAvailableId = Integer.parseInt(nextAvailableId);
+	}
+	
+	public void setPlayerIdWhoRolledHouse(String playerId) {
+		playerIdWhoRolledHouse = playerId;
 	}
 }

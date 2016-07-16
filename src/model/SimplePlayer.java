@@ -1,14 +1,19 @@
 package model;
 
+import java.io.Serializable;
+
 import model.interfaces.DicePair;
 import model.interfaces.Player;
 
-public class SimplePlayer implements Player {
-	private String playerId;
-	private String playerName;
+public class SimplePlayer implements Player, Serializable {
+	private static final long serialVersionUID = -1656658223445569521L;
+	private String playerId = null;
+	private String playerName = null;
 	private int points;
 	private int bet;
-	private DicePair rollResult;
+	private DicePair rollResult = null;
+	private boolean isRolling = false;
+	private boolean isParticipatingInRound = false;
 	
 	public SimplePlayer(String playerId, String playerName, int points) {
 		this.playerId = playerId;
@@ -34,7 +39,6 @@ public class SimplePlayer implements Player {
 	@Override
 	public void setPoints(int points) {
 		this.points = points;
-		
 	}
 
 	@Override
@@ -45,13 +49,13 @@ public class SimplePlayer implements Player {
 	@Override
 	public boolean placeBet(int bet) {
 		// pre: bet <= points
-		if (bet > this.points)
-			throw new IllegalArgumentException("Bet too high for: ");
-		
-		this.bet = bet;
-		this.points -= bet;
-		
-		return true;
+		if ((bet > this.points) || (bet < 0)) {
+			return false;
+		} else {
+			this.bet = bet;
+			this.points -= bet;
+			return true;
+		}
 	}
 
 	@Override
@@ -68,5 +72,29 @@ public class SimplePlayer implements Player {
 	public void setRollResult(DicePair rollResult) {
 		this.rollResult = rollResult;
 		
+	}
+	
+	public void setRolling() {
+		isRolling = true;
+	}
+	
+	public void setNotRolling() {
+		isRolling = false;
+	}
+	
+	public boolean getIsRolling() {
+		return isRolling;
+	}
+	
+	public void setParticipatingInRound(boolean value) {
+		isParticipatingInRound = value;
+	}
+	
+	public boolean getIsParticipatingInRound() {
+		return isParticipatingInRound;
+	}
+	
+	public void setPlayerId(String playerId) {
+		this.playerId = playerId;
 	}
 }

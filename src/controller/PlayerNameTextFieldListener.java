@@ -6,7 +6,7 @@ import java.awt.event.ActionListener;
 import view.MainFrame;
 
 public class PlayerNameTextFieldListener implements ActionListener {
-	MainFrame mainFrame;
+	private MainFrame mainFrame;
 	
 	public PlayerNameTextFieldListener(MainFrame mainFrame) {
 		this.mainFrame = mainFrame;

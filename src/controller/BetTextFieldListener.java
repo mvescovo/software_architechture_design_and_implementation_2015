@@ -6,7 +6,7 @@ import java.awt.event.ActionListener;
 import view.MainFrame;
 
 public class BetTextFieldListener implements ActionListener {
-	MainFrame mainFrame;
+	private MainFrame mainFrame;
 	
 	public BetTextFieldListener(MainFrame mainFrame) {
 		this.mainFrame = mainFrame;
@@ -15,6 +15,6 @@ public class BetTextFieldListener implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// press place bet button
-		mainFrame.getgameTablePanel().getToolBar().clickPlaceBet();
+		mainFrame.getTableAndToolbarContainerPanel().getToolBar().clickPlaceBet();
 	}
 }

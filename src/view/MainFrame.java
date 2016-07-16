@@ -4,37 +4,43 @@ import java.awt.*;
 
 import javax.swing.*;
 
+import controller.Controller;
+import model.GameEngineCallbackImplGUI;
 import model.interfaces.GameEngine;
+import model.GameEngineClientStub;
 
 public class MainFrame extends JFrame {
 	private static final long serialVersionUID = -7523238222452192023L;
-	GameEngine gameEngine;
-	StartGamePanel startGamePanel;
-	Menu menu;
-	HeadingPanel heading;
-	PlayerPanel playerPanel;
-	GameTablePanel gameTablePanel;
+	private GameEngine gameEngine;
+	private StartGamePanel startGamePanel;
+	private Menu menu;
+	private HeadingPanel heading;
+	private PlayerPanel playerPanel;
+	private TableAndToolbarContainerPanel tableAndToolbarContainerPanel;
 	
 	public MainFrame(GameEngine gameEngine) {
 		this.gameEngine = gameEngine;
+		this.gameEngine.addGameEngineCallback(new GameEngineCallbackImplGUI(this));
+		((GameEngineClientStub)(this.gameEngine)).addGameEngineCallbackToGameEngineCallbackServer();
 		startGamePanel = new StartGamePanel();
 		menu = new Menu();
 		heading = new HeadingPanel();
 		playerPanel = new PlayerPanel();
-		gameTablePanel = new GameTablePanel();
-
+		tableAndToolbarContainerPanel = new TableAndToolbarContainerPanel();
+		
 		setJMenuBar(menu);
 		add(heading, BorderLayout.NORTH);
 		add(playerPanel, BorderLayout.WEST);
-		add(gameTablePanel, BorderLayout.CENTER);
+		add(tableAndToolbarContainerPanel, BorderLayout.CENTER);
 		add(startGamePanel, BorderLayout.CENTER);
 		
 		// set details of main frame
 		setTitle("Dice Game");
-		setSize(600, 400);
-//		setLocation(1200, 300);
+		setSize(600, 420);
 		setLocationRelativeTo(null);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+//		setResizable(false);
+		new Controller(this.gameEngine, this);
 		setVisible(true);
 	}
 	
@@ -46,8 +52,8 @@ public class MainFrame extends JFrame {
 		return playerPanel;
 	}
 	
-	public GameTablePanel getgameTablePanel() {
-		return gameTablePanel;
+	public TableAndToolbarContainerPanel getTableAndToolbarContainerPanel() {
+		return tableAndToolbarContainerPanel;
 	}
 	
 	public Menu getMenu() {
