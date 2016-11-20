@@ -1,8 +1,12 @@
-Assignment 2 Dice Game by Michael Vescovo s3459317
+# Software Architecture Design and Implementation 2015
 
-- Hello marker. There's no issues that I'm aware of, but the following is how it should work.
+A Java program to demonstrate some basic software design patterns by way of a multilayer dice game.
 
-What my implementation does (as far as I can tell):
+# Install
+
+Standard Java program.
+
+# Features
 
 - Let's multiple players join the game simultaneously at any time.
 If a game is in progress it will immediately start receiving callbacks with a suitable message.
@@ -32,19 +36,13 @@ realised I didn't need it. I've proved that the players are being sent back beca
 consoles of each player receives the updates. Anyway I left the button there but it doesn't do
 anything.
 
-- players can top up their points at any time when the field is enabled.
+- Players can top up their points at any time when the field is enabled.
 
-- when a player places a bet, the points are deducted from their balance and displayed on the
+- When a player places a bet, the points are deducted from their balance and displayed on the
 current bet label. They are deducted on the server in this step also. After the round points are
 adjusted again.
 
-That's all I can think of off the top of my head.
+# Licence
+[![AUR](https://img.shields.io/aur/license/yaourt.svg)]()
 
-I hope I've covered everything. It was a tricky but fun assignment.
-
-Thanks,
-Michael.
-
-
-
-
+[GNU General Public License v3.0](http://choosealicense.com/licenses/gpl-3.0/)
