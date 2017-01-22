@@ -2,10 +2,6 @@
 
 A Java program to demonstrate some basic software design patterns by way of a multilayer dice game.
 
-# Install
-
-Standard Java program.
-
 # Features
 
 - Let's multiple players join the game simultaneously at any time.
@@ -41,6 +37,14 @@ anything.
 - When a player places a bet, the points are deducted from their balance and displayed on the
 current bet label. They are deducted on the server in this step also. After the round points are
 adjusted again.
+
+# Screenshots
+<img src="https://cloud.githubusercontent.com/assets/15829736/22180311/a9120d9e-e0c0-11e6-9717-6276015b6e90.png" height="373" width="500">
+<img src="https://cloud.githubusercontent.com/assets/15829736/22180322/0c076ba6-e0c1-11e6-8416-a72a03356ab4.png" height="500" width="335">
+
+# Install
+
+Standard Java program.
 
 # Licence
 [![AUR](https://img.shields.io/aur/license/yaourt.svg)]()
